@@ -70,10 +70,10 @@ There are three other lambda functions which are used in the statemachine:
 Still lots of things to tidy up:
 
 - [x] Secure all the lambda functions IAM profiles
-- [] Combine all the templates into one deployable unit
-- [] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
-- [] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
-- [] Sort out versioning of the project and build files.
+- [ ] Combine all the templates into one deployable unit
+- [ ] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
+- [ ] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
+- [ ] Sort out versioning of the project and build files.
 
 Some notes / suggestions for the buildkite team:
 
@@ -82,7 +82,7 @@ Some notes / suggestions for the buildkite team:
 
 # authors
 
-* Mark Wolfe
+* Mark Wolfe [@wolfeidau](https://twitter.com/wolfeidau)
 
 # license
 
