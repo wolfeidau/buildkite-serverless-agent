@@ -1,5 +1,5 @@
 
-APPNAME ?= lambda-buildkite-worker
+APPNAME ?= bk-buildkite-worker-lambda
 ENV ?= dev
 ENV_NO ?= 1
 

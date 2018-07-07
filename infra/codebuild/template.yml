@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Buildkite Codebuild Project'
+Description: 'codebuild: Codebuild Project which is used to run Buildkite jobs, a @wolfeidau template'
 Parameters:
     EnvironmentName:
       Type: String

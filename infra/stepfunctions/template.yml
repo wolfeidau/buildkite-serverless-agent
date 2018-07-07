@@ -1,6 +1,6 @@
 ---
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Buildkite Codebuild Project and job monitoring state machine'
+Description: 'stepfunctions: State machine which monitors Buildkite codebuild jobs, a @wolfeidau template'
 Parameters:
     EnvironmentName:
       Type: String

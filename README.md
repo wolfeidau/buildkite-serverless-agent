@@ -45,9 +45,13 @@ Then we need to deploy some cloudformation.
 
 * Launch a stack to create the buildkite codebuild project, which is located in `infra/codebuild`.
 
-* Deploy the lambdas for the job monitoring state machine, which can be deployed using `make all` in the root of the project. Note that you will need to configure some environment variables as per the `.envrc.example`.
+* Deploy the lambdas for the job monitoring state machine, which can be deployed using `make` in the root of each lambda project. Note that you will need to configure some environment variables as per the `.envrc.example`.
 
 * Launch a stack to create the buildkite job monitoring state machine project, which is located in `infra/stepfunctions`.
+
+* Update the env variable for `SFN_CODEBUILD_JOB_MONITOR_STACK` in your `.envrc`.
+
+* Deploy the `agent-worker` lambda which can be deployed using `make` in the root of the project
 
 Lastly we need to seed the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `infra/codebuild/project-template`, you just need to zip the `buildspec.yml` file.
 

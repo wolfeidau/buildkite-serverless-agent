@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lambda: Function which checks the status Buildkite jobs, a @wolfeidau template'
 Transform: AWS::Serverless-2016-10-31
 Parameters:
     EnvironmentName:

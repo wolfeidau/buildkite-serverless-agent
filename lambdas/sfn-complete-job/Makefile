@@ -1,5 +1,5 @@
 
-APPNAME ?= lambda-bk-sfn-complete-job
+APPNAME ?= bk-sfn-complete-job-lambda
 ENV ?= dev
 ENV_NO ?= 1
 
