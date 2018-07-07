@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+    EnvironmentName:
+      Type: String
+    EnvironmentNumber:
+      Type: String
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: main
+      Timeout: 30
+      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
+      Tracing: Active
+      Runtime: go1.x
+      CodeUri: ./handler.zip
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AWSXrayWriteOnlyAccess
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+            - Effect: Allow
+              Action: 
+              - 'ssm:GetParameters'
+              - 'ssm:GetParameter'
+              Resource:
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+            - Effect: Allow
+              Action: 
+              - 'codebuild:BatchGetBuilds'
+              Resource:
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/buildkite-${EnvironmentName}-${EnvironmentNumber}" # TODO: deprecated clean this up later
+            - Effect: Allow
+              Action:
+              - logs:GetLogEvents
+              Resource:
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}:*"
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/buildkite-${EnvironmentName}-${EnvironmentNumber}"    # TODO: deprecated clean this up later
+              - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/buildkite-${EnvironmentName}-${EnvironmentNumber}:*"  # TODO: deprecated clean this up later
+      Environment:
+        Variables:
+          ENVIRONMENT_NAME:
+            Ref: EnvironmentName
+          ENVIRONMENT_NUMBER:
+            Ref: EnvironmentNumber
+
+Outputs:
+  FunctionArn:
+    Value: !GetAtt Function.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionArn"

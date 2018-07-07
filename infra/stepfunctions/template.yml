@@ -1,0 +1,133 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Buildkite Codebuild Project and job monitoring state machine'
+Parameters:
+    EnvironmentName:
+      Type: String
+    EnvironmentNumber:
+      Type: String
+    SfnSubmitLambdaStack:
+      Description: 'Stack name of stack which deployed the submit lambda.'
+      Type: String
+    SfnCheckLambdaStack:
+      Description: 'Stack name of stack which deployed the check lambda.'
+      Type: String
+    SfnCompleteLambdaStack:
+      Description: 'Stack name of stack which deployed the complete lambda.'
+      Type: String
+
+Resources:
+
+  StateMachineCodebuildJobMonitor:
+    Type: 'AWS::StepFunctions::StateMachine'
+    Properties:
+      StateMachineName: !Sub "CodebuildJobMonitor-${EnvironmentName}-${EnvironmentNumber}"
+      DefinitionString: 
+        Fn::Sub:
+          - |
+            {
+              "Comment": "A state machine that submits a codebuild Job and monitors the Job until it completes.",
+              "StartAt": "Submit Job",
+              "States": {
+                "Submit Job": {
+                  "Type": "Task",
+                  "Resource": "${SfnSubmitLambdaARN}",
+                  "Next": "Wait X Seconds",
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "States.ALL"
+                      ],
+                      "IntervalSeconds": 1,
+                      "MaxAttempts": 3,
+                      "BackoffRate": 2
+                    }
+                  ]
+                },
+                "Wait X Seconds": {
+                  "Type": "Wait",
+                  "SecondsPath": "$.wait_time",
+                  "Next": "Get Job Status"
+                },
+                "Get Job Status": {
+                  "Type": "Task",
+                  "Resource": "${SfnCheckLambdaARN}",
+                  "Next": "Job Complete?",
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "States.ALL"
+                      ],
+                      "IntervalSeconds": 1,
+                      "MaxAttempts": 3,
+                      "BackoffRate": 2
+                    }
+                  ]
+                },
+                "Job Complete?": {
+                  "Type": "Choice",
+                  "Choices": [
+                    {
+                      "Variable": "$.build_status",
+                      "StringEquals": "FAILED",
+                      "Next": "Get Final Job Status"
+                    },
+                    {
+                      "Variable": "$.build_status",
+                      "StringEquals": "SUCCEEDED",
+                      "Next": "Get Final Job Status"
+                    }
+                  ],
+                  "Default": "Wait X Seconds"
+                },
+                "Get Final Job Status": {
+                  "Type": "Task",
+                  "Resource": "${SfnCompleteLambdaARN}",
+                  "End": true,
+                  "Retry": [
+                    {
+                      "ErrorEquals": [
+                        "States.ALL"
+                      ],
+                      "IntervalSeconds": 1,
+                      "MaxAttempts": 3,
+                      "BackoffRate": 2
+                    }
+                  ]
+                }
+              }
+            }
+          - SfnSubmitLambdaARN: !ImportValue
+              Fn::Sub: ${SfnSubmitLambdaStack}-FunctionArn
+            SfnCheckLambdaARN: !ImportValue
+              Fn::Sub: ${SfnCheckLambdaStack}-FunctionArn
+            SfnCompleteLambdaARN: !ImportValue
+              Fn::Sub: ${SfnCompleteLambdaStack}-FunctionArn
+      RoleArn: !GetAtt 'RoleCodebuildJobMonitor.Arn'
+
+  RoleCodebuildJobMonitor:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: !Sub 'states.${AWS::Region}.amazonaws.com'
+          Action: 'sts:AssumeRole'
+      Policies:
+      - PolicyName: lambda
+        PolicyDocument:
+          Statement:
+          - Effect: Allow
+            Action: 'lambda:InvokeFunction'
+            Resource:
+            - 'Fn::ImportValue': !Sub '${SfnSubmitLambdaStack}-FunctionArn'
+            - 'Fn::ImportValue': !Sub '${SfnCheckLambdaStack}-FunctionArn'
+            - 'Fn::ImportValue': !Sub '${SfnCompleteLambdaStack}-FunctionArn'
+
+Outputs:
+  StateMachineCodebuildJobMonitorArn:
+    Value: !Ref StateMachineCodebuildJobMonitor
+    Export:
+      Name: !Sub "${AWS::StackName}-StateMachineCodebuildJobMonitorArn"
