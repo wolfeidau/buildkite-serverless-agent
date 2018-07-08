@@ -6,14 +6,8 @@ Parameters:
       Type: String
     EnvironmentNumber:
       Type: String
-    SfnSubmitLambdaStack:
-      Description: 'Stack name of stack which deployed the submit lambda.'
-      Type: String
-    SfnCheckLambdaStack:
-      Description: 'Stack name of stack which deployed the check lambda.'
-      Type: String
-    SfnCompleteLambdaStack:
-      Description: 'Stack name of stack which deployed the complete lambda.'
+    SfnLambdaStack:
+      Description: 'Stack name of stack which deployed the step function job lambdas.'
       Type: String
 
 Resources:
@@ -98,11 +92,11 @@ Resources:
               }
             }
           - SfnSubmitLambdaARN: !ImportValue
-              Fn::Sub: ${SfnSubmitLambdaStack}-FunctionArn
+              Fn::Sub: ${SfnLambdaStack}-SubmitJobFunctionArn
             SfnCheckLambdaARN: !ImportValue
-              Fn::Sub: ${SfnCheckLambdaStack}-FunctionArn
+              Fn::Sub: ${SfnLambdaStack}-CheckJobFunctionArn
             SfnCompleteLambdaARN: !ImportValue
-              Fn::Sub: ${SfnCompleteLambdaStack}-FunctionArn
+              Fn::Sub: ${SfnLambdaStack}-CompleteJobFunctionArn
       RoleArn: !GetAtt 'RoleCodebuildJobMonitor.Arn'
 
   RoleCodebuildJobMonitor:
@@ -122,9 +116,9 @@ Resources:
           - Effect: Allow
             Action: 'lambda:InvokeFunction'
             Resource:
-            - 'Fn::ImportValue': !Sub '${SfnSubmitLambdaStack}-FunctionArn'
-            - 'Fn::ImportValue': !Sub '${SfnCheckLambdaStack}-FunctionArn'
-            - 'Fn::ImportValue': !Sub '${SfnCompleteLambdaStack}-FunctionArn'
+            - 'Fn::ImportValue': !Sub '${SfnLambdaStack}-SubmitJobFunctionArn'
+            - 'Fn::ImportValue': !Sub '${SfnLambdaStack}-CheckJobFunctionArn'
+            - 'Fn::ImportValue': !Sub '${SfnLambdaStack}-CompleteJobFunctionArn'
 
 Outputs:
   StateMachineCodebuildJobMonitorArn:

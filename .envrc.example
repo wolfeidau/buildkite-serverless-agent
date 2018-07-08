@@ -1,6 +1,4 @@
 # region config
 export AWS_DEFAULT_REGION=ap-southeast-2
 export AWS_REGION=ap-southeast-2
-export S3_BUCKET=bucket-used-for-lambda-deployments
-# used to tie the agent to it's stepfunction state machine
-export SFN_CODEBUILD_JOB_MONITOR_STACK=bk-sfn-codebuild-job-monitor-dev-1
+export S3_BUCKET=bucket-used-for-lambda-deployments-in-your-region

@@ -14,6 +14,8 @@ Before you start you need.
 2. An S3 bucket in the account to stage [cloudformation](https://aws.amazon.com/cloudformation/) artifacts.
 3. The [AWS CLI](https://aws.amazon.com/cli/).
 4. [direnv](https://direnv.net/) or the like to manage env variables using `.envrc`.
+5. [golang](https://golang.org) to build the lambda projects.
+6. This project cloned into your `$GOPATH` at `src/github.com/wolfeidau/buildkite-serverless-agent`
 
 # conventions
 
@@ -29,6 +31,8 @@ The other convention used is the linking of cloudformation stacks by passing in 
 
 Before we start we need to upload some configuration to amazon for the buildkite agent.
 
+**Note**: You need to configure some environment variables as per the `.envrc.example`.
+
 * This will import your agent SSH key (used to clone code from github/bitbucket/gitlab) into SSM and store it encrypted.
 
 ```
@@ -41,27 +45,27 @@ aws ssm put-parameter --name '/dev/1/buildkite-ssh-key' --value 'file://~/temp/i
 aws ssm put-parameter --name '/dev/1/buildkite-agent-key' --value 'xxxxx' --type SecureString
 ```
 
-Then we need to deploy some cloudformation.
+Then build and deploy all the serverless components.
+
+```
+make all
+```
+
+This makefile will do the following:
 
 * Launch a stack to create the buildkite codebuild project, which is located in `infra/codebuild`.
-
-* Deploy the lambdas for the job monitoring state machine, which can be deployed using `make` in the root of each lambda project. Note that you will need to configure some environment variables as per the `.envrc.example`.
-
+* Deploy the lambdas in the `sfn` project. 
 * Launch a stack to create the buildkite job monitoring state machine project, which is located in `infra/stepfunctions`.
+* Deploy the lambda in the `agent-worker` project.
+* Lastly we need to seed the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `infra/codebuild/project-template`.
 
-* Update the env variable for `SFN_CODEBUILD_JOB_MONITOR_STACK` in your `.envrc`.
-
-* Deploy the `agent-worker` lambda which can be deployed using `make` in the root of the project
-
-Lastly we need to seed the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `infra/codebuild/project-template`, you just need to zip the `buildspec.yml` file.
-
-# codebuild job monitor statemachine
+# codebuild job monitor step functions
 
 To enable monitoring of the codebuild job which could run for a few minutes I am using AWS step functions, this workflow is illustrated in the following image.
 
 This workflow is triggered by the `agent-worker` lambda which polls the job queue via the buildkite REST API. Once triggered the statemachine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
 
-There are three other lambda functions which are used in the statemachine:
+There are three other lambda functions which are used in the step functions:
 
 * `sfn-submit-job` which notifies the buildkite api the job is starting and submits the job to codebuild.
 * `sfn-check-job` which checks the status of the codebuild job and uploads logs every 10 seconds.
@@ -74,6 +78,7 @@ There are three other lambda functions which are used in the statemachine:
 Still lots of things to tidy up:
 
 - [x] Secure all the lambda functions IAM profiles
+- [ ] Testing
 - [ ] Combine all the templates into one deployable unit
 - [ ] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
 - [ ] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
