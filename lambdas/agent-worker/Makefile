@@ -35,5 +35,5 @@ deploy:
 		--template-file deploy.out.yml \
 		--capabilities CAPABILITY_IAM \
 		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO) \
-		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) SfnCodebuildJobMonitorStack=$(SFN_CODEBUILD_JOB_MONITOR_STACK)
+		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) SfnCodebuildJobMonitorStack=bk-stepfunctions-$(ENV)-$(ENV_NO)
 .PHONY: deploy
