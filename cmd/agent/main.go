@@ -7,9 +7,9 @@ import (
 	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/onrik/logrus/filename"
 	"github.com/sirupsen/logrus"
-	"github.com/wolfeidau/buildkite-serverless-agent/lambdas/agent-worker/pkg/handler"
-	"github.com/wolfeidau/buildkite-serverless-agent/lambdas/agent-worker/pkg/registration"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/agent"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/registration"
 )
 
 func main() {
@@ -23,7 +23,7 @@ func main() {
 
 	sess := session.Must(session.NewSession())
 
-	bkw := handler.New(cfg, sess)
+	bkw := agent.New(cfg, sess)
 
 	err = xray.Configure(xray.Config{LogLevel: "info"})
 	if err != nil {

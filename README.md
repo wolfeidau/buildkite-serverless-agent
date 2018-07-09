@@ -48,22 +48,22 @@ aws ssm put-parameter --name '/dev/1/buildkite-agent-key' --value 'xxxxx' --type
 Then build and deploy all the serverless components.
 
 ```
-make all
+make
 ```
 
-This makefile will do the following:
+This makefile will Launch a stack which deploys:
 
-* Launch a stack to create the buildkite codebuild project, which is located in `infra/codebuild`.
-* Deploy the lambdas in the `sfn` project. 
-* Launch a stack to create the buildkite job monitoring state machine project, which is located in `infra/stepfunctions`.
-* Deploy the lambda in the `agent-worker` project.
-* Lastly we need to seed the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `infra/codebuild/project-template`.
+* A codebuild project to run the buildkite jobs.
+* A stepfunction based job monitoring state machine project, and lambda functions.
+* The `agent` lambda, which connects to buildkite and starts jobs using the stepfunction.
+
+It also uploads the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `codebuild-template`.
 
 # codebuild job monitor step functions
 
 To enable monitoring of the codebuild job which could run for a few minutes I am using AWS step functions, this workflow is illustrated in the following image.
 
-This workflow is triggered by the `agent-worker` lambda which polls the job queue via the buildkite REST API. Once triggered the statemachine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
+This workflow is triggered by the `agent` lambda which polls the job queue via the buildkite REST API. Once triggered the statemachine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
 
 There are three other lambda functions which are used in the step functions:
 
@@ -79,7 +79,7 @@ Still lots of things to tidy up:
 
 - [x] Secure all the lambda functions IAM profiles
 - [ ] Testing
-- [ ] Combine all the templates into one deployable unit
+- [x] Combine all the templates into one deployable unit
 - [ ] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
 - [ ] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
 - [ ] Sort out versioning of the project and build files.
