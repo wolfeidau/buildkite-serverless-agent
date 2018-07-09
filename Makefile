@@ -68,7 +68,7 @@ deploy:
 		--template-file deploy.out.yml \
 		--capabilities CAPABILITY_IAM \
 		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO) \
-		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO)
+		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) ConcurrentBuilds=2
 .PHONY: deploy
 
 upload-buildkite-project:
