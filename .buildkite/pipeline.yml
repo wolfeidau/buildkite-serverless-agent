@@ -1,0 +1,5 @@
+steps:
+  - name: ":golang:"
+    command: "make ci"
+    env:
+      BUILDKTE_GOLANG_IMPORT_PATH: "github.com/wolfeidau/buildkite-serverless-agent"
