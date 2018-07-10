@@ -27,6 +27,7 @@ Resources:
         # using my custom codebuild docker image with buildkite installed along with golang
         Image: wolfeidau/codebuild-docker-buildkite:17.09.0 
         Type: LINUX_CONTAINER
+        PrivilegedMode: true
         EnvironmentVariables: 
         - Name: ENVIRONMENT_NAME
           Type: "PLAINTEXT"
