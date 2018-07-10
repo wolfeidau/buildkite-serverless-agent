@@ -2,6 +2,14 @@
 
 This project deploys a serverless [buildkite](https://buildkite.com/) agent which comprised of a bunch of [AWS Lambda](https://aws.amazon.com/lambda/) functions, an [AWS codebuild](https://aws.amazon.com/codebuild/) project and an [AWS stepfunction](https://aws.amazon.com/step-functions/) state machine which manages long running jobs.
 
+The aim of this stack is:
+
+1. Low IDLE cost
+2. Running builds in an isolated sandboxed env, such as codebuild
+3. Give the build container least privilege access to AWS
+4. Simple to scale up, again using codebuild, so 10 concurrent jobs should be ~approx the same as 1 job
+5. Cheap to run for small number of short (less than 5 minute) builds spread throughout the day
+
 # disclaimer
 
 This project is **not** currently supported by buildkite, I built this as an experiment and currently it works really well for me. The buildkite team has been super supportive in my endeavour so a big thanks goes to them.
@@ -58,6 +66,14 @@ This makefile will Launch a stack which deploys:
 * The `agent` lambda, which connects to buildkite and starts jobs using the stepfunction.
 
 It also uploads the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `codebuild-template`.
+
+# usage
+
+There are a few overrides which can be added to your pipeline configuration in the buildkite site, these use env variables.
+
+* `CODEBUILD_IMAGE_OVERRIDE` Override the docker image to use.
+* `CODEBUILD_COMPUTE_TYPE_OVERRIDE` Override the compute type, options are `BUILD_GENERAL1_SMALL | BUILD_GENERAL1_MEDIUM | BUILD_GENERAL1_LARGE`. 
+* `CODEBUILD_PRIVILEGED_MODE_OVERRIDE` Override whether or not privileged mode is enabled.
 
 # codebuild job monitor step functions
 
