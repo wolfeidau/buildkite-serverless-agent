@@ -16,6 +16,23 @@ Resources:
   SourceBucket:
     Type: AWS::S3::Bucket
 
+  BuildkiteProjectECR:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryPolicyText:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Sid: AllowPull
+            Effect: Allow
+            Principal:
+              AWS:
+                - !GetAtt BuildkiteCodeBuildRole.Arn
+            Action:
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
     DependsOn: BuildkiteCodeBuildRole
@@ -87,7 +104,44 @@ Resources:
             Resource:
             - !Sub "arn:aws:s3:::${SourceBucket}/buildkite.zip"
 
-  Function:
+  AgentFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "lambda.amazonaws.com"
+            Action: 
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+      Policies: 
+        - 
+          PolicyName: "BuildkiteSfnFunctionAccess"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                - states:DescribeStateMachine
+                - states:StartExecution
+                - states:ListExecutions
+                Resource:
+                - !Sub '${StateMachineCodebuildJobMonitor}'
+              - Effect: Allow
+                Action: 
+                - 'ssm:GetParameters'
+                - 'ssm:GetParameter'
+                - 'ssm:PutParameter'
+                Resource:
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+
+  AgentFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: agent
@@ -96,25 +150,7 @@ Resources:
       Tracing: Active
       Runtime: go1.x
       CodeUri: ./handler.zip
-      Policies:
-        - AWSLambdaBasicExecutionRole
-        - AWSXrayWriteOnlyAccess
-        - Version: '2012-10-17' # Policy Document
-          Statement:
-            - Effect: Allow
-              Action:
-              - states:DescribeStateMachine
-              - states:StartExecution
-              - states:ListExecutions
-              Resource:
-              - !Sub '${StateMachineCodebuildJobMonitor}'
-            - Effect: Allow
-              Action: 
-              - 'ssm:GetParameters'
-              - 'ssm:GetParameter'
-              - 'ssm:PutParameter'
-              Resource:
-              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+      Role: !Sub ${AgentFunctionRole.Arn}
       Environment:   
         Variables:
           ENVIRONMENT_NAME:
@@ -334,10 +370,10 @@ Resources:
             - !GetAtt CompleteJobFunction.Arn
 
 Outputs:
-  FunctionArn:
-    Value: !GetAtt Function.Arn
+  AgentFunctionArn:
+    Value: !GetAtt AgentFunction.Arn
     Export:
-      Name: !Sub "${AWS::StackName}-FunctionArn"
+      Name: !Sub "${AWS::StackName}-AgentFunctionArn"
   SubmitJobFunctionArn:
     Value: !GetAtt SubmitJobFunction.Arn
     Export:
@@ -361,4 +397,8 @@ Outputs:
   BuildkiteProject:
     Value: !Ref BuildkiteProject
     Export:
-      Name: !Sub "${AWS::StackName}-BuildkiteProject"      
+      Name: !Sub "${AWS::StackName}-BuildkiteProject"
+  BuildkiteProjectECR:
+    Value: !Ref BuildkiteProjectECR
+    Export:
+      Name: !Sub "${AWS::StackName}-BuildkiteProjectECR"      
