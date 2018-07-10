@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strconv"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -50,7 +51,16 @@ func New(cfg *config.Config, sess *session.Session) *BuildkiteSFNWorker {
 // HandlerSubmitJob process the step function submit job event
 func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.WorkflowData) (*bk.WorkflowData, error) {
 
-	logrus.Infof("Starting job %s", evt.Job.ID)
+	projectName := fmt.Sprintf("%s-%s-%s", codebuildProjectPrefix, bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
+
+	logger := logrus.WithFields(
+		logrus.Fields{
+			"projectName": projectName,
+			"id":          evt.Job.ID,
+		},
+	)
+
+	logger.Info("Starting job")
 
 	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig()
 	if err != nil {
@@ -71,9 +81,7 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 		return nil, errors.Errorf("failed to start job, returned status: %s", res.Status)
 	}
 
-	projectName := fmt.Sprintf("%s-%s-%s", codebuildProjectPrefix, bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
-
-	logrus.WithField("projectName", projectName).Info("Starting build")
+	logger.Info("Starting codebuild task")
 
 	codebuildEnv := convertEnvVars(evt.Job.Env)
 
@@ -89,18 +97,23 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 		Value: aws.String(agentConfig.AccessToken),
 	})
 
-	startResult, err := bkw.codebuildSvc.StartBuild(&codebuild.StartBuildInput{
+	ov := overrides{logger: logger, env: evt.Job.Env}
+
+	startBuildInput := &codebuild.StartBuildInput{
 		ProjectName:                  aws.String(projectName),
 		EnvironmentVariablesOverride: codebuildEnv,
-	})
+		ImageOverride:                ov.String("CODEBUILD_IMAGE_OVERRIDE"),
+		ComputeTypeOverride:          ov.String("CODEBUILD_COMPUTE_TYPE_OVERRIDE"),
+		PrivilegedModeOverride:       ov.Bool("CODEBUILD_PRIVILEGED_MODE_OVERRIDE"),
+	}
+
+	startResult, err := bkw.codebuildSvc.StartBuild(startBuildInput)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to start codebuild job")
 	}
 
-	logrus.WithFields(
+	logger.WithFields(
 		logrus.Fields{
-			"projectName":  projectName,
-			"id":           evt.Job.ID,
 			"build_id":     aws.StringValue(startResult.Build.Id),
 			"build_status": aws.StringValue(startResult.Build.BuildStatus),
 		},
@@ -278,4 +291,34 @@ func convertEnvVars(env map[string]string) []*codebuild.EnvironmentVariable {
 	}
 
 	return codebuildEnv
+}
+
+type overrides struct {
+	logger logrus.FieldLogger
+	env    map[string]string
+}
+
+func (ov *overrides) String(key string) *string {
+	if val, ok := ov.env[key]; ok {
+		ov.logger.Info("updating %s to %s", key, val)
+		return aws.String(val)
+	}
+
+	return nil
+}
+
+func (ov *overrides) Bool(key string) *bool {
+	if val, ok := ov.env[key]; !ok {
+
+		b, err := strconv.ParseBool(val)
+		if err != nil {
+			ov.logger.Warn("failed to update %s to %s", key, val)
+			return nil
+		}
+
+		ov.logger.Info("updating %s to %t", key, b)
+		return aws.Bool(b)
+	}
+
+	return nil
 }
