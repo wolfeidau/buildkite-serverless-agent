@@ -71,9 +71,9 @@ It also uploads the buildkite codebuild project which runs the `buildkite-agent 
 
 There are a few overrides which can be added to your pipeline configuration in the buildkite site, these use env variables.
 
-* `CODEBUILD_IMAGE_OVERRIDE` Override the docker image to use.
-* `CODEBUILD_COMPUTE_TYPE_OVERRIDE` Override the compute type, options are `BUILD_GENERAL1_SMALL | BUILD_GENERAL1_MEDIUM | BUILD_GENERAL1_LARGE`. 
-* `CODEBUILD_PRIVILEGED_MODE_OVERRIDE` Override whether or not privileged mode is enabled.
+* `CB_IMAGE_OVERRIDE` Override the docker image to use.
+* `CB_COMPUTE_TYPE_OVERRIDE` Override the compute type, options are `BUILD_GENERAL1_SMALL | BUILD_GENERAL1_MEDIUM | BUILD_GENERAL1_LARGE`. 
+* `CB_PRIVILEGED_MODE_OVERRIDE` Override whether or not privileged mode is enabled.
 
 # codebuild job monitor step functions
 
