@@ -102,9 +102,9 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 	startBuildInput := &codebuild.StartBuildInput{
 		ProjectName:                  aws.String(projectName),
 		EnvironmentVariablesOverride: codebuildEnv,
-		ImageOverride:                ov.String("CODEBUILD_IMAGE_OVERRIDE"),
-		ComputeTypeOverride:          ov.String("CODEBUILD_COMPUTE_TYPE_OVERRIDE"),
-		PrivilegedModeOverride:       ov.Bool("CODEBUILD_PRIVILEGED_MODE_OVERRIDE"),
+		ImageOverride:                ov.String("CB_IMAGE_OVERRIDE"),
+		ComputeTypeOverride:          ov.String("CB_COMPUTE_TYPE_OVERRIDE"),
+		PrivilegedModeOverride:       ov.Bool("CB_PRIVILEGED_MODE_OVERRIDE"),
 	}
 
 	startResult, err := bkw.codebuildSvc.StartBuild(startBuildInput)
@@ -300,7 +300,7 @@ type overrides struct {
 
 func (ov *overrides) String(key string) *string {
 	if val, ok := ov.env[key]; ok {
-		ov.logger.Info("updating %s to %s", key, val)
+		ov.logger.Infof("updating %s to %s", key, val)
 		return aws.String(val)
 	}
 
@@ -312,11 +312,11 @@ func (ov *overrides) Bool(key string) *bool {
 
 		b, err := strconv.ParseBool(val)
 		if err != nil {
-			ov.logger.Warn("failed to update %s to %s", key, val)
+			ov.logger.Warnf("failed to update %s to %s", key, val)
 			return nil
 		}
 
-		ov.logger.Info("updating %s to %t", key, b)
+		ov.logger.Infof("updating %s to %t", key, b)
 		return aws.Bool(b)
 	}
 
