@@ -66,7 +66,7 @@ func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchE
 	}
 
 	// we we running any jobs at the moment?
-	if len(listResult.Executions) >= bkw.cfg.GetConcurrentBuilds() {
+	if len(listResult.Executions) >= 1 {
 
 		logrus.Infof("Running %d executions so not retrieving a job", len(listResult.Executions))
 		return nil // we are done as there is already a job running

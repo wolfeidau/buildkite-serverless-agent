@@ -7,8 +7,7 @@ The aim of this stack is:
 1. Low IDLE cost
 2. Running builds in an isolated sandboxed env, such as codebuild
 3. Give the build container least privilege access to AWS
-4. Simple to scale up, again using codebuild, so 10 concurrent jobs should be ~approx the same as 1 job
-5. Cheap to run for small number of short (less than 5 minute) builds spread throughout the day
+4. Cheap to run for small number of short (less than 5 minute) builds spread throughout the day
 
 # disclaimer
 

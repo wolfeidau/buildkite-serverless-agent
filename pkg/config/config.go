@@ -1,14 +1,9 @@
 package config
 
 import (
-	"strconv"
-
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pkg/errors"
 )
-
-// DefaultConcurrentBuilds default number of concurrent builds supported by this agent
-const DefaultConcurrentBuilds = 1
 
 var (
 	// ErrMissingEnvironmentName missing Environment name configuration
@@ -24,21 +19,6 @@ type Config struct {
 	EnvironmentName           string `envconfig:"ENVIRONMENT_NAME"`
 	EnvironmentNumber         string `envconfig:"ENVIRONMENT_NUMBER"`
 	SfnCodebuildJobMonitorArn string `envconfig:"SFN_CODEBUILD_JOB_MONITOR_ARN"`
-	ConcurrentBuilds          string `envconfig:"CONCURRENT_BUILDS"`
-}
-
-// GetConcurrentBuilds get the current value of cGetConcurrentBuilds or the default if it is not provided
-func (cfg *Config) GetConcurrentBuilds() int {
-	c, err := strconv.Atoi(cfg.ConcurrentBuilds)
-	if err != nil {
-		return DefaultConcurrentBuilds
-	}
-
-	if c < 1 {
-		return DefaultConcurrentBuilds
-	}
-
-	return c
 }
 
 // Validate checks the presence of the loaded template path on the filesystem

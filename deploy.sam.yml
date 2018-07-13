@@ -6,10 +6,6 @@ Parameters:
       Type: String
     EnvironmentNumber:
       Type: String
-    ConcurrentBuilds:
-      Type: Number
-      Default: 1
-      MinValue: 1
 
 Resources:
 
@@ -157,8 +153,6 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-          CONCURRENT_BUILDS:
-            Ref: ConcurrentBuilds
           SFN_CODEBUILD_JOB_MONITOR_ARN: !Sub '${StateMachineCodebuildJobMonitor}'
       Events:
         Timer:
