@@ -5,6 +5,8 @@ ENV_NO ?= 1
 GOPATH := $(shell go env GOPATH)
 SOURCE_FILES?=$$(go list ./... | grep -v /vendor/ | grep -v mocks)
 
+LDFLAGS := -ldflags="-s -w"
+
 default: clean lint test build package deploy upload-buildkite-project
 .PHONY: default
 
@@ -31,10 +33,10 @@ test:
 # build the lambda binary
 build:
 	@echo "build all the things"
-	GOOS=linux GOARCH=amd64 go build -o agent ./cmd/agent
-	GOOS=linux GOARCH=amd64 go build -o submit-job ./cmd/submit-job
-	GOOS=linux GOARCH=amd64 go build -o check-job ./cmd/check-job
-	GOOS=linux GOARCH=amd64 go build -o complete-job ./cmd/complete-job
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent ./cmd/agent
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o submit-job ./cmd/submit-job
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o check-job ./cmd/check-job
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o complete-job ./cmd/complete-job
 .PHONY: build
 
 # clean all the things
