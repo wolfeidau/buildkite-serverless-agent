@@ -174,8 +174,6 @@ func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.
 
 	client := agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create()
 
-	//client.Chunks.
-
 	evt.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
 
 	switch evt.BuildStatus {
@@ -183,6 +181,9 @@ func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.
 		evt.Job.ExitStatus = "-2"
 	case codebuild.StatusTypeSucceeded:
 		evt.Job.ExitStatus = "0"
+	default:
+		logrus.WithField("build_status", evt.BuildStatus).Error("Codebuild Job failed.")
+		evt.Job.ExitStatus = "-4"
 	}
 
 	evt.Job.ChunksFailedCount = 0

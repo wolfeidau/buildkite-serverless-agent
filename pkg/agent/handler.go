@@ -95,7 +95,14 @@ func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchE
 		return errors.Wrap(err, "failed to marshal job")
 	}
 
-	execName := fmt.Sprintf("%s_%d", job.ID, time.Now().Unix())
+	pipelineSlug := job.Env["BUILDKITE_PIPELINE_SLUG"]
+
+	// first 60 characters of the pipeline slug
+	if len(pipelineSlug) > 60 {
+		pipelineSlug = pipelineSlug[0:60]
+	}
+
+	execName := fmt.Sprintf("%s_%s", pipelineSlug, time.Now().Format("2006-01-02T150405Z"))
 
 	execResult, err := bkw.sfnSvc.StartExecution(&sfn.StartExecutionInput{
 		StateMachineArn: aws.String(bkw.cfg.SfnCodebuildJobMonitorArn),
