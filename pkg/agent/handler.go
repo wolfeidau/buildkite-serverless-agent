@@ -43,7 +43,9 @@ func New(cfg *config.Config, sess *session.Session) *BuildkiteWorker {
 // Handler process the cloudwatch scheduled event
 func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchEvent) error {
 
-	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig()
+	agentConfigSSMKey := fmt.Sprintf("/%s/%s/agent-config", bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
+
+	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig(agentConfigSSMKey)
 	if err != nil {
 		return errors.Wrap(err, "failed to load agent configuration")
 	}

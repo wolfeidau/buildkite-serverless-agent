@@ -2,7 +2,6 @@ package params
 
 import (
 	"encoding/json"
-	"fmt"
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -29,31 +28,28 @@ func New(cfg *config.Config, ssmSvc ssmiface.SSMAPI) *Store {
 }
 
 // GetAgentKey retrieve the buildkite agent key from the params store
-func (st *Store) GetAgentKey() (string, error) {
-	agentKey := fmt.Sprintf("/%s/%s/buildkite-agent-key", st.cfg.EnvironmentName, st.cfg.EnvironmentNumber)
+func (st *Store) GetAgentKey(agentSSMKey string) (string, error) {
 
 	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
-		Name:           aws.String(agentKey),
+		Name:           aws.String(agentSSMKey),
 		WithDecryption: aws.Bool(true),
 	})
 	if err != nil {
-		return "", errors.Wrapf(err, "failed to retrieve key %s from ssm", agentKey)
+		return "", errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMKey)
 	}
 
 	return aws.StringValue(resp.Parameter.Value), nil
 }
 
 // GetAgentConfig retrieve the buildkite agent config from the params store
-func (st *Store) GetAgentConfig() (*api.Agent, error) {
-
-	agentKey := fmt.Sprintf("/%s/%s/agent-config", st.cfg.EnvironmentName, st.cfg.EnvironmentNumber)
+func (st *Store) GetAgentConfig(agentSSMConfigKey string) (*api.Agent, error) {
 
 	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
-		Name:           aws.String(agentKey),
+		Name:           aws.String(agentSSMConfigKey),
 		WithDecryption: aws.Bool(true),
 	})
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to retrieve key %s from ssm", agentKey)
+		return nil, errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMConfigKey)
 	}
 
 	agentConfig := new(api.Agent)
@@ -62,16 +58,14 @@ func (st *Store) GetAgentConfig() (*api.Agent, error) {
 
 	err = json.NewDecoder(stringReader).Decode(agentConfig)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to parse JSON for key %s from ssm", agentKey)
+		return nil, errors.Wrapf(err, "failed to parse JSON for key %s from ssm", agentSSMConfigKey)
 	}
 
 	return agentConfig, nil
 }
 
 // SaveAgentConfig save the agent configuration to SSM so it can be retrieved by other lambda functions
-func (st *Store) SaveAgentConfig(agentConfig *api.Agent) error {
-
-	agentKey := fmt.Sprintf("/%s/%s/agent-config", st.cfg.EnvironmentName, st.cfg.EnvironmentNumber)
+func (st *Store) SaveAgentConfig(agentSSMConfigKey string, agentConfig *api.Agent) error {
 
 	agentData, err := json.Marshal(agentConfig)
 	if err != nil {
@@ -79,13 +73,13 @@ func (st *Store) SaveAgentConfig(agentConfig *api.Agent) error {
 	}
 
 	resp, err := st.ssmSvc.PutParameter(&ssm.PutParameterInput{
-		Name:      aws.String(agentKey),
+		Name:      aws.String(agentSSMConfigKey),
 		Type:      aws.String(ssm.ParameterTypeSecureString),
 		Value:     aws.String(string(agentData)),
 		Overwrite: aws.Bool(true),
 	})
 	if err != nil {
-		return errors.Wrapf(err, "failed to retrieve key %s from ssm", agentKey)
+		return errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMConfigKey)
 	}
 
 	logrus.WithField("version", aws.Int64Value(resp.Version)).Info("saved agent configuration")
