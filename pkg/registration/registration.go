@@ -39,14 +39,16 @@ func New(cfg *config.Config, sess *session.Session) *Service {
 // RegisterAgent register the agent in buildkite using the agent key
 func (rm *Service) RegisterAgent() (*api.Agent, error) {
 
-	agentName := fmt.Sprintf("%s-%s-%s", DefaultAgentNamePrefix, rm.cfg.EnvironmentName, rm.cfg.EnvironmentNumber)
+	agentSSMKey := fmt.Sprintf("/%s/%s/buildkite-agent-key", rm.cfg.EnvironmentName, rm.cfg.EnvironmentNumber)
 
-	agentKey, err := rm.paramStore.GetAgentKey()
+	agentKey, err := rm.paramStore.GetAgentKey(agentSSMKey)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to retrieve key from ssm")
 	}
 
 	client := agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentKey}.Create()
+
+	agentName := fmt.Sprintf("%s-%s-%s", DefaultAgentNamePrefix, rm.cfg.EnvironmentName, rm.cfg.EnvironmentNumber)
 
 	agentConfig, _, err := client.Agents.Register(&api.Agent{
 		Name: agentName,
@@ -61,7 +63,9 @@ func (rm *Service) RegisterAgent() (*api.Agent, error) {
 		return nil, errors.Wrap(err, "failed to register agent")
 	}
 
-	err = rm.paramStore.SaveAgentConfig(agentConfig)
+	agentSSMConfigKey := fmt.Sprintf("/%s/%s/agent-config", rm.cfg.EnvironmentName, rm.cfg.EnvironmentNumber)
+
+	err = rm.paramStore.SaveAgentConfig(agentSSMConfigKey, agentConfig)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to register agent")
 	}

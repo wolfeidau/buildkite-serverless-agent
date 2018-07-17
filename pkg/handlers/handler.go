@@ -14,7 +14,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
 	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/aws/aws-sdk-go/service/ssm/ssmiface"
 	"github.com/buildkite/agent/agent"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
@@ -31,7 +30,7 @@ const codebuildProjectPrefix = "BuildkiteProject"
 type BuildkiteSFNWorker struct {
 	cfg          *config.Config
 	sess         *session.Session
-	ssmSvc       ssmiface.SSMAPI
+	paramStore   *params.Store
 	codebuildSvc codebuildiface.CodeBuildAPI
 }
 
@@ -43,8 +42,8 @@ func New(cfg *config.Config, sess *session.Session) *BuildkiteSFNWorker {
 	return &BuildkiteSFNWorker{
 		cfg:          cfg,
 		sess:         sess,
-		ssmSvc:       ssmSvc,
 		codebuildSvc: codebuildSvc,
+		paramStore:   params.New(cfg, ssmSvc),
 	}
 }
 
@@ -62,12 +61,10 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 
 	logger.Info("Starting job")
 
-	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig()
+	client, agentConfig, err := bkw.getBKClient(evt)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to load agent configuration")
+		return nil, errors.Wrap(err, "failed to build buildkite client")
 	}
-
-	client := agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create()
 
 	evt.Job.StartedAt = time.Now().UTC().Format(time.RFC3339Nano)
 
@@ -146,14 +143,6 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 		return nil, errors.Errorf("failed to locate build: %s", evt.BuildID)
 	}
 
-	logrus.WithFields(
-		logrus.Fields{
-			"projectName": projectName,
-			"id":          evt.BuildID,
-			"status":      aws.StringValue(res.Builds[0].BuildStatus),
-		},
-	).Info("Started build")
-
 	evt.BuildStatus = aws.StringValue(res.Builds[0].BuildStatus)
 
 	err = bkw.uploadLogChunks(evt)
@@ -161,18 +150,35 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 		return nil, errors.Wrap(err, "failed to upload log chunks")
 	}
 
+	client, _, err := bkw.getBKClient(evt)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to build buildkite client")
+	}
+
+	jobStatus, _, err := client.Jobs.GetState(evt.Job.ID)
+	if err != nil {
+		return nil, errors.Wrap(err, "call to the buildkite api failed")
+	}
+
+	logrus.WithFields(
+		logrus.Fields{
+			"projectName":     projectName,
+			"id":              evt.BuildID,
+			"CodebuildStatus": aws.StringValue(res.Builds[0].BuildStatus),
+			"buildkiteStatus": jobStatus.State,
+		},
+	).Info("checked build")
+
 	return evt, nil
 }
 
 // CompletedJobHandler process the step function event for completed jobs
 func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.WorkflowData) (*bk.WorkflowData, error) {
 
-	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig()
+	client, _, err := bkw.getBKClient(evt)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to load agent configuration")
+		return nil, errors.Wrap(err, "failed to build buildkite client")
 	}
-
-	client := agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create()
 
 	evt.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
 
@@ -209,13 +215,10 @@ func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.
 
 func (bkw *BuildkiteSFNWorker) uploadLogChunks(evt *bk.WorkflowData) error {
 
-	// // post to buildkite
-	agentConfig, err := params.New(bkw.cfg, bkw.ssmSvc).GetAgentConfig()
+	client, _, err := bkw.getBKClient(evt)
 	if err != nil {
-		return errors.Wrap(err, "failed to load agent configuration")
+		return errors.Wrap(err, "failed to build buildkite client")
 	}
-
-	client := agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create()
 
 	logrus.WithFields(logrus.Fields{
 		"BuildID":   evt.BuildID,
@@ -278,6 +281,16 @@ func (bkw *BuildkiteSFNWorker) uploadLogChunks(evt *bk.WorkflowData) error {
 	evt.NextToken = nextToken
 
 	return nil
+}
+
+func (bkw *BuildkiteSFNWorker) getBKClient(evt *bk.WorkflowData) (*api.Client, *api.Agent, error) {
+	agentSSMConfigKey := fmt.Sprintf("/%s/%s/agent-config", bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
+
+	agentConfig, err := bkw.paramStore.GetAgentConfig(agentSSMConfigKey)
+	if err != nil {
+		return nil, nil, errors.Wrap(err, "failed to load agent configuration")
+	}
+	return agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create(), agentConfig, nil
 }
 
 func convertEnvVars(env map[string]string) []*codebuild.EnvironmentVariable {
