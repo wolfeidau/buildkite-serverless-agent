@@ -12,6 +12,9 @@ Resources:
   SourceBucket:
     Type: AWS::S3::Bucket
 
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+
   BuildkiteProjectECR:
     Type: AWS::ECR::Repository
     Properties:
@@ -48,6 +51,9 @@ Resources:
         - Name: ENVIRONMENT_NUMBER
           Type: "PLAINTEXT"
           Value: !Sub "${EnvironmentNumber}"
+        - Name: ARTIFACT_BUCKET_NAME
+          Type: "PLAINTEXT"
+          Value: !Ref ArtifactBucket
       Name: !Sub "BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
       ServiceRole: !Ref BuildkiteCodeBuildRole
       Source:
@@ -99,6 +105,20 @@ Resources:
             - s3:GetObjectVersion
             Resource:
             - !Sub "arn:aws:s3:::${SourceBucket}/buildkite.zip"
+          - Effect: Allow
+            Action:
+            - 's3:ListAllMyBuckets'
+            Resource:
+            - '*'
+          - Effect: Allow
+            Action:
+            - s3:ListBucket
+            - s3:PutObject
+            - s3:GetObject
+            - s3:GetObjectVersion
+            Resource:
+            - !Sub "arn:aws:s3:::${ArtifactBucket}/*"
+            - !Sub "arn:aws:s3:::${ArtifactBucket}"
 
   AgentFunctionRole:
     Type: AWS::IAM::Role
