@@ -79,6 +79,8 @@ func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchE
 		return errors.Wrap(err, "failed to ping endpoint")
 	}
 
+	logrus.WithField("Action", ping.Action).WithField("Message", ping.Message).Info("Received ping from buildkite api")
+
 	if ping.Job == nil {
 		logrus.Info("Ping to endpoint returned no job")
 
