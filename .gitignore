@@ -1,6 +1,7 @@
 .envrc
 handler.zip
 /agent
+/agent-poll
 /check-job
 /complete-job
 /submit-job
@@ -10,3 +11,4 @@ coverage.txt
 codebuid.out.yml
 buildkite.zip
 /vendor
+*.swp

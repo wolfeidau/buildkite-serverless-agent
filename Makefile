@@ -2,10 +2,14 @@ APPNAME ?= bk-serverless-codebuild-agent
 ENV ?= dev
 ENV_NO ?= 1
 
+VERSION := 2.0.0
+BUILD_VERSION := $(shell git rev-parse --short HEAD)
+
 GOPATH := $(shell go env GOPATH)
+GOPKG := github.com/wolfeidau/buildkite-serverless-agent
 SOURCE_FILES?=$$(go list ./... | grep -v /vendor/ | grep -v mocks)
 
-LDFLAGS := -ldflags="-s -w"
+LDFLAGS := -ldflags="-s -w -X $(GOPKG)/pkg/bk.Version=$(VERSION) -X $(GOPKG)/pkg/bk.BuildVersion=$(BUILD_VERSION)"
 
 default: clean lint test build package deploy upload-buildkite-project
 .PHONY: default
@@ -30,9 +34,16 @@ test:
 	@go test -cover ./...
 .PHONY: test
 
+mocks:
+	mockery -dir pkg/params --all
+	mockery -dir pkg/bk --all
+	mockery -dir pkg/statemachine --all
+.PHONY: mocks
+
 # build the lambda binary
 build:
 	@echo "build all the things"
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent-poll ./cmd/agent-poll
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent ./cmd/agent
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o submit-job ./cmd/submit-job
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o check-job ./cmd/check-job
@@ -42,6 +53,7 @@ build:
 # clean all the things
 clean:
 	@echo "clean all the things"
+	@rm -f ./agent-poll
 	@rm -f ./agent
 	@rm -f ./submit-job
 	@rm -f ./check-job
@@ -54,7 +66,7 @@ clean:
 # package up the lambda and upload it to S3
 package:
 	@echo "package lambdas into handler.zip"
-	@zip -9 -r ./handler.zip agent submit-job check-job complete-job
+	@zip -9 -r ./handler.zip agent-poll agent submit-job check-job complete-job
 	@echo "Running as: $(shell aws sts get-caller-identity --query Arn --output text)"
 	@aws cloudformation package \
 		--template-file deploy.sam.yml \

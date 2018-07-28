@@ -30,7 +30,7 @@ const codebuildProjectPrefix = "BuildkiteProject"
 type BuildkiteSFNWorker struct {
 	cfg          *config.Config
 	sess         *session.Session
-	paramStore   *params.Store
+	paramStore   *params.SSMStore
 	codebuildSvc codebuildiface.CodeBuildAPI
 }
 
@@ -284,7 +284,7 @@ func (bkw *BuildkiteSFNWorker) uploadLogChunks(evt *bk.WorkflowData) error {
 }
 
 func (bkw *BuildkiteSFNWorker) getBKClient(evt *bk.WorkflowData) (*api.Client, *api.Agent, error) {
-	agentSSMConfigKey := fmt.Sprintf("/%s/%s/agent-config", bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
+	agentSSMConfigKey := fmt.Sprintf("/%s/%s/%s", bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber, evt.AgentName)
 
 	agentConfig, err := bkw.paramStore.GetAgentConfig(agentSSMConfigKey)
 	if err != nil {

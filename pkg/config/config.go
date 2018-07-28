@@ -19,6 +19,8 @@ type Config struct {
 	EnvironmentName           string `envconfig:"ENVIRONMENT_NAME"`
 	EnvironmentNumber         string `envconfig:"ENVIRONMENT_NUMBER"`
 	SfnCodebuildJobMonitorArn string `envconfig:"SFN_CODEBUILD_JOB_MONITOR_ARN"`
+	SfnAgentPollerArn         string `envconfig:"SFN_AGENT_POLLER_ARN"`
+	AgentPoolSize             int    `envconfig:"AGENT_POOL_SIZE"`
 }
 
 // Validate checks the presence of the loaded template path on the filesystem
