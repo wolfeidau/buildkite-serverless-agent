@@ -1,19 +1,19 @@
 package main
 
 import (
+	"github.com/apex/log"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/onrik/logrus/filename"
-	log "github.com/sirupsen/logrus"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/agentpool"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
+	"github.com/sirupsen/logrus"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/agent"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
 
 func main() {
-	log.AddHook(filename.NewHook())
-	log.SetFormatter(&log.JSONFormatter{})
+	logrus.AddHook(filename.NewHook())
+	logrus.SetFormatter(&logrus.JSONFormatter{})
 
 	cfg, err := config.New()
 	if err != nil {
@@ -27,14 +27,7 @@ func main() {
 		log.WithError(err).Fatal("failed to xray configuration")
 	}
 
-	agentPool := agentpool.New(cfg, sess, bk.NewAgentAPI())
-
-	err = agentPool.RegisterAgents()
-	if err != nil {
-		log.WithError(err).Fatal("failed to register agents")
-	}
-
-	bkw := agentpool.NewBuildkiteWorker(agentPool)
+	bkw := agent.New(cfg, sess)
 
 	lambda.Start(bkw.Handler)
 }

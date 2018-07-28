@@ -13,22 +13,29 @@ import (
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
 
-// Store store for buildkite related params which is backed by SSM
-type Store struct {
+// Store store for buildkite agent params
+type Store interface {
+	GetAgentKey(string) (string, error)
+	GetAgentConfig(string) (*api.Agent, error)
+	SaveAgentConfig(string, *api.Agent) error
+}
+
+// SSMStore store for buildkite related params which is backed by SSM
+type SSMStore struct {
 	cfg    *config.Config
 	ssmSvc ssmiface.SSMAPI
 }
 
 // New create a new params store which is backed by SSM
-func New(cfg *config.Config, ssmSvc ssmiface.SSMAPI) *Store {
-	return &Store{
+func New(cfg *config.Config, ssmSvc ssmiface.SSMAPI) *SSMStore {
+	return &SSMStore{
 		ssmSvc: ssmSvc,
 		cfg:    cfg,
 	}
 }
 
 // GetAgentKey retrieve the buildkite agent key from the params store
-func (st *Store) GetAgentKey(agentSSMKey string) (string, error) {
+func (st *SSMStore) GetAgentKey(agentSSMKey string) (string, error) {
 
 	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
 		Name:           aws.String(agentSSMKey),
@@ -42,7 +49,7 @@ func (st *Store) GetAgentKey(agentSSMKey string) (string, error) {
 }
 
 // GetAgentConfig retrieve the buildkite agent config from the params store
-func (st *Store) GetAgentConfig(agentSSMConfigKey string) (*api.Agent, error) {
+func (st *SSMStore) GetAgentConfig(agentSSMConfigKey string) (*api.Agent, error) {
 
 	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
 		Name:           aws.String(agentSSMConfigKey),
@@ -65,7 +72,7 @@ func (st *Store) GetAgentConfig(agentSSMConfigKey string) (*api.Agent, error) {
 }
 
 // SaveAgentConfig save the agent configuration to SSM so it can be retrieved by other lambda functions
-func (st *Store) SaveAgentConfig(agentSSMConfigKey string, agentConfig *api.Agent) error {
+func (st *SSMStore) SaveAgentConfig(agentSSMConfigKey string, agentConfig *api.Agent) error {
 
 	agentData, err := json.Marshal(agentConfig)
 	if err != nil {
