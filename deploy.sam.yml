@@ -262,6 +262,7 @@ Resources:
                 Action: 
                 - 'codebuild:BatchGetBuilds'
                 - 'codebuild:StartBuild'
+                - 'codebuild:StopBuild'
                 Resource:
                 - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
               - Effect: Allow
@@ -459,6 +460,11 @@ Resources:
                 "Job Complete?": {
                   "Type": "Choice",
                   "Choices": [
+                    {
+                      "Variable": "$.build_status",
+                      "StringEquals": "STOPPED",
+                      "Next": "Get Final Job Status"
+                    },
                     {
                       "Variable": "$.build_status",
                       "StringEquals": "FAILED",

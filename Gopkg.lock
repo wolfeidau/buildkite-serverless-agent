@@ -2,44 +2,35 @@
 
 
 [[projects]]
-  digest = "1:5c3894b2aa4d6bead0ceeea6831b305d62879c871780e7b76296ded1b004bc57"
   name = "cloud.google.com/go"
   packages = ["compute/metadata"]
-  pruneopts = "UT"
-  revision = "777200caa7fb8936aed0f12b1fd79af64cc83ec9"
-  version = "v0.24.0"
+  revision = "aad3f485ee528456e0768f20397b4d9dd941e755"
+  version = "v0.25.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:13cc46de8b0bfe9b7bed515b24f8daaed2c2cadede3d2bc4e0af0ade2c5a042d"
   name = "github.com/ErikDubbelboer/gspt"
   packages = ["."]
-  pruneopts = "UT"
-  revision = "08ed213262b5bb2cf6ccb0baa71c6b201d353e63"
+  revision = "e39e726e09cc23d1ccf13b36ce10dbdb4a4510e0"
 
 [[projects]]
-  digest = "1:40261f597e43f31aaf9f8658b85c082773217943056f1be137635e769c0798c9"
   name = "github.com/apex/log"
   packages = ["."]
-  pruneopts = "UT"
   revision = "0296d6eb16bb28f8a0c55668affcf4876dc269be"
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:e169043ad9e2b4ab95a4cb761c050b0309e0c62b75cf5a47d235d67545a050dd"
   name = "github.com/aws/aws-lambda-go"
   packages = [
     "events",
     "lambda",
     "lambda/messages",
-    "lambdacontext",
+    "lambdacontext"
   ]
-  pruneopts = "UT"
   revision = "4d30d0ff60440c2d0480a15747c96ee71c3c53d4"
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:cb0f34e0ee710875665a284dc08675abaa5ce020591e2187f25b37f552aff5b3"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -61,6 +52,7 @@
     "aws/signer/v4",
     "internal/sdkio",
     "internal/sdkrand",
+    "internal/sdkuri",
     "internal/shareddefaults",
     "private/protocol",
     "private/protocol/ec2query",
@@ -85,14 +77,12 @@
     "service/sfn/sfniface",
     "service/ssm",
     "service/ssm/ssmiface",
-    "service/sts",
+    "service/sts"
   ]
-  pruneopts = "UT"
-  revision = "16cb9f62f8a8b7af4f38725567f5ce762e1d562b"
-  version = "v1.14.21"
+  revision = "8475c414b1bd58b8cc214873a8854e3a621e67d7"
+  version = "v1.15.0"
 
 [[projects]]
-  digest = "1:0189236d2d8c2d632129046576dbd90defc25ea24b4add1befbef1a8df7a6834"
   name = "github.com/aws/aws-xray-sdk-go"
   packages = [
     "header",
@@ -102,14 +92,12 @@
     "strategy/ctxmissing",
     "strategy/exception",
     "strategy/sampling",
-    "xray",
+    "xray"
   ]
-  pruneopts = "UT"
   revision = "32670489212454717deeafb8da5dbb1da0299749"
   version = "v0.9.4"
 
 [[projects]]
-  digest = "1:4fdc59723e0625018e62cdb8b57c2d94513bfb36529655e701254377b53c0b97"
   name = "github.com/buildkite/agent"
   packages = [
     "agent",
@@ -123,181 +111,145 @@
     "proctitle",
     "retry",
     "signalwatcher",
-    "system",
+    "system"
   ]
-  pruneopts = "UT"
-  revision = "ce85701032d3fffbb498bdc353f30b2400195a87"
-  version = "v3.2.1"
+  revision = "edbcbecab6fdbf9fb68fd68ae5af1185feb27b89"
+  version = "v3.3.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:f7b937d8308793c2ceb87ab884f3ae5092d7ed78889147667de86b871de2ebcc"
   name = "github.com/buildkite/interpolate"
   packages = ["."]
-  pruneopts = "UT"
   revision = "c1c376f870d259871fcc9bf3bcfd4889b999ed1a"
 
 [[projects]]
   branch = "master"
-  digest = "1:d6d986a8292ac9a3bb44c05768cbee84d802d027e3d7d192b237f2023f08f1c8"
   name = "github.com/buildkite/shellwords"
   packages = ["."]
-  pruneopts = "UT"
   revision = "59467a9b8e10273196e210888dfa98cda53cf014"
 
 [[projects]]
-  digest = "1:2a81c6e126d36ad027328cffaa4888fc3be40f09dc48028d1f93705b718130b9"
   name = "github.com/buildkite/yaml"
   packages = ["."]
-  pruneopts = "UT"
   revision = "7f97868eec74b32b0982dd158a51a446d1da7eb5"
   version = "v2.1.1"
 
 [[projects]]
-  digest = "1:50e893a85575fa48dc4982a279e50e2fd8b74e4f7c587860c1e25c77083b8125"
   name = "github.com/cihub/seelog"
   packages = ["."]
-  pruneopts = "UT"
   revision = "d2c6e5aa9fbfdd1c624e140287063c7730654115"
   version = "v2.6"
 
 [[projects]]
-  digest = "1:a2c1d0e43bd3baaa071d1b9ed72c27d78169b2b269f71c105ac4ba34b1be4a39"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
-  pruneopts = "UT"
   revision = "346938d642f2ec3594ed81d874461961cd0faa76"
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:fb46255681497314debedde38b64be32a75bae50bad107586c22f1662bf2d352"
-  name = "github.com/go-ini/ini"
+  name = "github.com/denisbrodbeck/machineid"
   packages = ["."]
-  pruneopts = "UT"
-  revision = "06f5f3d67269ccec1fe5fe4134ba6e982984f7f5"
-  version = "v1.37.0"
+  revision = "e2e48f90c87f1f77286682531a46ff99e95d8089"
+  version = "v1.0.0"
 
 [[projects]]
-  digest = "1:15042ad3498153684d09f393bbaec6b216c8eec6d61f63dff711de7d64ed8861"
+  name = "github.com/go-ini/ini"
+  packages = ["."]
+  revision = "358ee7663966325963d4e8b2e1fbd570c5195153"
+  version = "v1.38.1"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  pruneopts = "UT"
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
   version = "v1.1.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:a63cff6b5d8b95638bfe300385d93b2a6d9d687734b863da8e09dc834510a690"
   name = "github.com/google/go-querystring"
   packages = ["query"]
-  pruneopts = "UT"
   revision = "53e6ce116135b80d037921a7fdd5138cf32d7a8a"
 
 [[projects]]
-  digest = "1:e22af8c7518e1eab6f2eab2b7d7558927f816262586cd6ed9f349c97a6c285c4"
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
-  pruneopts = "UT"
   revision = "0b12d6b5"
 
 [[projects]]
-  digest = "1:edbef42561faa44c19129b68d1e109fbc1647f63239250391eadc8d0e7c9f669"
   name = "github.com/kelseyhightower/envconfig"
   packages = ["."]
-  pruneopts = "UT"
   revision = "f611eb38b3875cc3bd991ca91c51d06446afa14c"
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:094e04c4742b596bce4455eb535d4e4365016b44016db76f8593211406d77299"
   name = "github.com/kr/pty"
   packages = ["."]
-  pruneopts = "UT"
   revision = "fa756f09eeb418bf1cc6268c66ceaad9bb98f598"
   version = "v1.1.2"
 
 [[projects]]
   branch = "master"
-  digest = "1:fac98b671636c7f56bb825b0e0bca43aea592d5ecddf4daa28805acb3048e12f"
   name = "github.com/mattn/go-zglob"
   packages = [
     ".",
-    "fastwalk",
+    "fastwalk"
   ]
-  pruneopts = "UT"
   revision = "c436403c742d0b6d8fc37e69eadf33e024fe74fa"
 
 [[projects]]
   branch = "master"
-  digest = "1:760b8150a400b7fd93ce140bd2b8abf54a4e9c4a1fd40403fea2f5e01a5c51cc"
   name = "github.com/onrik/logrus"
   packages = ["filename"]
-  pruneopts = "UT"
-  revision = "9db917e87735094e75f37662738b3bebb96eedaa"
+  revision = "00f4ddfaeb23824ce8b9ce969095a9b2529b9eca"
 
 [[projects]]
-  digest = "1:361de06aa7ae272616cbe71c3994a654cc6316324e30998e650f7765b20c5b33"
   name = "github.com/pborman/uuid"
   packages = ["."]
-  pruneopts = "UT"
   revision = "e790cca94e6cc75c7064b1332e63811d4aae1a53"
   version = "v1.1"
 
 [[projects]]
-  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
   name = "github.com/pkg/errors"
   packages = ["."]
-  pruneopts = "UT"
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
 [[projects]]
-  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
   name = "github.com/pmezard/go-difflib"
   packages = ["difflib"]
-  pruneopts = "UT"
   revision = "792786c7400a136282c1664665ae0a8db921c6c2"
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:9e9193aa51197513b3abcb108970d831fbcf40ef96aa845c4f03276e1fa316d2"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
-  pruneopts = "UT"
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
+  revision = "3e01752db0189b9157070a0e1668a620f9a85da2"
+  version = "v1.0.6"
 
 [[projects]]
-  digest = "1:ac83cf90d08b63ad5f7e020ef480d319ae890c208f8524622a2f3136e2686b02"
   name = "github.com/stretchr/objx"
   packages = ["."]
-  pruneopts = "UT"
   revision = "477a77ecc69700c7cdeb1fa9e129548e1c1c393c"
   version = "v0.1.1"
 
 [[projects]]
-  digest = "1:0ce644ed4e959cb140cb8ece625650cdad11499671a00f5878ccd0c38c334010"
   name = "github.com/stretchr/testify"
   packages = [
     "assert",
     "mock",
-    "require",
+    "require"
   ]
-  pruneopts = "UT"
   revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
   version = "v1.2.2"
 
 [[projects]]
   branch = "master"
-  digest = "1:3f3a05ae0b95893d90b9b3b5afdb79a9b3d96e4e36e099d841ae602e4aca0da8"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
-  pruneopts = "UT"
-  revision = "a49355c7e3f8fe157a85be2f77e6e269a0f89602"
+  revision = "c126467f60eb25f8f27e5a981f32a87e3965053f"
 
 [[projects]]
   branch = "master"
-  digest = "1:be54cfdbfb497e35754824e9ddba8a5e1f09f6c6494446e08b15e14a2f7c1b44"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -305,38 +257,33 @@
     "http/httpguts",
     "http2",
     "http2/hpack",
-    "idna",
+    "idna"
   ]
-  pruneopts = "UT"
-  revision = "6f138e0f60713a248abf7046f1014a3ba90f5341"
+  revision = "3673e40ba22529d22c3fd7c93e97b0ce50fa7bdd"
 
 [[projects]]
   branch = "master"
-  digest = "1:05fcb1ce27666bec824043afa2a11806ebf02aec86a1bc497a8c5372df6a4c09"
   name = "golang.org/x/oauth2"
   packages = [
     ".",
     "google",
     "internal",
     "jws",
-    "jwt",
+    "jwt"
   ]
-  pruneopts = "UT"
-  revision = "ef147856a6ddbb60760db74283d2424e98c87bff"
+  revision = "3d292e4d0cdc3a0113e6d207bb137145ef1de42f"
 
 [[projects]]
   branch = "master"
-  digest = "1:72d6244a51be9611f08994aca19677fcc31676b3e7b742c37e129e6ece4ad8fc"
   name = "golang.org/x/sys"
   packages = [
     "unix",
     "windows",
+    "windows/registry"
   ]
-  pruneopts = "UT"
-  revision = "1b2967e3c290b7c545b3db0deeda16e9be4f98a2"
+  revision = "bd9dbc187b6e1dacfdd2722a87e83093c2d7bd6e"
 
 [[projects]]
-  digest = "1:7509ba4347d1f8de6ae9be8818b0cd1abc3deeffe28aeaf4be6d4b6b5178d9ca"
   name = "golang.org/x/text"
   packages = [
     "collate",
@@ -352,27 +299,23 @@
     "unicode/bidi",
     "unicode/cldr",
     "unicode/norm",
-    "unicode/rangetable",
+    "unicode/rangetable"
   ]
-  pruneopts = "UT"
   revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
   version = "v0.3.0"
 
 [[projects]]
   branch = "master"
-  digest = "1:62de467657757c53e401d164e35c592d9a18ae954c1065243985140b9802a191"
   name = "google.golang.org/api"
   packages = [
     "gensupport",
     "googleapi",
     "googleapi/internal/uritemplates",
-    "storage/v1",
+    "storage/v1"
   ]
-  pruneopts = "UT"
-  revision = "ac730e38c5514b49097b1459b3acbe1bf905e930"
+  revision = "082d5fa4f1f046d7c35245229282ed6f488892c0"
 
 [[projects]]
-  digest = "1:7c0b8dbcfb22775889f977671b321cdaf92cb17fbfe2d998b76729dcd29181e6"
   name = "google.golang.org/appengine"
   packages = [
     ".",
@@ -385,51 +328,23 @@
     "internal/modules",
     "internal/remote_api",
     "internal/urlfetch",
-    "urlfetch",
+    "urlfetch"
   ]
-  pruneopts = "UT"
   revision = "b1f26356af11148e710935ed1ac8a7f5702c7612"
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:8ad92609b5d7e609c766100b5c38392891f09f852d3cb162eb9845e1d7532f20"
   name = "gopkg.in/vmihailenco/msgpack.v2"
   packages = [
     ".",
-    "codes",
+    "codes"
   ]
-  pruneopts = "UT"
   revision = "f4f8982de4ef0de18be76456617cc3f5d8d8141e"
   version = "v2.9.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  input-imports = [
-    "github.com/apex/log",
-    "github.com/aws/aws-lambda-go/events",
-    "github.com/aws/aws-lambda-go/lambda",
-    "github.com/aws/aws-sdk-go/aws",
-    "github.com/aws/aws-sdk-go/aws/request",
-    "github.com/aws/aws-sdk-go/aws/session",
-    "github.com/aws/aws-sdk-go/service/cloudwatchlogs",
-    "github.com/aws/aws-sdk-go/service/cloudwatchlogs/cloudwatchlogsiface",
-    "github.com/aws/aws-sdk-go/service/codebuild",
-    "github.com/aws/aws-sdk-go/service/codebuild/codebuildiface",
-    "github.com/aws/aws-sdk-go/service/sfn",
-    "github.com/aws/aws-sdk-go/service/sfn/sfniface",
-    "github.com/aws/aws-sdk-go/service/ssm",
-    "github.com/aws/aws-sdk-go/service/ssm/ssmiface",
-    "github.com/aws/aws-xray-sdk-go/xray",
-    "github.com/buildkite/agent/agent",
-    "github.com/buildkite/agent/api",
-    "github.com/kelseyhightower/envconfig",
-    "github.com/onrik/logrus/filename",
-    "github.com/pkg/errors",
-    "github.com/sirupsen/logrus",
-    "github.com/stretchr/testify/assert",
-    "github.com/stretchr/testify/mock",
-    "github.com/stretchr/testify/require",
-  ]
+  inputs-digest = "033e069d41d3a164c03cb8e59e6e765c7b6bbe34d4425bb088245531ac5722d2"
   solver-name = "gps-cdcl"
   solver-version = 1
