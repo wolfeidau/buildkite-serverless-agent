@@ -78,7 +78,7 @@ There are a few overrides which can be added to your pipeline configuration in t
 
 To enable monitoring of the codebuild job which could run for a few minutes I am using AWS step functions, this workflow is illustrated in the following image.
 
-This workflow is triggered by the `agent` lambda which polls the job queue via the buildkite REST API. Once triggered the statemachine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
+This workflow is triggered by the `agent` lambda which polls the job queue via the buildkite REST API. Once triggered the state machine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
 
 There are three other lambda functions which are used in the step functions:
 
@@ -93,11 +93,13 @@ There are three other lambda functions which are used in the step functions:
 Still lots of things to tidy up:
 
 - [x] Secure all the lambda functions IAM profiles
-- [ ] Testing
+- [X] Testing
 - [x] Combine all the templates into one deployable unit
 - [ ] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
 - [ ] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
-- [ ] Sort out versioning of the project and build files.
+- [X] Sort out versioning of the project and build files.
+- [X] Support canceled builds.
+- [X] Create a pool of agents to enable parallel builds and enable scale out.
 
 Some notes / suggestions for the buildkite team:
 

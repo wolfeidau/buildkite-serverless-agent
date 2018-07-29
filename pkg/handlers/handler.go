@@ -31,19 +31,21 @@ type BuildkiteSFNWorker struct {
 	cfg          *config.Config
 	sess         *session.Session
 	paramStore   *params.SSMStore
+	buildkiteAPI bk.API
 	codebuildSvc codebuildiface.CodeBuildAPI
 }
 
 // New create a new handler
-func New(cfg *config.Config, sess *session.Session) *BuildkiteSFNWorker {
+func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *BuildkiteSFNWorker {
 	ssmSvc := ssm.New(sess)
 	codebuildSvc := codebuild.New(sess)
 
 	return &BuildkiteSFNWorker{
 		cfg:          cfg,
 		sess:         sess,
-		codebuildSvc: codebuildSvc,
 		paramStore:   params.New(cfg, ssmSvc),
+		buildkiteAPI: buildkiteAPI,
+		codebuildSvc: codebuildSvc,
 	}
 }
 
@@ -169,6 +171,28 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 		},
 	).Info("checked build")
 
+	// if job status is canceled then we need to stop codebuild and mark the job as complete
+	switch jobStatus.State {
+	case "canceled":
+		stopRes, err := bkw.codebuildSvc.StopBuild(&codebuild.StopBuildInput{
+			Id: res.Builds[0].Id,
+		})
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to stop codebuild job")
+		}
+
+		logrus.WithFields(
+			logrus.Fields{
+				"projectName":     projectName,
+				"id":              evt.BuildID,
+				"CodebuildStatus": aws.StringValue(stopRes.Build.BuildStatus),
+				"buildkiteStatus": jobStatus.State,
+			},
+		).Info("stopped canceled build")
+
+		evt.BuildStatus = aws.StringValue(stopRes.Build.BuildStatus)
+	}
+
 	return evt, nil
 }
 
@@ -183,6 +207,8 @@ func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.
 	evt.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
 
 	switch evt.BuildStatus {
+	case codebuild.StatusTypeStopped:
+		evt.Job.ExitStatus = "-3"
 	case codebuild.StatusTypeFailed:
 		evt.Job.ExitStatus = "-2"
 	case codebuild.StatusTypeSucceeded:

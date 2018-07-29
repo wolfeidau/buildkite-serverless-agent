@@ -6,7 +6,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
@@ -24,6 +23,12 @@ const DefaultAgentPoolSize = 5
 // ActionFunc async agent action function
 type ActionFunc func(agentInstance *AgentInstance, resultsChan chan *AgentResult)
 
+// AgentResult agent result from operation
+type AgentResult struct {
+	Name  string // name of the agent which returned the result
+	Error error
+}
+
 // AgentPool used to store a pool of agents which are created on launch
 type AgentPool struct {
 	Agents       []*AgentInstance
@@ -31,47 +36,6 @@ type AgentPool struct {
 	buildkiteAPI bk.API
 	paramStore   params.Store
 	executor     statemachine.Executor
-}
-
-// AgentInstance instance of the serverless agent
-type AgentInstance struct {
-	cfg   *config.Config
-	index int
-}
-
-// NewAgentInstance create a new agent instance
-func NewAgentInstance(cfg *config.Config, index int) *AgentInstance {
-	return &AgentInstance{
-		cfg:   cfg,
-		index: index,
-	}
-}
-
-// Name return the name of the agent instance
-func (ai AgentInstance) Name() string {
-	return fmt.Sprintf("serverless-agent-%s-%s_%d", ai.cfg.EnvironmentName, ai.cfg.EnvironmentNumber, ai.index)
-}
-
-// EnvironmentName return the Environment Name of the agent instance
-func (ai AgentInstance) EnvironmentName() string {
-	return ai.cfg.EnvironmentName
-}
-
-// EnvironmentNumber return the Environment Number of the agent instance
-func (ai AgentInstance) EnvironmentNumber() string {
-	return ai.cfg.EnvironmentNumber
-}
-
-// ConfigKey return the key used to store the agent instances configuration
-func (ai AgentInstance) ConfigKey() string {
-	return fmt.Sprintf("/%s/%s/%s", ai.EnvironmentName(), ai.EnvironmentNumber(), ai.Name())
-}
-
-// AgentResult agent result from operation
-type AgentResult struct {
-	Name  string // name of the agent which returned the result
-	Error error
-	Ping  *api.Ping
 }
 
 // New create a new agent pool and populate it based on the poolsize
@@ -145,7 +109,7 @@ func processResults(agents []*AgentInstance, resultsChan chan *AgentResult) erro
 func (ap *AgentPool) getAgentKey() (string, error) {
 	agentSSMKey := fmt.Sprintf("/%s/%s/buildkite-agent-key", ap.cfg.EnvironmentName, ap.cfg.EnvironmentNumber)
 
-	log.WithField("agentSSMKey", agentSSMKey).Info("Loading buildkite key")
+	log.WithField("agentSSMKey", agentSSMKey).Info("Loading buildkite key from SSM")
 
 	agentKey, err := ap.paramStore.GetAgentKey(agentSSMKey)
 	if err != nil {
@@ -184,6 +148,8 @@ func (ap *AgentPool) asyncPoll(agentInstance *AgentInstance, resultsChan chan *A
 }
 
 func (ap *AgentPool) poll(agentInstance *AgentInstance) error {
+
+	log.WithField("agentConfigSSMKey", agentInstance.ConfigKey()).Info("Loading buildkite key from SSM")
 
 	agentConfig, err := ap.paramStore.GetAgentConfig(agentInstance.ConfigKey())
 	if err != nil {
