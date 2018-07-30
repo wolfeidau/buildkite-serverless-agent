@@ -79,12 +79,12 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 			name: "RegisterAgents() with valid pool",
 			fields: fields{
 				Agents: []*AgentInstance{
-					&AgentInstance{cfg: cfg, index: 0},
+					&AgentInstance{cfg: cfg, index: 0, tags: []string{"dev"}},
 				},
 			},
 			apiMock: apiMock{
 				method:          "Register",
-				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123"},
+				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123", []string{"dev"}},
 				returnArguments: []interface{}{&api.Agent{}, nil},
 			},
 			wantErr: false,
@@ -93,12 +93,12 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 			name: "RegisterAgents() with failed api call",
 			fields: fields{
 				Agents: []*AgentInstance{
-					&AgentInstance{cfg: cfg, index: 0},
+					&AgentInstance{cfg: cfg, index: 0, tags: []string{"dev"}},
 				},
 			},
 			apiMock: apiMock{
 				method:          "Register",
-				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123"},
+				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123", []string{"dev"}},
 				returnArguments: []interface{}{nil, errors.New("whoops")},
 			},
 			wantErr: true,

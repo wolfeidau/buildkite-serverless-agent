@@ -54,6 +54,7 @@ func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *AgentP
 		agents[i] = &AgentInstance{
 			cfg:   cfg,
 			index: i,
+			tags:  []string{"aws", "serverless", "codebuild", cfg.AwsRegion, cfg.EnvironmentName},
 		}
 	}
 
@@ -130,7 +131,7 @@ func (ap *AgentPool) register(agentInstance *AgentInstance) error {
 		return errors.Wrap(err, "failed to get agent key from param store")
 	}
 
-	agentConfig, err := ap.buildkiteAPI.Register(agentInstance.Name(), agentKey)
+	agentConfig, err := ap.buildkiteAPI.Register(agentInstance.Name(), agentKey, agentInstance.Tags())
 	if err != nil {
 		return errors.Wrap(err, "failed to register agent")
 	}

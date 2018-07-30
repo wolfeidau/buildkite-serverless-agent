@@ -39,7 +39,7 @@ type WorkflowData struct {
 
 // API wrap up all the buildkite api operations
 type API interface {
-	Register(string, string) (*api.Agent, error)
+	Register(string, string, []string) (*api.Agent, error)
 	Beat(string) (*api.Heartbeat, error)
 	Ping(string) (*api.Ping, error)
 	AcceptJob(string, *api.Job) (*api.Job, error)
@@ -55,14 +55,14 @@ func NewAgentAPI() *AgentAPI {
 }
 
 // Register register an agent
-func (ab *AgentAPI) Register(agentName string, agentKey string) (*api.Agent, error) {
+func (ab *AgentAPI) Register(agentName string, agentKey string, tags []string) (*api.Agent, error) {
 
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
 
 	agentConfig, _, err := client.Agents.Register(&api.Agent{
 		Name: agentName,
 		// Priority:          r.Priority,
-		Tags:    []string{"aws", "serverless", "codebuild"},
+		Tags:    tags,
 		Version: Version,
 		Build:   BuildVersion,
 		Arch:    runtime.GOARCH,
