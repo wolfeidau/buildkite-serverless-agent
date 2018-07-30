@@ -10,13 +10,15 @@ import (
 type AgentInstance struct {
 	cfg   *config.Config
 	index int
+	tags  []string
 }
 
 // NewAgentInstance create a new agent instance
-func NewAgentInstance(cfg *config.Config, index int) *AgentInstance {
+func NewAgentInstance(cfg *config.Config, index int, tags []string) *AgentInstance {
 	return &AgentInstance{
 		cfg:   cfg,
 		index: index,
+		tags:  tags,
 	}
 }
 
@@ -38,4 +40,9 @@ func (ai AgentInstance) EnvironmentNumber() string {
 // ConfigKey return the key used to store the agent instances configuration
 func (ai AgentInstance) ConfigKey() string {
 	return fmt.Sprintf("/%s/%s/%s", ai.EnvironmentName(), ai.EnvironmentNumber(), ai.Name())
+}
+
+// Tags return the tags for the agent instance
+func (ai AgentInstance) Tags() []string {
+	return ai.tags
 }

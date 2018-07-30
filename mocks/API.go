@@ -79,13 +79,13 @@ func (_m *API) Ping(_a0 string) (*api.Ping, error) {
 	return r0, r1
 }
 
-// Register provides a mock function with given fields: _a0, _a1
-func (_m *API) Register(_a0 string, _a1 string) (*api.Agent, error) {
-	ret := _m.Called(_a0, _a1)
+// Register provides a mock function with given fields: _a0, _a1, _a2
+func (_m *API) Register(_a0 string, _a1 string, _a2 []string) (*api.Agent, error) {
+	ret := _m.Called(_a0, _a1, _a2)
 
 	var r0 *api.Agent
-	if rf, ok := ret.Get(0).(func(string, string) *api.Agent); ok {
-		r0 = rf(_a0, _a1)
+	if rf, ok := ret.Get(0).(func(string, string, []string) *api.Agent); ok {
+		r0 = rf(_a0, _a1, _a2)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*api.Agent)
@@ -93,8 +93,8 @@ func (_m *API) Register(_a0 string, _a1 string) (*api.Agent, error) {
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(string, string) error); ok {
-		r1 = rf(_a0, _a1)
+	if rf, ok := ret.Get(1).(func(string, string, []string) error); ok {
+		r1 = rf(_a0, _a1, _a2)
 	} else {
 		r1 = ret.Error(1)
 	}
