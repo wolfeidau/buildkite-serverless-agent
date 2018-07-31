@@ -54,7 +54,7 @@ func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *AgentP
 		agents[i] = &AgentInstance{
 			cfg:   cfg,
 			index: i,
-			tags:  []string{"aws", "serverless", "codebuild", cfg.AwsRegion, cfg.EnvironmentName},
+			tags:  []string{"aws", "serverless", "codebuild", cfg.AwsRegion, fmt.Sprintf("queue=%s", cfg.EnvironmentName)},
 		}
 	}
 

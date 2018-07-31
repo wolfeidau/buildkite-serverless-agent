@@ -21,14 +21,14 @@ func main() {
 		log.WithError(err).Fatal("failed to load configuration")
 	}
 
-	sess := session.Must(session.NewSession())
-
-	bkw := handlers.New(cfg, sess, bk.NewAgentAPI())
-
 	err = xray.Configure(xray.Config{LogLevel: "info"})
 	if err != nil {
 		log.WithError(err).Fatal("failed to xray configuration")
 	}
+
+	sess := session.Must(session.NewSession())
+
+	bkw := handlers.New(cfg, sess, bk.NewAgentAPI())
 
 	lambda.Start(bkw.HandlerSubmitJob)
 }
