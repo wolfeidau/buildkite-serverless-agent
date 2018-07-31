@@ -20,12 +20,12 @@ func main() {
 		log.WithError(err).Fatal("failed to load configuration")
 	}
 
-	sess := session.Must(session.NewSession())
-
 	err = xray.Configure(xray.Config{LogLevel: "info"})
 	if err != nil {
 		log.WithError(err).Fatal("failed to xray configuration")
 	}
+
+	sess := session.Must(session.NewSession())
 
 	agentPool := agentpool.New(cfg, sess, bk.NewAgentAPI())
 
