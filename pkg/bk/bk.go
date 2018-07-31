@@ -27,14 +27,15 @@ const (
 
 // WorkflowData this is information passed along in the step function workflow
 type WorkflowData struct {
-	Job         *api.Job `json:"job,omitempty"`
-	BuildID     string   `json:"build_id,omitempty"`
-	BuildStatus string   `json:"build_status,omitempty"`
-	WaitTime    int      `json:"wait_time,omitempty"`
-	NextToken   string   `json:"next_token,omitempty"`
-	LogBytes    int      `json:"log_bytes,omitempty"`
-	LogSequence int      `json:"log_sequence,omitempty"`
-	AgentName   string   `json:"agent_name,omitempty"`
+	Job                  *api.Job `json:"job,omitempty"`
+	BuildID              string   `json:"build_id,omitempty"`
+	BuildStatus          string   `json:"build_status,omitempty"`
+	WaitTime             int      `json:"wait_time,omitempty"`
+	NextToken            string   `json:"next_token,omitempty"`
+	LogBytes             int      `json:"log_bytes,omitempty"`
+	LogSequence          int      `json:"log_sequence,omitempty"`
+	AgentName            string   `json:"agent_name,omitempty"`
+	CodeBuildProjectName string   `json:"code_build_project_name,omitempty"`
 }
 
 // API wrap up all the buildkite api operations
