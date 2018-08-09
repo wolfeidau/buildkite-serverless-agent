@@ -2,16 +2,11 @@ package agentpool
 
 import (
 	"context"
+	"time"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/sirupsen/logrus"
 )
-
-// PollerData used to track iterations in the poller
-type PollerData struct {
-	Index    int  `json:"index"`
-	Continue bool `json:"continue"`
-	Count    int  `json:"count"`
-}
 
 // BuildkiteWorker handler for lambda events
 type BuildkiteWorker struct {
@@ -26,11 +21,24 @@ func NewBuildkiteWorker(agentPool *AgentPool) *BuildkiteWorker {
 }
 
 // Handler process the cloudwatch scheduled event
-func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *PollerData) (*PollerData, error) {
+func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchEvent) error {
 	logrus.Info("Poll agents")
 
-	evt.Index++
-	evt.Continue = evt.Index < evt.Count
+	// loop until we are out of time, which is in our case is 60 seconds
+	for {
+		remaining := time.Now().Sub(evt.Time)
 
-	return evt, bkw.agentPool.PollAgents()
+		if remaining > 50*time.Second {
+			logrus.Info("Poll agents finished")
+			break
+		}
+		err := bkw.agentPool.PollAgents()
+		if err != nil {
+			logrus.WithError(err).Error("failed to poll")
+		}
+
+		time.Sleep(2 * time.Second)
+	}
+
+	return nil
 }
