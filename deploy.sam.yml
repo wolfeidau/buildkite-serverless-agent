@@ -92,8 +92,7 @@ Resources:
             - logs:CreateLogStream
             - logs:PutLogEvents
             Resource:
-            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
-            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}:*"
+            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
           - Effect: Allow
             Action:
             - s3:PutObject
@@ -264,19 +263,17 @@ Resources:
                 - 'codebuild:StartBuild'
                 - 'codebuild:StopBuild'
                 Resource:
-                - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
+                - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
               - Effect: Allow
                 Action:
                 - logs:GetLogEvents
                 Resource:
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}:*"
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
               - Effect: Allow
                 Action:
                 - logs:GetLogEvents
                 Resource:
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}:*"
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
 
   SubmitJobFunction:
     Type: AWS::Serverless::Function
@@ -546,6 +543,10 @@ Outputs:
     Value: !Ref SourceBucket
     Export:
       Name: !Sub "${AWS::StackName}-SourceBucket"
+  ArtifactBucket:
+    Value: !Ref ArtifactBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-ArtifactBucket"
   BuildkiteProject:
     Value: !Ref BuildkiteProject
     Export:

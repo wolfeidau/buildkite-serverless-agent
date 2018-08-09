@@ -86,8 +86,25 @@ deploy:
 .PHONY: deploy
 
 upload-buildkite-project:
-	@echo "upload the buildkite codebuild project to s3"
+	@echo "upload the buildkite codebuild sources to s3"
 	@zip -j -9 -r ./buildkite.zip codebuild-template/buildspec.yml
 	@aws cloudformation describe-stacks --stack-name $(APPNAME)-$(ENV)-$(ENV_NO) --query 'Stacks[0].Outputs[?OutputKey==`SourceBucket`].OutputValue' --output text | \
 		xargs -I{} -n1 aws s3 cp ./buildkite.zip s3://{}
 .PHONY: upload-buildkite-project
+
+deploy-deployer-project:
+	@echo "deploy deployer codebuild project into aws"
+	@aws cloudformation deploy \
+		--template-file examples/codebuild-project.yaml \
+		--capabilities CAPABILITY_IAM \
+		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO)-deployer-project \
+		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) Name=deployer \
+			BuildkiteAgentPeerStack=$(APPNAME)-$(ENV)-$(ENV_NO) SourceName=buildkite-deployer.zip
+.PHONY: deploy-deployer-project
+
+upload-deployer-project:
+	@echo "upload the deployer codebuild sources to s3"
+	@zip -j -9 -r ./buildkite-deployer.zip codebuild-template/buildspec.yml
+	@aws cloudformation describe-stacks --stack-name $(APPNAME)-$(ENV)-$(ENV_NO) --query 'Stacks[0].Outputs[?OutputKey==`SourceBucket`].OutputValue' --output text | \
+		xargs -I{} -n1 aws s3 cp ./buildkite-deployer.zip s3://{}
+.PHONY: upload-deployer-project

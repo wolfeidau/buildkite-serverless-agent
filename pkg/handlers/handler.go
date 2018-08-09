@@ -98,6 +98,10 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 
 	ov := overrides{logger: logger, env: evt.Job.Env}
 
+	if codebuildProj := ov.String("CB_PROJECT_NAME"); codebuildProj != nil {
+		projectName = aws.StringValue(codebuildProj)
+	}
+
 	startBuildInput := &codebuild.StartBuildInput{
 		ProjectName:                  aws.String(projectName),
 		EnvironmentVariablesOverride: codebuildEnv,
@@ -121,6 +125,7 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 	evt.BuildID = aws.StringValue(startResult.Build.Id)
 	evt.BuildStatus = aws.StringValue(startResult.Build.BuildStatus)
 	evt.WaitTime = 10
+	evt.CodeBuildProjectName = aws.StringValue(startResult.Build.ProjectName)
 
 	return evt, nil
 }
@@ -130,9 +135,7 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 
 	logrus.Infof("%+v", evt)
 
-	projectName := fmt.Sprintf("%s-%s-%s", codebuildProjectPrefix, bkw.cfg.EnvironmentName, bkw.cfg.EnvironmentNumber)
-
-	logrus.WithField("projectName", projectName).Info("Getting build status")
+	logrus.WithField("projectName", evt.CodeBuildProjectName).Info("Getting build status")
 
 	res, err := bkw.codebuildSvc.BatchGetBuilds(&codebuild.BatchGetBuildsInput{
 		Ids: []*string{aws.String(evt.BuildID)},
@@ -164,7 +167,7 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 
 	logrus.WithFields(
 		logrus.Fields{
-			"projectName":     projectName,
+			"projectName":     evt.CodeBuildProjectName,
 			"id":              evt.BuildID,
 			"CodebuildStatus": aws.StringValue(res.Builds[0].BuildStatus),
 			"buildkiteStatus": jobStatus.State,
@@ -183,7 +186,7 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 
 		logrus.WithFields(
 			logrus.Fields{
-				"projectName":     projectName,
+				"projectName":     evt.CodeBuildProjectName,
 				"id":              evt.BuildID,
 				"CodebuildStatus": aws.StringValue(stopRes.Build.BuildStatus),
 				"buildkiteStatus": jobStatus.State,
