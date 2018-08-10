@@ -121,57 +121,6 @@ Resources:
             - !Sub "arn:aws:s3:::${ArtifactBucket}/*"
             - !Sub "arn:aws:s3:::${ArtifactBucket}"
 
-  AgentPollFunctionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - Effect: "Allow"
-            Principal: 
-              Service: 
-                - "lambda.amazonaws.com"
-            Action: 
-              - sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
-      Policies: 
-        - PolicyName: "BuildkiteSfnFunctionAccess"
-          PolicyDocument: 
-            Version: "2012-10-17"
-            Statement:
-              - Effect: Allow
-                Action:
-                - states:DescribeStateMachine
-                - states:StartExecution
-                - states:ListExecutions
-                Resource:
-                - !Sub '${StateMachineAgentPoller}'
-
-  AgentPollFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: agent-poll
-      Timeout: 30
-      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
-      Tracing: Active
-      Runtime: go1.x
-      CodeUri: ./handler.zip
-      Role: !Sub ${AgentPollFunctionRole.Arn}
-      Environment:   
-        Variables:
-          ENVIRONMENT_NAME:
-            Ref: EnvironmentName
-          ENVIRONMENT_NUMBER:
-            Ref: EnvironmentNumber
-          SFN_AGENT_POLLER_ARN: !Sub '${StateMachineAgentPoller}'
-      Events:
-        Timer:
-          Type: Schedule
-          Properties:
-            Schedule: rate(1 minute)
-
   AgentFunctionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -212,8 +161,8 @@ Resources:
   AgentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: agent
-      Timeout: 30
+      Handler: agent-poll
+      Timeout: 60
       # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
       Tracing: Active
       Runtime: go1.x
@@ -228,6 +177,11 @@ Resources:
           AGENT_POOL_SIZE:
             Ref: AgentPoolSize
           SFN_CODEBUILD_JOB_MONITOR_ARN: !Sub '${StateMachineCodebuildJobMonitor}'
+      Events:
+        Timer:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 minute)
 
   SfnFunctionRole:
     Type: AWS::IAM::Role
@@ -325,74 +279,6 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-
-  StateMachineAgentPoller:
-    Type: 'AWS::StepFunctions::StateMachine'
-    Properties:
-      StateMachineName: !Sub "AgentPoller-${EnvironmentName}-${EnvironmentNumber}"
-      DefinitionString: 
-        Fn::Sub:
-          - |
-            {
-                "Comment": "Invoke Buildkite Agent Lambda every 10 seconds",
-                "StartAt": "ConfigureCount",
-                "States": {
-                    "ConfigureCount": {
-                        "Type": "Pass",
-                        "Result": {
-                            "index": 0,
-                            "count": 5
-                        },
-                        "Next": "Iterator"
-                    },
-                    "Iterator": {
-                        "Type": "Task",
-                        "Resource": "${AgentFunctionARN}",
-                        "Next": "IsCountReached"
-                    },
-                    "IsCountReached": {
-                        "Type": "Choice",
-                        "Choices": [
-                            {
-                                "Variable": "$.continue",
-                                "BooleanEquals": true,
-                                "Next": "Wait"
-                            }
-                        ],
-                        "Default": "Done"
-                    },
-                    "Wait": {
-                        "Type": "Wait",
-                        "Seconds": 10,
-                        "Next": "Iterator"
-                    },
-                    "Done": {
-                        "Type": "Pass",
-                        "End": true
-                    }
-                }
-            }
-          - AgentFunctionARN: !GetAtt AgentFunction.Arn
-      RoleArn: !GetAtt 'RoleAgentPoller.Arn'
-
-  RoleAgentPoller:
-    Type: 'AWS::IAM::Role'
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service: !Sub 'states.${AWS::Region}.amazonaws.com'
-          Action: 'sts:AssumeRole'
-      Policies:
-      - PolicyName: lambda
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action: 'lambda:InvokeFunction'
-            Resource:
-            - !GetAtt AgentFunction.Arn
 
   StateMachineCodebuildJobMonitor:
     Type: 'AWS::StepFunctions::StateMachine'
