@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ssm"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
@@ -60,8 +59,7 @@ func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *AgentP
 
 	executor := statemachine.NewSFNExecutor(cfg, sess)
 
-	ssmSvc := ssm.New(sess)
-	paramStore := params.New(cfg, ssmSvc)
+	paramStore := params.New(cfg, sess)
 
 	return &AgentPool{
 		Agents:       agents,

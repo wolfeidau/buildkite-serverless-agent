@@ -3,41 +3,55 @@ package params
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go/service/ssm/ssmiface"
+	"github.com/buildkite/agent/api"
+	"github.com/stretchr/testify/mock"
+	"github.com/tj/assert"
+	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
 
 func TestSSMStore_GetAgentKey(t *testing.T) {
-	type fields struct {
-		cfg    *config.Config
-		ssmSvc ssmiface.SSMAPI
+	ssmCacheMock := &mocks.Cache{}
+
+	ssmCacheMock.On("GetKey", "abc123", true).Return("qer567", nil)
+
+	ssmStore := &SSMStore{
+		cfg:      &config.Config{},
+		ssmCache: ssmCacheMock,
 	}
-	type args struct {
-		agentSSMKey string
+
+	res, err := ssmStore.GetAgentKey("abc123")
+	assert.Nil(t, err)
+	assert.Equal(t, "qer567", res)
+}
+
+func TestSSMStore_GetAgentConfig(t *testing.T) {
+
+	ssmCacheMock := &mocks.Cache{}
+
+	ssmCacheMock.On("GetKey", "abc123", true).Return("{}", nil)
+
+	ssmStore := &SSMStore{
+		cfg:      &config.Config{},
+		ssmCache: ssmCacheMock,
 	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    string
-		wantErr bool
-	}{
-		// TODO: Add test cases.
+
+	res, err := ssmStore.GetAgentConfig("abc123")
+	assert.Nil(t, err)
+	assert.Equal(t, &api.Agent{}, res)
+}
+
+func TestSSMStore_SaveAgentConfig(t *testing.T) {
+	ssmCacheMock := &mocks.Cache{}
+
+	ssmCacheMock.On("PutKey", "abc123", mock.AnythingOfType("string"), true).Return(nil)
+	ssmCacheMock.On("GetKey", "abc123", true).Return("{}", nil)
+
+	ssmStore := &SSMStore{
+		cfg:      &config.Config{},
+		ssmCache: ssmCacheMock,
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			st := &SSMStore{
-				cfg:    tt.fields.cfg,
-				ssmSvc: tt.fields.ssmSvc,
-			}
-			got, err := st.GetAgentKey(tt.args.agentSSMKey)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("SSMStore.GetAgentKey() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if got != tt.want {
-				t.Errorf("SSMStore.GetAgentKey() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+
+	err := ssmStore.SaveAgentConfig("abc123", &api.Agent{})
+	assert.Nil(t, err)
 }

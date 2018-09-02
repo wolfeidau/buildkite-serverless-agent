@@ -38,6 +38,7 @@ mocks:
 	mockery -dir pkg/params --all
 	mockery -dir pkg/bk --all
 	mockery -dir pkg/statemachine --all
+	mockery -dir pkg/ssmcache --all
 .PHONY: mocks
 
 # build the lambda binary

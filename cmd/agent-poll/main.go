@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-xray-sdk-go/xray"
@@ -9,11 +11,13 @@ import (
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/agentpool"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/ssmcache"
 )
 
 func main() {
 	log.AddHook(filename.NewHook())
 	log.SetFormatter(&log.JSONFormatter{})
+	ssmcache.SetDefaultExpiry(5 * time.Minute)
 
 	cfg, err := config.New()
 	if err != nil {
