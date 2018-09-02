@@ -198,8 +198,8 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 	return evt, nil
 }
 
-// CompletedJobHandler process the step function event for completed jobs
-func (bkw *BuildkiteSFNWorker) CompletedJobHandler(ctx context.Context, evt *bk.WorkflowData) (*bk.WorkflowData, error) {
+// HandlerCompletedJob process the step function event for completed jobs
+func (bkw *BuildkiteSFNWorker) HandlerCompletedJob(ctx context.Context, evt *bk.WorkflowData) (*bk.WorkflowData, error) {
 
 	client, _, err := bkw.getBKClient(evt)
 	if err != nil {

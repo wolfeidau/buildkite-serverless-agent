@@ -45,18 +45,14 @@ mocks:
 build:
 	@echo "build all the things"
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent-poll ./cmd/agent-poll
-	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o submit-job ./cmd/submit-job
-	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o check-job ./cmd/check-job
-	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o complete-job ./cmd/complete-job
+	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o step-handler ./cmd/step-handler
 .PHONY: build
 
 # clean all the things
 clean:
 	@echo "clean all the things"
 	@rm -f ./agent-poll
-	@rm -f ./submit-job
-	@rm -f ./check-job
-	@rm -f ./complete-job
+	@rm -f ./step-handler
 	@rm -f ./handler.zip
 	@rm -f ./buildkite.zip
 	@rm -f ./deploy.out.yml
@@ -65,7 +61,7 @@ clean:
 # package up the lambda and upload it to S3
 package:
 	@echo "package lambdas into handler.zip"
-	@zip -9 -r ./handler.zip agent-poll submit-job check-job complete-job
+	@zip -9 -r ./handler.zip agent-poll step-handler
 	@echo "Running as: $(shell aws sts get-caller-identity --query Arn --output text)"
 	@aws cloudformation package \
 		--template-file deploy.sam.yml \
