@@ -34,10 +34,6 @@
   version = "1.14.33"
 
 [[constraint]]
-  name = "github.com/aws/aws-xray-sdk-go"
-  version = "0.9.4"
-
-[[constraint]]
   name = "github.com/buildkite/agent"
   version = "3.3.0"
 

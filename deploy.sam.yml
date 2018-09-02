@@ -163,8 +163,6 @@ Resources:
     Properties:
       Handler: agent-poll
       Timeout: 60
-      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
-      Tracing: Active
       Runtime: go1.x
       CodeUri: ./handler.zip
       Role: !Sub ${AgentFunctionRole.Arn}
@@ -232,15 +230,14 @@ Resources:
   SubmitJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: submit-job
+      Handler: step-handler
       Timeout: 30
-      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
-      Tracing: Active
       Runtime: go1.x
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
+          STEP_HANDLER: "submit-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
@@ -249,15 +246,14 @@ Resources:
   CheckJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: check-job
+      Handler: step-handler
       Timeout: 30
-      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
-      Tracing: Active
       Runtime: go1.x
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
+          STEP_HANDLER: "check-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
@@ -266,15 +262,14 @@ Resources:
   CompleteJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: complete-job
+      Handler: step-handler
       Timeout: 30
-      # For options see https://docs.aws.amazon.com/lambda/latest/dg/API_TracingConfig.html
-      Tracing: Active
       Runtime: go1.x
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
+          STEP_HANDLER: "complete-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:

@@ -15,6 +15,7 @@ var (
 
 // Config for the environment
 type Config struct {
+	StepHandler               string `envconfig:"STEP_HANDLER"`
 	AwsRegion                 string `envconfig:"AWS_REGION"`
 	EnvironmentName           string `envconfig:"ENVIRONMENT_NAME"`
 	EnvironmentNumber         string `envconfig:"ENVIRONMENT_NUMBER"`

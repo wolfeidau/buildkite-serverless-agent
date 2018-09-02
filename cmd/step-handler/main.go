@@ -6,7 +6,6 @@ import (
 	"github.com/apex/log"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-xray-sdk-go/xray"
 	"github.com/onrik/logrus/filename"
 	"github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
@@ -29,11 +28,14 @@ func main() {
 
 	bkw := handlers.New(cfg, sess, bk.NewAgentAPI())
 
-	err = xray.Configure(xray.Config{LogLevel: "info"})
-	if err != nil {
-		log.WithError(err).Fatal("failed to xray configuration")
+	switch cfg.StepHandler {
+	case "check-job":
+		lambda.Start(bkw.HandlerCheckJob)
+	case "submit-job":
+		lambda.Start(bkw.HandlerSubmitJob)
+	case "complete-job":
+		lambda.Start(bkw.HandlerCompletedJob)
+	default:
+		log.WithField("StepHandler", cfg.StepHandler).Fatal("failed to locate job handler")
 	}
-
-	lambda.Start(bkw.HandlerCheckJob)
-
 }

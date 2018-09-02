@@ -2,9 +2,7 @@
 handler.zip
 /agent
 /agent-poll
-/check-job
-/complete-job
-/submit-job
+/step-handler
 deploy.out.yml
 buildkite.zip
 buildkite-deployer.zip

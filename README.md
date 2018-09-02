@@ -78,13 +78,15 @@ There are a few overrides which can be added to your pipeline configuration in t
 
 To enable monitoring of the codebuild job which could run for a few minutes I am using AWS step functions, this workflow is illustrated in the following image.
 
-This workflow is triggered by the `agent` lambda which polls the job queue via the buildkite REST API. Once triggered the state machine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
+This workflow is triggered by the `agent-pool` lambda which polls the job queue via the buildkite REST API. Once triggered the state machine flags the job as in progress, streams logs to buildkite, and marks the job as complete once it is done.
 
-There are three other lambda functions which are used in the step functions:
+The `step-handler` lambda function contains handlers for the following tasks within the step function:
 
-* `sfn-submit-job` which notifies the buildkite api the job is starting and submits the job to codebuild.
-* `sfn-check-job` which checks the status of the codebuild job and uploads logs every 10 seconds.
-* `sfn-complete-job` which notifies the buildkite api the job is completed, either successful or failed, and uploads the remaining logs.
+* `submit-job` which notifies the buildkite api the job is starting and submits the job to codebuild.
+* `check-job` which checks the status of the codebuild job and uploads logs every 10 seconds.
+* `complete-job` which notifies the buildkite api the job is completed, either successful or failed, and uploads the remaining logs.
+
+Note: This function uses `STEP_HANDLER` environment variable to dispatch to the correct handler.
 
 ![codebuild job monitor](docs/images/stepfunction.png)
 
