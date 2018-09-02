@@ -3,11 +3,10 @@ package main
 import (
 	"time"
 
-	"github.com/apex/log"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/onrik/logrus/filename"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/handlers"
@@ -15,8 +14,8 @@ import (
 )
 
 func main() {
-	logrus.AddHook(filename.NewHook())
-	logrus.SetFormatter(&logrus.JSONFormatter{})
+	log.AddHook(filename.NewHook())
+	log.SetFormatter(&log.JSONFormatter{})
 	ssmcache.SetDefaultExpiry(5 * time.Minute)
 
 	cfg, err := config.New()

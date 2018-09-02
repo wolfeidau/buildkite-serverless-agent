@@ -5,8 +5,6 @@ ENV_NO ?= 1
 VERSION := 2.0.0
 BUILD_VERSION := $(shell git rev-parse --short HEAD)
 
-GOPATH := $(shell go env GOPATH)
-GOPKG := github.com/wolfeidau/buildkite-serverless-agent
 SOURCE_FILES?=$$(go list ./... | grep -v /vendor/ | grep -v mocks)
 
 LDFLAGS := -ldflags="-s -w -X $(GOPKG)/pkg/bk.Version=$(VERSION) -X $(GOPKG)/pkg/bk.BuildVersion=$(BUILD_VERSION)"
@@ -20,13 +18,11 @@ ci: setup lint test build
 setup:
 	@echo "setup install deps"
 	@go get -u github.com/mgechev/revive
-	@go get -u github.com/golang/dep/cmd/dep
-	@$(GOPATH)/bin/dep ensure -v
 .PHONY: setup
 
 lint:
 	@echo "lint all the things"
-	@$(GOPATH)/bin/revive -formatter friendly $(SOURCE_FILES)
+	@$(shell go env GOPATH)/bin/revive -formatter friendly $(SOURCE_FILES)
 .PHONY: lint
 
 test:

@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/buildkite/agent/api"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"github.com/tj/assert"
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )

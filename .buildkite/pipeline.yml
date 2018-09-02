@@ -2,10 +2,10 @@ steps:
   - name: ":golang:"
     command: "make ci"
     env:
-      BUILDKTE_GOLANG_IMPORT_PATH: "github.com/wolfeidau/buildkite-serverless-agent"
-      CB_IMAGE_OVERRIDE: "wolfeidau/codebuild-docker-buildkite:17.09.0"
+      CB_IMAGE_OVERRIDE: "wolfeidau/codebuild-buildkite-golang:1.11"
       CB_COMPUTE_TYPE_OVERRIDE: "BUILD_GENERAL1_SMALL"
       CB_PRIVILEGED_MODE_OVERRIDE: "true"
+      GO111MODULE: "on"
     agents:
       queue: dev
       serverless: true
