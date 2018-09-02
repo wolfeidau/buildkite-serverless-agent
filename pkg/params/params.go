@@ -4,13 +4,12 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/ssm"
-	"github.com/aws/aws-sdk-go/service/ssm/ssmiface"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/ssmcache"
 )
 
 // Store store for buildkite agent params
@@ -22,46 +21,40 @@ type Store interface {
 
 // SSMStore store for buildkite related params which is backed by SSM
 type SSMStore struct {
-	cfg    *config.Config
-	ssmSvc ssmiface.SSMAPI
+	cfg      *config.Config
+	ssmCache ssmcache.Cache
 }
 
 // New create a new params store which is backed by SSM
-func New(cfg *config.Config, ssmSvc ssmiface.SSMAPI) *SSMStore {
+func New(cfg *config.Config, ssmSvc *session.Session) *SSMStore {
 	return &SSMStore{
-		ssmSvc: ssmSvc,
-		cfg:    cfg,
+		ssmCache: ssmcache.New(session.Must(session.NewSession())),
+		cfg:      cfg,
 	}
 }
 
 // GetAgentKey retrieve the buildkite agent key from the params store
 func (st *SSMStore) GetAgentKey(agentSSMKey string) (string, error) {
 
-	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
-		Name:           aws.String(agentSSMKey),
-		WithDecryption: aws.Bool(true),
-	})
+	value, err := st.ssmCache.GetKey(agentSSMKey, true)
 	if err != nil {
 		return "", errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMKey)
 	}
 
-	return aws.StringValue(resp.Parameter.Value), nil
+	return value, nil
 }
 
 // GetAgentConfig retrieve the buildkite agent config from the params store
 func (st *SSMStore) GetAgentConfig(agentSSMConfigKey string) (*api.Agent, error) {
 
-	resp, err := st.ssmSvc.GetParameter(&ssm.GetParameterInput{
-		Name:           aws.String(agentSSMConfigKey),
-		WithDecryption: aws.Bool(true),
-	})
+	value, err := st.ssmCache.GetKey(agentSSMConfigKey, true)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMConfigKey)
 	}
 
 	agentConfig := new(api.Agent)
 
-	stringReader := strings.NewReader(aws.StringValue(resp.Parameter.Value))
+	stringReader := strings.NewReader(value)
 
 	err = json.NewDecoder(stringReader).Decode(agentConfig)
 	if err != nil {
@@ -79,17 +72,12 @@ func (st *SSMStore) SaveAgentConfig(agentSSMConfigKey string, agentConfig *api.A
 		return errors.Wrap(err, "failed to write agent config to ssm")
 	}
 
-	resp, err := st.ssmSvc.PutParameter(&ssm.PutParameterInput{
-		Name:      aws.String(agentSSMConfigKey),
-		Type:      aws.String(ssm.ParameterTypeSecureString),
-		Value:     aws.String(string(agentData)),
-		Overwrite: aws.Bool(true),
-	})
+	err = st.ssmCache.PutKey(agentSSMConfigKey, string(agentData), true)
 	if err != nil {
 		return errors.Wrapf(err, "failed to retrieve key %s from ssm", agentSSMConfigKey)
 	}
 
-	logrus.WithField("version", aws.Int64Value(resp.Version)).Info("saved agent configuration")
+	logrus.Info("saved agent configuration")
 
 	return nil
 }

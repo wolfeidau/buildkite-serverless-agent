@@ -13,7 +13,6 @@ import (
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
-	"github.com/aws/aws-sdk-go/service/ssm"
 	"github.com/buildkite/agent/agent"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
@@ -37,13 +36,13 @@ type BuildkiteSFNWorker struct {
 
 // New create a new handler
 func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *BuildkiteSFNWorker {
-	ssmSvc := ssm.New(sess)
+
 	codebuildSvc := codebuild.New(sess)
 
 	return &BuildkiteSFNWorker{
 		cfg:          cfg,
 		sess:         sess,
-		paramStore:   params.New(cfg, ssmSvc),
+		paramStore:   params.New(cfg, sess),
 		buildkiteAPI: buildkiteAPI,
 		codebuildSvc: codebuildSvc,
 	}
