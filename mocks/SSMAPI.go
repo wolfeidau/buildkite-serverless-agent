@@ -3938,6 +3938,84 @@ func (_m *SSMAPI) DescribePatchGroupsWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	return r0, r1
 }
 
+// DescribeSessions provides a mock function with given fields: _a0
+func (_m *SSMAPI) DescribeSessions(_a0 *ssm.DescribeSessionsInput) (*ssm.DescribeSessionsOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.DescribeSessionsOutput
+	if rf, ok := ret.Get(0).(func(*ssm.DescribeSessionsInput) *ssm.DescribeSessionsOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.DescribeSessionsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.DescribeSessionsInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// DescribeSessionsRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) DescribeSessionsRequest(_a0 *ssm.DescribeSessionsInput) (*request.Request, *ssm.DescribeSessionsOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.DescribeSessionsInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.DescribeSessionsOutput
+	if rf, ok := ret.Get(1).(func(*ssm.DescribeSessionsInput) *ssm.DescribeSessionsOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.DescribeSessionsOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// DescribeSessionsWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) DescribeSessionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeSessionsInput, _a2 ...request.Option) (*ssm.DescribeSessionsOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.DescribeSessionsOutput
+	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeSessionsInput, ...request.Option) *ssm.DescribeSessionsOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.DescribeSessionsOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeSessionsInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // GetAutomationExecution provides a mock function with given fields: _a0
 func (_m *SSMAPI) GetAutomationExecution(_a0 *ssm.GetAutomationExecutionInput) (*ssm.GetAutomationExecutionOutput, error) {
 	ret := _m.Called(_a0)
@@ -4086,6 +4164,84 @@ func (_m *SSMAPI) GetCommandInvocationWithContext(_a0 aws.Context, _a1 *ssm.GetC
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetCommandInvocationInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetConnectionStatus provides a mock function with given fields: _a0
+func (_m *SSMAPI) GetConnectionStatus(_a0 *ssm.GetConnectionStatusInput) (*ssm.GetConnectionStatusOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.GetConnectionStatusOutput
+	if rf, ok := ret.Get(0).(func(*ssm.GetConnectionStatusInput) *ssm.GetConnectionStatusOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.GetConnectionStatusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.GetConnectionStatusInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetConnectionStatusRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) GetConnectionStatusRequest(_a0 *ssm.GetConnectionStatusInput) (*request.Request, *ssm.GetConnectionStatusOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.GetConnectionStatusInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.GetConnectionStatusOutput
+	if rf, ok := ret.Get(1).(func(*ssm.GetConnectionStatusInput) *ssm.GetConnectionStatusOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.GetConnectionStatusOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// GetConnectionStatusWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) GetConnectionStatusWithContext(_a0 aws.Context, _a1 *ssm.GetConnectionStatusInput, _a2 ...request.Option) (*ssm.GetConnectionStatusOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.GetConnectionStatusOutput
+	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetConnectionStatusInput, ...request.Option) *ssm.GetConnectionStatusOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.GetConnectionStatusOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetConnectionStatusInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7268,6 +7424,84 @@ func (_m *SSMAPI) RemoveTagsFromResourceWithContext(_a0 aws.Context, _a1 *ssm.Re
 	return r0, r1
 }
 
+// ResumeSession provides a mock function with given fields: _a0
+func (_m *SSMAPI) ResumeSession(_a0 *ssm.ResumeSessionInput) (*ssm.ResumeSessionOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.ResumeSessionOutput
+	if rf, ok := ret.Get(0).(func(*ssm.ResumeSessionInput) *ssm.ResumeSessionOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.ResumeSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.ResumeSessionInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ResumeSessionRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) ResumeSessionRequest(_a0 *ssm.ResumeSessionInput) (*request.Request, *ssm.ResumeSessionOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.ResumeSessionInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.ResumeSessionOutput
+	if rf, ok := ret.Get(1).(func(*ssm.ResumeSessionInput) *ssm.ResumeSessionOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.ResumeSessionOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ResumeSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) ResumeSessionWithContext(_a0 aws.Context, _a1 *ssm.ResumeSessionInput, _a2 ...request.Option) (*ssm.ResumeSessionOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.ResumeSessionOutput
+	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ResumeSessionInput, ...request.Option) *ssm.ResumeSessionOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.ResumeSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ResumeSessionInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SendAutomationSignal provides a mock function with given fields: _a0
 func (_m *SSMAPI) SendAutomationSignal(_a0 *ssm.SendAutomationSignalInput) (*ssm.SendAutomationSignalOutput, error) {
 	ret := _m.Called(_a0)
@@ -7580,6 +7814,84 @@ func (_m *SSMAPI) StartAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.
 	return r0, r1
 }
 
+// StartSession provides a mock function with given fields: _a0
+func (_m *SSMAPI) StartSession(_a0 *ssm.StartSessionInput) (*ssm.StartSessionOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.StartSessionOutput
+	if rf, ok := ret.Get(0).(func(*ssm.StartSessionInput) *ssm.StartSessionOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.StartSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.StartSessionInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// StartSessionRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) StartSessionRequest(_a0 *ssm.StartSessionInput) (*request.Request, *ssm.StartSessionOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.StartSessionInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.StartSessionOutput
+	if rf, ok := ret.Get(1).(func(*ssm.StartSessionInput) *ssm.StartSessionOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.StartSessionOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// StartSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) StartSessionWithContext(_a0 aws.Context, _a1 *ssm.StartSessionInput, _a2 ...request.Option) (*ssm.StartSessionOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.StartSessionOutput
+	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.StartSessionInput, ...request.Option) *ssm.StartSessionOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.StartSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StartSessionInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // StopAutomationExecution provides a mock function with given fields: _a0
 func (_m *SSMAPI) StopAutomationExecution(_a0 *ssm.StopAutomationExecutionInput) (*ssm.StopAutomationExecutionOutput, error) {
 	ret := _m.Called(_a0)
@@ -7650,6 +7962,84 @@ func (_m *SSMAPI) StopAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.S
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StopAutomationExecutionInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// TerminateSession provides a mock function with given fields: _a0
+func (_m *SSMAPI) TerminateSession(_a0 *ssm.TerminateSessionInput) (*ssm.TerminateSessionOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.TerminateSessionOutput
+	if rf, ok := ret.Get(0).(func(*ssm.TerminateSessionInput) *ssm.TerminateSessionOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.TerminateSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.TerminateSessionInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// TerminateSessionRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) TerminateSessionRequest(_a0 *ssm.TerminateSessionInput) (*request.Request, *ssm.TerminateSessionOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.TerminateSessionInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.TerminateSessionOutput
+	if rf, ok := ret.Get(1).(func(*ssm.TerminateSessionInput) *ssm.TerminateSessionOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.TerminateSessionOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// TerminateSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) TerminateSessionWithContext(_a0 aws.Context, _a1 *ssm.TerminateSessionInput, _a2 ...request.Option) (*ssm.TerminateSessionOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.TerminateSessionOutput
+	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.TerminateSessionInput, ...request.Option) *ssm.TerminateSessionOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.TerminateSessionOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.TerminateSessionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
