@@ -4,7 +4,6 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws/session"
-
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/mock"

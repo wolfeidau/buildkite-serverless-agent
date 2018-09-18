@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sirupsen/logrus"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 	"github.com/aws/aws-sdk-go/service/cloudwatchlogs/cloudwatchlogsiface"
 	"github.com/pkg/errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
 
@@ -48,7 +47,7 @@ func (cwlr *CloudwatchLogsReader) ReadLogs(buildID string, nextToken string) (st
 		getlogsInput.NextToken = aws.String(nextToken)
 	}
 
-	logrus.WithFields(logrus.Fields{
+	log.WithFields(log.Fields{
 		"LogGroupName":  groupName,
 		"LogStreamName": streamName,
 		"NextToken":     nextToken,
