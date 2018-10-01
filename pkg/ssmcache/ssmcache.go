@@ -1,7 +1,6 @@
 package ssmcache
 
 import (
-	"log"
 	"sync"
 	"time"
 
@@ -10,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ssm"
 	"github.com/aws/aws-sdk-go/service/ssm/ssmiface"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 var defaultExpiry = 30 * time.Second
@@ -61,7 +61,7 @@ func (ssc *cache) GetKey(key string, encrypted bool) (string, error) {
 
 	if time.Now().After(ent.expires) {
 		// we have expired and need to refresh
-		log.Println("expired cache refreshing value")
+		logrus.Println("expired cache refreshing value")
 
 		return ssc.updateParam(key, encrypted)
 	}
@@ -96,7 +96,7 @@ func (ssc *cache) PutKey(key string, val string, encrypted bool) error {
 
 func (ssc *cache) updateParam(key string, encrypted bool) (string, error) {
 
-	log.Println("updating key from ssm:", key)
+	logrus.Println("updating key from ssm:", key)
 
 	resp, err := ssc.ssmSvc.GetParameter(&ssm.GetParameterInput{
 		Name:           aws.String(key),
@@ -111,7 +111,7 @@ func (ssc *cache) updateParam(key string, encrypted bool) (string, error) {
 		expires: time.Now().Add(defaultExpiry), // reset the expiry
 	}
 
-	log.Println("key value refreshed from ssm at:", time.Now())
+	logrus.Println("key value refreshed from ssm at:", time.Now())
 
 	return aws.StringValue(resp.Parameter.Value), nil
 }
