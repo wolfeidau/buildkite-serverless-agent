@@ -152,6 +152,11 @@ Resources:
                 - !Sub '${StateMachineCodebuildJobMonitor}'
               - Effect: Allow
                 Action: 
+                - 'ssm:DescribeParameters'
+                Resource:
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:*"
+              - Effect: Allow
+                Action: 
                 - 'ssm:GetParameters'
                 - 'ssm:GetParameter'
                 - 'ssm:PutParameter'
@@ -207,8 +212,14 @@ Resources:
                 Action: 
                 - 'ssm:GetParameters'
                 - 'ssm:GetParameter'
+                - 'ssm:DescribeParameters'
                 Resource:
                 - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+              - Effect: Allow
+                Action: 
+                - 'ssm:DescribeParameters'
+                Resource:
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:*"
               - Effect: Allow
                 Action: 
                 - 'codebuild:BatchGetBuilds'

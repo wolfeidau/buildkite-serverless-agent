@@ -15,7 +15,9 @@ import (
 
 func main() {
 	log.AddHook(filename.NewHook())
-	log.SetFormatter(&log.JSONFormatter{})
+	log.SetFormatter(&log.JSONFormatter{
+		DisableTimestamp: true,
+	})
 	ssmcache.SetDefaultExpiry(5 * time.Minute)
 
 	cfg, err := config.New()
