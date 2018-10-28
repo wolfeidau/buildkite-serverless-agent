@@ -2,10 +2,12 @@ package bk
 
 import (
 	"runtime"
+	"time"
 
 	"github.com/buildkite/agent/agent"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/telemetry"
 )
 
 const (
@@ -57,10 +59,11 @@ func NewAgentAPI() *AgentAPI {
 
 // Register register an agent
 func (ab *AgentAPI) Register(agentName string, agentKey string, tags []string) (*api.Agent, error) {
+	defer telemetry.MeasureSince("register", time.Now())
 
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
 
-	agentConfig, _, err := client.Agents.Register(&api.Agent{
+	agentConfig, res, err := client.Agents.Register(&api.Agent{
 		Name: agentName,
 		// Priority:          r.Priority,
 		Tags:    tags,
@@ -72,45 +75,52 @@ func (ab *AgentAPI) Register(agentName string, agentKey string, tags []string) (
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to register agent")
 	}
+	defer telemetry.ReportAPIResponse(res)
 
 	return agentConfig, nil
 }
 
 // Beat send a heartbeat to the agent api
 func (ab *AgentAPI) Beat(agentKey string) (*api.Heartbeat, error) {
+	defer telemetry.MeasureSince("beat", time.Now())
 
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
 
-	heartbeat, _, err := client.Heartbeats.Beat()
+	heartbeat, res, err := client.Heartbeats.Beat()
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to send agent heartbeat")
 	}
+	defer telemetry.ReportAPIResponse(res)
 
 	return heartbeat, nil
 }
 
 // Ping ping the agent api for a job
 func (ab *AgentAPI) Ping(agentKey string) (*api.Ping, error) {
+	defer telemetry.MeasureSince("ping", time.Now())
 
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
 
-	ping, _, err := client.Pings.Get()
+	ping, res, err := client.Pings.Get()
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to send agent ping")
 	}
+	defer telemetry.ReportAPIResponse(res)
 
 	return ping, nil
 }
 
 // AcceptJob accept the job provided by buildkite
 func (ab *AgentAPI) AcceptJob(agentKey string, job *api.Job) (*api.Job, error) {
+	defer telemetry.MeasureSince("acceptjob", time.Now())
 
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
 
-	job, _, err := client.Jobs.Accept(job)
+	job, res, err := client.Jobs.Accept(job)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to send agent ping")
 	}
+	defer telemetry.ReportAPIResponse(res)
 
 	return job, nil
 }

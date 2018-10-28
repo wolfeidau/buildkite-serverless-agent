@@ -16,17 +16,17 @@ ci: setup lint test build
 .PHONY: ci
 
 setup:
-	@echo "setup install deps"
+	@echo "--- setup install deps"
 	@go get -u github.com/mgechev/revive
 .PHONY: setup
 
 lint:
-	@echo "lint all the things"
+	@echo "--- lint all the things"
 	@$(shell go env GOPATH)/bin/revive -formatter friendly $(SOURCE_FILES)
 .PHONY: lint
 
 test:
-	@echo "test all the things"
+	@echo "--- test all the things"
 	@go test -cover ./...
 .PHONY: test
 
@@ -39,14 +39,14 @@ mocks:
 
 # build the lambda binary
 build:
-	@echo "build all the things"
+	@echo "--- build all the things"
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent-poll ./cmd/agent-poll
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o step-handler ./cmd/step-handler
 .PHONY: build
 
 # clean all the things
 clean:
-	@echo "clean all the things"
+	@echo "--- clean all the things"
 	@rm -f ./agent-poll
 	@rm -f ./step-handler
 	@rm -f ./handler.zip
@@ -56,7 +56,7 @@ clean:
 
 # package up the lambda and upload it to S3
 package:
-	@echo "package lambdas into handler.zip"
+	@echo "--- package lambdas into handler.zip"
 	@zip -9 -r ./handler.zip agent-poll step-handler
 	@echo "Running as: $(shell aws sts get-caller-identity --query Arn --output text)"
 	@aws cloudformation package \
@@ -68,7 +68,7 @@ package:
 
 # deploy the lambda
 deploy:
-	@echo "deploy lambdas into aws"
+	@echo "--- deploy lambdas into aws"
 	@aws cloudformation deploy \
 		--template-file deploy.out.yml \
 		--capabilities CAPABILITY_IAM \
@@ -77,14 +77,14 @@ deploy:
 .PHONY: deploy
 
 upload-buildkite-project:
-	@echo "upload the buildkite codebuild sources to s3"
+	@echo "--- upload the buildkite codebuild sources to s3"
 	@zip -j -9 -r ./buildkite.zip codebuild-template/buildspec.yml
 	@aws cloudformation describe-stacks --stack-name $(APPNAME)-$(ENV)-$(ENV_NO) --query 'Stacks[0].Outputs[?OutputKey==`SourceBucket`].OutputValue' --output text | \
 		xargs -I{} -n1 aws s3 cp ./buildkite.zip s3://{}
 .PHONY: upload-buildkite-project
 
 deploy-deployer-project:
-	@echo "deploy deployer codebuild project into aws"
+	@echo "--- deploy deployer codebuild project into aws"
 	@aws cloudformation deploy \
 		--template-file examples/codebuild-project.yaml \
 		--capabilities CAPABILITY_IAM \
@@ -94,7 +94,7 @@ deploy-deployer-project:
 .PHONY: deploy-deployer-project
 
 upload-deployer-project:
-	@echo "upload the deployer codebuild sources to s3"
+	@echo "--- upload the deployer codebuild sources to s3"
 	@zip -j -9 -r ./buildkite-deployer.zip codebuild-template/buildspec.yml
 	@aws cloudformation describe-stacks --stack-name $(APPNAME)-$(ENV)-$(ENV_NO) --query 'Stacks[0].Outputs[?OutputKey==`SourceBucket`].OutputValue' --output text | \
 		xargs -I{} -n1 aws s3 cp ./buildkite-deployer.zip s3://{}
