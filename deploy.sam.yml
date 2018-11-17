@@ -448,6 +448,6 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
   BuildkiteProjectECR:
-    Value: !Ref BuildkiteProjectECR
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${BuildkiteProjectECR}"
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProjectECR"      
