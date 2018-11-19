@@ -4,8 +4,10 @@ Transform: AWS::Serverless-2016-10-31
 Parameters:
     EnvironmentName:
       Type: String
+      Default: "dev"
     EnvironmentNumber:
       Type: String
+      Default: "1"
     AgentPoolSize:
       Type: Number
       Default: 5
@@ -17,23 +19,6 @@ Resources:
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
-
-  BuildkiteProjectECR:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryPolicyText:
-        Version: "2012-10-17"
-        Statement:
-          -
-            Sid: AllowPull
-            Effect: Allow
-            Principal:
-              AWS:
-                - !GetAtt BuildkiteCodeBuildRole.Arn
-            Action:
-              - "ecr:GetDownloadUrlForLayer"
-              - "ecr:BatchGetImage"
-              - "ecr:BatchCheckLayerAvailability"
 
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
@@ -114,9 +99,13 @@ Resources:
           - Effect: Allow
             Action:
             - s3:ListBucket
-            - s3:PutObject
             - s3:GetObject
             - s3:GetObjectVersion
+            - s3:GetObjectAcl
+            - s3:GetObjectVersion
+            - s3:PutObject
+            - s3:PutObjectAcl
+            - s3:PutObjectVersionAcl
             Resource:
             - !Sub "arn:aws:s3:::${ArtifactBucket}/*"
             - !Sub "arn:aws:s3:::${ArtifactBucket}"
@@ -447,7 +436,3 @@ Outputs:
     Value: !Ref BuildkiteProject
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
-  BuildkiteProjectECR:
-    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${BuildkiteProjectECR}"
-    Export:
-      Name: !Sub "${AWS::StackName}-BuildkiteProjectECR"      
