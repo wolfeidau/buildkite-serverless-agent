@@ -9,11 +9,47 @@ The aim of this stack is:
 3. Give the build container least privilege access to AWS
 4. Cheap to run for small number of short (less than 5 minute) builds spread throughout the day
 
-# disclaimer
+# Deployment
 
-This project is **not** currently supported by buildkite, I built this as an experiment and currently it works really well for me. The buildkite team has been super supportive in my endeavour so a big thanks goes to them.
+You can now deploy buildkite serverless agent in a few commands, and a click using []() by going to this link [buildkite-serverless-agent](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:170889777468:applications~buildkite-serverless-agent) and following the instructions to load your SSH key, and Buildkite Agent Key into [SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html).
 
-# prerequisites
+# Before you Start
+
+To run the buildkite agent, we first need:
+
+1. An [AWS](https://aws.amazon.com) Account
+2. A [buildkite](https://buildkite.com/) Account
+3. A [Github](https://github.com) Machine Account
+
+Once signed up we need to upload some keys to amazon so the buildkite serverless agent can connect to github, and the buildkite service.
+
+1. This will upload your agent SSH key into SSM and store it encrypted, this is used to clone source code from git. For more information on setting up github see [GitHub SSH Keys](https://buildkite.com/docs/agent/v3/github-ssh-keys).
+
+```
+aws ssm put-parameter --name '/dev/1/buildkite-ssh-key' --value 'file://~/temp/id_rsa-testci' --type SecureString
+```
+
+2. This will upload your buildkite agent key into SSM, and store it encrypted.
+
+```
+aws ssm put-parameter --name '/dev/1/buildkite-agent-key' --value 'xxxxx' --type SecureString
+```
+
+3. Then deploy the serverless application.
+
+**Note:** These values need to be uploaded to the same region as your serverless application.
+
+# Conventions
+
+Throughout the code you will see reference to environments, this convention enables you to run a group of dependent components which are linked together based on:
+
+* `EnvironmentName` Name of the environment could be dev, test or prod. 
+* `EnvironmentNumber` Number for the environment, Typically 1 - n.
+
+The other convention used is the linking of cloudformation stacks by passing in the name of a stack, rather than nesting or the like. This takes advantage of imports / exports, which you can read about at [Exporting Stack Output Values
+](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) 
+
+# development
 
 Before you start you need.
 
@@ -24,33 +60,7 @@ Before you start you need.
 5. [golang](https://golang.org) to build the lambda projects.
 6. This project cloned into your `$GOPATH` at `src/github.com/wolfeidau/buildkite-serverless-agent`
 
-# conventions
-
-Throughout the code you will see reference to environments, this convention enables you to run a group of dependent components which are linked together based on:
-
-* `EnvironmentName` Name of the environment could be dev, test or prod. 
-* `EnvironmentNumber` Number for the environment, Typically 1 - n.
-
-The other convention used is the linking of cloudformation stacks by passing in the name of a stack, rather than nesting or the like. This takes advantage of imports / exports, which you can read about at [Exporting Stack Output Values
-](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-exports.html) 
-
-# setup
-
-Before we start we need to upload some configuration to amazon for the buildkite agent.
-
 **Note**: You need to configure some environment variables as per the `.envrc.example`.
-
-* This will import your agent SSH key (used to clone code from github/bitbucket/gitlab) into SSM and store it encrypted.
-
-```
-aws ssm put-parameter --name '/dev/1/buildkite-ssh-key' --value 'file://~/temp/id_rsa-testci' --type SecureString
-```
-
-* This will import your buildkite agent key into SSM and store it encrypted.
-
-```
-aws ssm put-parameter --name '/dev/1/buildkite-agent-key' --value 'xxxxx' --type SecureString
-```
 
 Then build and deploy all the serverless components.
 
@@ -66,7 +76,7 @@ This makefile will Launch a stack which deploys:
 
 It also uploads the buildkite codebuild project which runs the `buildkite-agent bootstrap` process in codebuild. This is done by uploading a zip file named `buildkite.zip` to the S3 bucket created as a part of the buildkite codebuild project cloudformation. The template for this zip file is located at `codebuild-template`.
 
-# usage
+# Usage
 
 There are a few overrides which can be added to your pipeline configuration in the buildkite site, these use env variables.
 
@@ -74,7 +84,7 @@ There are a few overrides which can be added to your pipeline configuration in t
 * `CB_COMPUTE_TYPE_OVERRIDE` Override the compute type, options are `BUILD_GENERAL1_SMALL | BUILD_GENERAL1_MEDIUM | BUILD_GENERAL1_LARGE`. 
 * `CB_PRIVILEGED_MODE_OVERRIDE` Override whether or not privileged mode is enabled.
 
-# codebuild job monitor step functions
+# Codebuild job monitor step functions
 
 To enable monitoring of the codebuild job which could run for a few minutes I am using AWS step functions, this workflow is illustrated in the following image.
 
@@ -90,14 +100,14 @@ Note: This function uses `STEP_HANDLER` environment variable to dispatch to the 
 
 ![codebuild job monitor](docs/images/stepfunction.png)
 
-# todo
+# Todo
 
 Still lots of things to tidy up:
 
 - [x] Secure all the lambda functions IAM profiles
 - [X] Testing
 - [x] Combine all the templates into one deployable unit
-- [ ] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
+- [x] Ensure all the step function lambdas are idempotent as they WILL retry at the moment.
 - [ ] Currently only uploading 1MB of logs per 10 seconds, need to tune this and refactor the last upload to correctly flush the remaining data.
 - [X] Sort out versioning of the project and build files.
 - [X] Support canceled builds.
@@ -108,10 +118,10 @@ Some notes / suggestions for the buildkite team:
 * Draw a diagram of agent call flow and timeouts related
 * Document the currently internal API from the agent project
 
-# authors
+# Authors
 
 * Mark Wolfe [@wolfeidau](https://twitter.com/wolfeidau)
 
-# license
+# License
 
 This project is released under Apache 2.0 License.
