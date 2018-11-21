@@ -18,6 +18,9 @@ func main() {
 	log.SetFormatter(&log.JSONFormatter{
 		DisableTimestamp: true,
 	})
+
+	log.WithField("version", bk.Version).Info("step-handler starting")
+
 	ssmcache.SetDefaultExpiry(5 * time.Minute)
 
 	cfg, err := config.New()
