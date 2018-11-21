@@ -24,20 +24,34 @@ func NewBuildkiteWorker(agentPool *AgentPool) *BuildkiteWorker {
 func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchEvent) error {
 	logrus.Info("Poll agents")
 
+	deadline, _ := ctx.Deadline()
+	deadline = deadline.Add(-3 * time.Second)
+	timeoutChannel := time.After(time.Until(deadline))
+
+	logrus.WithField("deadline", deadline).Info("Poll agents deadline")
+
+LOOP:
+
 	// loop until we are out of time, which is in our case is 60 seconds
 	for {
-		remaining := time.Now().Sub(evt.Time)
 
-		if remaining > 50*time.Second {
+		select {
+
+		case <-timeoutChannel:
+
 			logrus.Info("Poll agents finished")
-			break
-		}
-		err := bkw.agentPool.PollAgents()
-		if err != nil {
-			logrus.WithError(err).Error("failed to poll")
+			break LOOP
+
+		default:
+
+			err := bkw.agentPool.PollAgents()
+			if err != nil {
+				logrus.WithError(err).Error("failed to poll")
+			}
+
+			time.Sleep(2 * time.Second)
 		}
 
-		time.Sleep(2 * time.Second)
 	}
 
 	return nil
