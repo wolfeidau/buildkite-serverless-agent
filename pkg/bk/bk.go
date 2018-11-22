@@ -14,17 +14,19 @@ const (
 	// DefaultAPIEndpoint default api endpoint
 	DefaultAPIEndpoint = "https://agent.buildkite.com/v3"
 
-	// Version the serverless agent version
-	Version = "1.0.0"
-
-	// BuildVersion the serverless agent version
-	BuildVersion = "1.0.0"
-
 	// MaxAgentConcurrentJobs jobs which can be run per agent instance
 	MaxAgentConcurrentJobs = 1
 
 	// DefaultAgentNamePrefix serverless agent name prefix used when registering the agent
 	DefaultAgentNamePrefix = "serverless-agent"
+)
+
+var (
+	// Version the serverless agent version
+	Version = "dev"
+
+	// BuildVersion the serverless agent version
+	BuildVersion = "dev"
 )
 
 // WorkflowData this is information passed along in the step function workflow
