@@ -37,6 +37,12 @@ aws ssm put-parameter --name '/dev/1/buildkite-agent-key' --value 'xxxxx' --type
 
 3. Then deploy the serverless application.
 
+4. Download the buildkite-deployer.zip from the [releases](https://github.com/wolfeidau/buildkite-serverless-agent/releases) page and upload this to your `SourceBucket`. The bucket name is in the Outputs to the CFN stack deployed in your account.
+
+```
+aws s3 cp ./buildkite-deployer.zip s3://[[ insert SourceBucket name ]]
+```
+
 **Note:** These values need to be uploaded to the same region as your serverless application.
 
 # Conventions
