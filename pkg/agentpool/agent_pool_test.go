@@ -2,9 +2,9 @@ package agentpool
 
 import (
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws/session"
-
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/mock"
@@ -118,7 +118,7 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 
 			buildkiteAPI.On(tt.apiMock.method, tt.apiMock.arguments...).Return(tt.apiMock.returnArguments...)
 
-			err := ap.RegisterAgents()
+			err := ap.RegisterAgents(time.Now().Add(30 * time.Second))
 			if (err != nil) != tt.wantErr {
 				require.Error(t, err)
 			}
@@ -209,7 +209,7 @@ func TestAgentPool_PollAgents(t *testing.T) {
 
 			executor.On("RunningForAgent", "serverless-agent-dev-1_0").Return(0, nil)
 
-			err := ap.PollAgents()
+			err := ap.PollAgents(time.Now().Add(30 * time.Second))
 			if (err != nil) != tt.wantErr {
 				require.Error(t, err)
 			}
