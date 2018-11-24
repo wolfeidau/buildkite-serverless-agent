@@ -22,13 +22,12 @@ func NewBuildkiteWorker(agentPool *AgentPool) *BuildkiteWorker {
 
 // Handler process the cloudwatch scheduled event
 func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchEvent) error {
-	logrus.Info("Poll agents")
 
 	deadline, _ := ctx.Deadline()
 	deadline = deadline.Add(-3 * time.Second)
 	timeoutChannel := time.After(time.Until(deadline))
 
-	logrus.WithField("deadline", deadline).Info("Poll agents deadline")
+	logrus.WithField("deadline", deadline).Info("Polling agents")
 
 LOOP:
 

@@ -116,6 +116,7 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 
 	buildID := aws.StringValue(startResult.Build.Id)
 	buildStatus := aws.StringValue(startResult.Build.BuildStatus)
+	buildProjectName := aws.StringValue(startResult.Build.ProjectName)
 
 	logger.WithFields(
 		logrus.Fields{
@@ -129,7 +130,7 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 	evt.WaitTime = 10
 	evt.CodeBuildProjectName = aws.StringValue(startResult.Build.ProjectName)
 
-	msg := fmt.Sprintf("--- Start a job in codebuild\nbuild_id=%s\nbuild_status=%s\n", buildID,	buildStatus)
+	msg := fmt.Sprintf("--- Start a job in codebuild\nbuild_project=%s\nbuild_id=%s\nbuild_status=%s\n", buildProjectName, buildID,	buildStatus)
 
 	_, err = client.Chunks.Upload(evt.Job.ID, &api.Chunk{
 		Data:     msg,
