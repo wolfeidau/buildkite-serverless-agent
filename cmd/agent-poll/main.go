@@ -32,7 +32,11 @@ func main() {
 
 	agentPool := agentpool.New(cfg, sess, bk.NewAgentAPI())
 
-	err = agentPool.RegisterAgents()
+	// configure a 30 second deadline for the register operation just to make sure
+	// this doesn't timeout or block. I have added this to ensure changes to the 30 second deadline
+	// in the buildkite http client don't impact this service.
+	deadline := time.Now().Add(30 * time.Second)
+	err = agentPool.RegisterAgents(deadline)
 	if err != nil {
 		log.WithError(err).Fatal("failed to register agents")
 	}

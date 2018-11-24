@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // BuildkiteWorker handler for lambda events
@@ -27,7 +27,7 @@ func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchE
 	deadline = deadline.Add(-3 * time.Second)
 	timeoutChannel := time.After(time.Until(deadline))
 
-	logrus.WithField("deadline", deadline).Info("Polling agents")
+	log.WithField("deadline", deadline).Info("Polling agents")
 
 LOOP:
 
@@ -38,17 +38,20 @@ LOOP:
 
 		case <-timeoutChannel:
 
-			logrus.Info("Poll agents finished")
+			log.Info("Poll agents finished")
 			break LOOP
 
 		default:
 
-			err := bkw.agentPool.PollAgents()
+			err := bkw.agentPool.PollAgents(deadline)
 			if err != nil {
-				logrus.WithError(err).Error("failed to poll")
+				log.WithError(err).Error("failed to poll")
 			}
 
-			time.Sleep(2 * time.Second)
+			// is the current time before the deadline, if not skip the sleep
+			if time.Now().Before(deadline) {
+				time.Sleep(2 * time.Second)
+			}
 		}
 
 	}

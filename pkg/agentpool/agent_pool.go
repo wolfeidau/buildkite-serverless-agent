@@ -3,6 +3,7 @@ package agentpool
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/pkg/errors"
@@ -71,15 +72,15 @@ func New(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *AgentP
 }
 
 // RegisterAgents register all the agents in the pool
-func (ap *AgentPool) RegisterAgents() error {
+func (ap *AgentPool) RegisterAgents(deadline time.Time) error {
 	resultsChan := dispatchAgentTasks(ap.Agents, ap.asyncRegister)
-	return processResults(ap.Agents, resultsChan)
+	return processResults(ap.Agents, deadline, resultsChan)
 }
 
 // PollAgents send a heartbeat to all the agents in the pool then check for jobs using ping
-func (ap *AgentPool) PollAgents() error {
+func (ap *AgentPool) PollAgents(deadline time.Time) error {
 	resultsChan := dispatchAgentTasks(ap.Agents, ap.asyncPoll)
-	return processResults(ap.Agents, resultsChan)
+	return processResults(ap.Agents, deadline, resultsChan)
 }
 
 func dispatchAgentTasks(agents []*AgentInstance, action ActionFunc) chan *AgentResult {
@@ -92,12 +93,18 @@ func dispatchAgentTasks(agents []*AgentInstance, action ActionFunc) chan *AgentR
 	return resultsChan
 }
 
-func processResults(agents []*AgentInstance, resultsChan chan *AgentResult) error {
+func processResults(agents []*AgentInstance, deadline time.Time, resultsChan chan *AgentResult) error {
 
-	for _ = range agents {
-		result := <-resultsChan
-		if result.Error != nil {
-			return result.Error
+	timeoutChannel := time.After(time.Until(deadline))
+
+	for range agents {
+		select {
+		case <-timeoutChannel:
+			return fmt.Errorf("timed out during API operation")
+		case result := <-resultsChan:
+			if result.Error != nil {
+				return result.Error
+			}
 		}
 	}
 
