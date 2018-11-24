@@ -13,11 +13,10 @@ type measurement struct {
 }
 
 type response struct {
-	Host          string `json:"host"`
-	Method        string `json:"method"`
-	RequestURI    string `json:"uri"`
-	StatusCode    int    `json:"code"`
-	ContentLength int64  `json:"len"`
+	Host       string `json:"host"`
+	Method     string `json:"method"`
+	RequestURI string `json:"uri"`
+	StatusCode int    `json:"statusCode"`
 }
 
 // MeasureSince log a duration metric for a given action
@@ -35,10 +34,9 @@ func ReportAPIResponse(res *api.Response) {
 		path = res.Request.URL.Path
 	}
 	logrus.WithField("res", &response{
-		Host:          res.Request.Host,
-		RequestURI:    path,
-		Method:        res.Request.Method,
-		StatusCode:    res.StatusCode,
-		ContentLength: res.ContentLength,
+		Host:       res.Request.Host,
+		RequestURI: path,
+		Method:     res.Request.Method,
+		StatusCode: res.StatusCode,
 	}).Println("telemetry")
 }

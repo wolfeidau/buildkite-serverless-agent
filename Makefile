@@ -2,7 +2,7 @@ APPNAME ?= bk-serverless-codebuild-agent
 ENV ?= dev
 ENV_NO ?= 1
 
-VERSION := 1.0.0
+VERSION := 1.1.0
 BUILD_VERSION := $(shell git rev-parse --short HEAD)
 GOPKG := $(shell go list -m)
 
