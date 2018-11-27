@@ -13,7 +13,7 @@ LDFLAGS := -ldflags="-s -w -X '$(GOPKG)/pkg/bk.Version=$(VERSION)' -X '$(GOPKG)/
 default: clean lint test build package deploy upload-buildkite-project
 .PHONY: default
 
-ci: setup lint test build
+ci: setup lint test build upload
 .PHONY: ci
 
 setup:
@@ -38,14 +38,20 @@ mocks:
 	mockery -dir pkg/ssmcache --all
 .PHONY: mocks
 
-# build the lambda binary
 build:
 	@echo "--- build all the things"
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o agent-poll ./cmd/agent-poll
 	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o step-handler ./cmd/step-handler
 .PHONY: build
 
-# clean all the things
+upload:
+	@echo "--- upload all the things"
+	@echo "--- upload all the things"
+	@zip -9 -r ./handler.zip agent-poll step-handler
+	@buildkite-agent artifact upload handler.zip
+	@buildkite-agent artifact upload deploy.sam.yml
+.PHONY: upload
+
 clean:
 	@echo "--- clean all the things"
 	@rm -f ./agent-poll
@@ -55,7 +61,6 @@ clean:
 	@rm -f ./deploy.out.yml
 .PHONY: clean
 
-# package up the lambda and upload it to S3
 package:
 	@echo "--- package lambdas into handler.zip"
 	@zip -9 -r ./handler.zip agent-poll step-handler
@@ -67,7 +72,6 @@ package:
 		--s3-prefix sam
 .PHONY: package
 
-# deploy the lambda
 deploy:
 	@echo "--- deploy lambdas into aws"
 	@aws cloudformation deploy \
