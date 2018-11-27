@@ -6,6 +6,9 @@ steps:
       CB_COMPUTE_TYPE_OVERRIDE: "BUILD_GENERAL1_SMALL"
       CB_PRIVILEGED_MODE_OVERRIDE: "true"
       GO111MODULE: "on"
+      BUILDKITE_ARTIFACT_UPLOAD_DESTINATION: "s3://bk-serverless-codebuild-agent-dev-artifactbucket-14w0qzatat56i/$BUILDKITE_PIPELINE_SLUG/$BUILDKITE_JOB_ID"
+      BUILDKITE_S3_DEFAULT_REGION: ap-southeast-2
+      BUILDKITE_S3_ACL: "private"
     agents:
       queue: dev
       serverless: true

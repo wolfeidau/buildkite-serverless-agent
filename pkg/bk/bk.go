@@ -1,6 +1,7 @@
 package bk
 
 import (
+	"fmt"
 	"runtime"
 	"time"
 
@@ -63,7 +64,7 @@ func NewAgentAPI() *AgentAPI {
 func (ab *AgentAPI) Register(agentName string, agentKey string, tags []string) (*api.Agent, error) {
 	defer telemetry.MeasureSince("register", time.Now())
 
-	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client := newAgent(agentKey)
 
 	agentConfig, res, err := client.Agents.Register(&api.Agent{
 		Name: agentName,
@@ -86,7 +87,7 @@ func (ab *AgentAPI) Register(agentName string, agentKey string, tags []string) (
 func (ab *AgentAPI) Beat(agentKey string) (*api.Heartbeat, error) {
 	defer telemetry.MeasureSince("beat", time.Now())
 
-	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client := newAgent(agentKey)
 
 	heartbeat, res, err := client.Heartbeats.Beat()
 	if err != nil {
@@ -101,7 +102,7 @@ func (ab *AgentAPI) Beat(agentKey string) (*api.Heartbeat, error) {
 func (ab *AgentAPI) Ping(agentKey string) (*api.Ping, error) {
 	defer telemetry.MeasureSince("ping", time.Now())
 
-	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client := newAgent(agentKey)
 
 	ping, res, err := client.Pings.Get()
 	if err != nil {
@@ -116,7 +117,7 @@ func (ab *AgentAPI) Ping(agentKey string) (*api.Ping, error) {
 func (ab *AgentAPI) AcceptJob(agentKey string, job *api.Job) (*api.Job, error) {
 	defer telemetry.MeasureSince("acceptjob", time.Now())
 
-	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client := newAgent(agentKey)
 
 	job, res, err := client.Jobs.Accept(job)
 	if err != nil {
@@ -125,4 +126,12 @@ func (ab *AgentAPI) AcceptJob(agentKey string, job *api.Job) (*api.Job, error) {
 	defer telemetry.ReportAPIResponse(res)
 
 	return job, nil
+}
+
+// enables overriding of the user agent to ensure this agent is recongised as a 
+// seperate project.
+func newAgent(agentKey string) *api.Client {
+	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client.UserAgent = fmt.Sprintf("buildkite-serverless-agent/%s_%s (%s; %s)", Version, BuildVersion, runtime.GOOS, runtime.GOARCH)
+	return client
 }
