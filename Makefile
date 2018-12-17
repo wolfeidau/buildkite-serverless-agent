@@ -1,6 +1,7 @@
 APPNAME ?= bk-serverless-codebuild-agent
 ENV ?= dev
 ENV_NO ?= 1
+DEPLOYER_NAME ?= default
 
 VERSION := 1.1.0
 BUILD_VERSION := $(shell git rev-parse --short HEAD)
@@ -93,8 +94,8 @@ deploy-deployer-project:
 	@aws cloudformation deploy \
 		--template-file examples/codebuild-project.yaml \
 		--capabilities CAPABILITY_IAM \
-		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO)-deployer-project \
-		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) Name=deployer \
+		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO)-deployer-$(DEPLOYER_NAME) \
+		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) Name=$(DEPLOYER_NAME) \
 			BuildkiteAgentPeerStack=$(APPNAME)-$(ENV)-$(ENV_NO) SourceName=buildkite-deployer.zip
 .PHONY: deploy-deployer-project
 
