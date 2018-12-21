@@ -1,13 +1,13 @@
 package ssmcache
 
 import (
-	"time"
 	"testing"
+	"time"
 
-	"github.com/stretchr/testify/require"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/ssm"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 )
 
@@ -15,27 +15,23 @@ func TestGetKey(t *testing.T) {
 
 	ssmMock := &mocks.SSMAPI{}
 
-	modDate := aws.Time(time.Now())
-	
 	gpo := &ssm.GetParameterOutput{
 		Parameter: &ssm.Parameter{
-			Name:  aws.String("testtest"),
-			Value: aws.String("sup"),
-			LastModifiedDate: modDate,
+			Name:    aws.String("testtest"),
+			Value:   aws.String("sup"),
+			Version: aws.Int64(1),
 		},
 	}
 
 	ssmMock.On("GetParameter", mock.AnythingOfType("*ssm.GetParameterInput")).Return(gpo, nil)
 
-	dpo := &ssm.DescribeParametersOutput{
-		Parameters: []*ssm.ParameterMetadata {
-			&ssm.ParameterMetadata{
-				LastModifiedDate: modDate,
-			},
+	dpo := &ssm.GetParameterOutput{
+		Parameter: &ssm.Parameter{
+			Version: aws.Int64(1),
 		},
 	}
 
-	ssmMock.On("DescribeParameters", mock.AnythingOfType("*ssm.DescribeParametersInput")).Return(dpo, nil)
+	ssmMock.On("GetParameter", mock.AnythingOfType("*ssm.GetParameterInput")).Return(dpo, nil)
 
 	cache := &cache{
 		ssmSvc:    ssmMock,
@@ -60,10 +56,9 @@ func TestGetKey(t *testing.T) {
 	ssmMock.Calls = []mock.Call{}
 	time.Sleep(1 * time.Second)
 
-	// simulate an update of key where a subsequent change ot the parameter will 
+	// simulate an update of key where a subsequent change ot the parameter will
 	// trigger retrieval from SSM
-	gpo.Parameter.LastModifiedDate = aws.Time(time.Now())
-	dpo.Parameters[0].LastModifiedDate = aws.Time(time.Now())
+	gpo.Parameter.Version = aws.Int64(2)
 	val, err = cache.GetKey("testtest", true)
 	require.Nil(t, err)
 	require.Equal(t, "sup", val)
