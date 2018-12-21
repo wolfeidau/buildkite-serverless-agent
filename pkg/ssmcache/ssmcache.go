@@ -4,12 +4,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sirupsen/logrus"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ssm"
 	"github.com/aws/aws-sdk-go/service/ssm/ssmiface"
 	"github.com/pkg/errors"
+	"github.com/sirupsen/logrus"
 )
 
 var defaultExpiry = 30 * time.Second
@@ -23,9 +23,9 @@ func SetDefaultExpiry(expires time.Duration) {
 
 // Entry an SSM entry in the cache
 type Entry struct {
-	value        string
-	expires      time.Time
-	lastModified time.Time
+	value       string
+	expires     time.Time
+	lastVersion int64
 }
 
 // Cache SSM cache which provides read access to parameters
@@ -104,9 +104,9 @@ func (ssc *cache) updateParam(key string, encrypted bool) (string, error) {
 		// value and avoid another decryption call which costs money.
 		modified, err := ssc.parameterModified(key)
 		if err != nil {
-			return "", errors.Wrapf(err, "failed to describe parameter key %s in ssm", key)
+			return "", errors.Wrapf(err, "failed to get parameter key %s in ssm", key)
 		}
-	
+
 		if !modified {
 			logrus.Info("skipping refresh returning unmodified value")
 			ssc.ssmValues[key].expires = time.Now().Add(defaultExpiry)
@@ -123,9 +123,9 @@ func (ssc *cache) updateParam(key string, encrypted bool) (string, error) {
 	}
 
 	ssc.ssmValues[key] = &Entry{
-		value:        aws.StringValue(resp.Parameter.Value),
-		expires:      time.Now().Add(defaultExpiry), // reset the expiry
-		lastModified: aws.TimeValue(resp.Parameter.LastModifiedDate),
+		value:       aws.StringValue(resp.Parameter.Value),
+		expires:     time.Now().Add(defaultExpiry), // reset the expiry
+		lastVersion: aws.Int64Value(resp.Parameter.Version),
 	}
 
 	logrus.Println("key value refreshed from ssm at:", time.Now())
@@ -134,28 +134,19 @@ func (ssc *cache) updateParam(key string, encrypted bool) (string, error) {
 }
 
 func (ssc *cache) parameterModified(key string) (bool, error) {
-	desc, err := ssc.ssmSvc.DescribeParameters(&ssm.DescribeParametersInput{
-		Filters: []*ssm.ParametersFilter{
-			{
-				Key:    aws.String("Name"),
-				Values: []*string{aws.String(key)},
-			},
-		},
+	desc, err := ssc.ssmSvc.GetParameter(&ssm.GetParameterInput{
+		Name: aws.String(key),
 	})
 	if err != nil {
 		return false, err
 	}
 
-	if len(desc.Parameters) != 1 {
-		return false, errors.Errorf("parameter not found: %s", key)
-	}
-
 	logrus.WithFields(logrus.Fields{
-		"param": aws.TimeValue(desc.Parameters[0].LastModifiedDate),
-		"cache": ssc.ssmValues[key].lastModified,
+		"param": aws.TimeValue(desc.Parameter.LastModifiedDate),
+		"cache": ssc.ssmValues[key].lastVersion,
 	}).Info("check LastModified")
 
 	// check if the parameter has been modified recently, if not we can just return the existing
 	// value and avoid another decryption call which costs money.
-	return aws.TimeValue(desc.Parameters[0].LastModifiedDate).After(ssc.ssmValues[key].lastModified), nil
+	return aws.Int64Value(desc.Parameter.Version) > ssc.ssmValues[key].lastVersion, nil
 }
