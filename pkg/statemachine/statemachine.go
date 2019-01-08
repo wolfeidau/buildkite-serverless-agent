@@ -15,6 +15,13 @@ import (
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
 
+// MaxPipelineSlugLength Maximum characters to take from the pipeline slug value before it is truncated
+const MaxPipelineSlugLength = 32
+const MaxAgentNameLength = 28
+
+// used to inject a static time for testing
+var nowFunc = time.Now
+
 // Executor run background jobs to track a build job
 type Executor interface {
 	RunningForAgent(agentName string) (int, error)
@@ -69,12 +76,19 @@ func (sfne *SFNExecutor) StartExecution(agentName string, job *api.Job, jsonData
 
 	pipelineSlug := job.Env["BUILDKITE_PIPELINE_SLUG"]
 
-	// first 60 characters of the pipeline slug
-	if len(pipelineSlug) > 60 {
-		pipelineSlug = pipelineSlug[0:60]
+	// ppc-ping-stack-pipeline-deploy-s_serverless-agent-sandpit-1_2_2019-01-04T003421Z
+
+	// truncate the pipeline slug if longer than MaxPipelineSlugLength
+	if len(pipelineSlug) > MaxPipelineSlugLength {
+		pipelineSlug = pipelineSlug[0:MaxPipelineSlugLength]
 	}
 
-	execName := fmt.Sprintf("%s_%s_%s", pipelineSlug, agentName, time.Now().Format("2006-01-02T150405Z"))
+	// truncate the agent name if longer than MaxAgentNameLength
+	if len(agentName) > MaxAgentNameLength {
+		agentName = agentName[0:MaxAgentNameLength]
+	}
+
+	execName := fmt.Sprintf("%s_%s_%s", pipelineSlug, agentName, nowFunc().Format("2006-01-02T150405Z"))
 
 	execResult, err := sfne.sfnSvc.StartExecution(&sfn.StartExecutionInput{
 		StateMachineArn: aws.String(sfne.cfg.SfnCodebuildJobMonitorArn),

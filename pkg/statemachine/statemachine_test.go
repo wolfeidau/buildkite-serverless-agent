@@ -2,6 +2,7 @@ package statemachine
 
 import (
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/sfn"
@@ -103,6 +104,12 @@ func TestSFNExecutor_RunningForAgent(t *testing.T) {
 }
 
 func TestSFNExecutor_StartExecution(t *testing.T) {
+
+	nowFunc = func() time.Time {
+		dt, _ := time.Parse("2006-01-02T150405Z", "2006-01-02T150405Z")
+		return dt
+	}
+
 	type fields struct {
 		cfg *config.Config
 	}
@@ -137,7 +144,11 @@ func TestSFNExecutor_StartExecution(t *testing.T) {
 			},
 			sfnMock: sfnMock{
 				method:    "StartExecution",
-				arguments: []interface{}{mock.Anything},
+				arguments: []interface{}{&sfn.StartExecutionInput{
+					Input: aws.String(""),
+					Name: aws.String("testingtestingtestingtestingtest_test-agent-dev-1_" + nowFunc().Format("2006-01-02T150405Z")),
+					StateMachineArn: aws.String("test"),
+				}},
 				returnArguments: []interface{}{
 					&sfn.StartExecutionOutput{
 						ExecutionArn: aws.String("test"),
