@@ -130,7 +130,7 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 	evt.WaitTime = 10
 	evt.CodeBuildProjectName = aws.StringValue(startResult.Build.ProjectName)
 
-	msg := fmt.Sprintf("--- Start a job in codebuild\nbuild_project=%s\nbuild_id=%s\nbuild_status=%s\n", buildProjectName, buildID,	buildStatus)
+	msg := fmt.Sprintf("--- Start a job in codebuild\nbuild_project=%s\nbuild_id=%s\nbuild_status=%s\n", buildProjectName, buildID, buildStatus)
 
 	_, err = client.Chunks.Upload(evt.Job.ID, &api.Chunk{
 		Data:     msg,
@@ -138,6 +138,9 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 		Offset:   evt.LogBytes,
 		Size:     len(msg),
 	})
+	if err != nil {
+		return nil, err
+	}
 
 	// increment everything
 	evt.LogSequence++

@@ -19,12 +19,12 @@ ci: setup lint test build upload
 
 setup:
 	@echo "--- setup install deps"
-	@go get -u github.com/mgechev/revive
+	@GO111MODULE=off go get -v -u github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: setup
 
 lint:
 	@echo "--- lint all the things"
-	@$(shell go env GOPATH)/bin/revive -formatter friendly $(SOURCE_FILES)
+	@$(shell go env GOPATH)/bin/golangci-lint run
 .PHONY: lint
 
 test:

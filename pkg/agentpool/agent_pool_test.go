@@ -61,8 +61,7 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 	}
 
 	type fields struct {
-		Agents   []*AgentInstance
-		poolsize int
+		Agents []*AgentInstance
 	}
 	type apiMock struct {
 		method          string
@@ -140,8 +139,7 @@ func TestAgentPool_PollAgents(t *testing.T) {
 	}
 
 	type fields struct {
-		Agents   []*AgentInstance
-		poolsize int
+		Agents []*AgentInstance
 	}
 	type apiMock struct {
 		method          string
