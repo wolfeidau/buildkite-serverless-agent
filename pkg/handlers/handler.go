@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
 	"github.com/buildkite/agent/agent"
 	"github.com/buildkite/agent/api"
+	"github.com/buildkite/agent/logger"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
@@ -125,10 +126,10 @@ func (bkw *BuildkiteSFNWorker) HandlerSubmitJob(ctx context.Context, evt *bk.Wor
 		},
 	).Info("Started build")
 
-	evt.BuildID = aws.StringValue(startResult.Build.Id)
-	evt.BuildStatus = aws.StringValue(startResult.Build.BuildStatus)
+	evt.BuildID = startResult.Build.Id
+	evt.BuildStatus = startResult.Build.BuildStatus
 	evt.WaitTime = 10
-	evt.CodeBuildProjectName = aws.StringValue(startResult.Build.ProjectName)
+	evt.CodeBuildProjectName = startResult.Build.ProjectName
 
 	msg := fmt.Sprintf("--- Start a job in codebuild\nbuild_project=%s\nbuild_id=%s\nbuild_status=%s\n", buildProjectName, buildID, buildStatus)
 
@@ -157,17 +158,17 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 	logrus.WithField("projectName", evt.CodeBuildProjectName).Info("Getting build status")
 
 	res, err := bkw.codebuildSvc.BatchGetBuilds(&codebuild.BatchGetBuildsInput{
-		Ids: []*string{aws.String(evt.BuildID)},
+		Ids: []*string{evt.BuildID},
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to start codebuild job")
 	}
 
 	if len(res.Builds) != 1 {
-		return nil, errors.Errorf("failed to locate build: %s", evt.BuildID)
+		return nil, errors.Errorf("failed to locate build: %s", aws.StringValue(evt.BuildID))
 	}
 
-	evt.BuildStatus = aws.StringValue(res.Builds[0].BuildStatus)
+	evt.BuildStatus = res.Builds[0].BuildStatus
 
 	err = bkw.uploadLogChunks(evt)
 	if err != nil {
@@ -207,12 +208,12 @@ func (bkw *BuildkiteSFNWorker) HandlerCheckJob(ctx context.Context, evt *bk.Work
 			logrus.Fields{
 				"projectName":     evt.CodeBuildProjectName,
 				"id":              evt.BuildID,
-				"CodebuildStatus": aws.StringValue(stopRes.Build.BuildStatus),
+				"CodebuildStatus": stopRes.Build.BuildStatus,
 				"buildkiteStatus": jobStatus.State,
 			},
 		).Info("stopped canceled build")
 
-		evt.BuildStatus = aws.StringValue(stopRes.Build.BuildStatus)
+		evt.BuildStatus = stopRes.Build.BuildStatus
 	}
 
 	return evt, nil
@@ -229,11 +230,11 @@ func (bkw *BuildkiteSFNWorker) HandlerCompletedJob(ctx context.Context, evt *bk.
 	evt.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
 
 	switch evt.BuildStatus {
-	case codebuild.StatusTypeStopped:
+	case aws.String(codebuild.StatusTypeStopped):
 		evt.Job.ExitStatus = "-3"
-	case codebuild.StatusTypeFailed:
+	case aws.String(codebuild.StatusTypeFailed):
 		evt.Job.ExitStatus = "-2"
-	case codebuild.StatusTypeSucceeded:
+	case aws.String(codebuild.StatusTypeSucceeded):
 		evt.Job.ExitStatus = "0"
 	default:
 		logrus.WithField("build_status", evt.BuildStatus).Error("Codebuild Job failed.")
@@ -253,9 +254,14 @@ func (bkw *BuildkiteSFNWorker) HandlerCompletedJob(ctx context.Context, evt *bk.
 
 	logrus.WithField("ID", evt.Job.ID).Info("job completed!")
 
-	err = bkw.uploadLogChunks(evt)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to upload log chunks")
+	// if we created a codebuild job then
+	// upload the logs, otherwise skip this
+	// task
+	if evt.BuildID != nil {
+		err = bkw.uploadLogChunks(evt)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to upload log chunks")
+		}
 	}
 
 	return evt, nil
@@ -268,14 +274,16 @@ func (bkw *BuildkiteSFNWorker) uploadLogChunks(evt *bk.WorkflowData) error {
 		return errors.Wrap(err, "failed to build buildkite client")
 	}
 
+	buildID := aws.StringValue(evt.BuildID)
+
 	logrus.WithFields(logrus.Fields{
-		"BuildID":   evt.BuildID,
+		"BuildID":   buildID,
 		"NextToken": evt.NextToken,
 	}).Info("ReadLogs")
 
 	logsReader := cwlogs.NewCloudwatchLogsReader(bkw.cfg, cloudwatchlogs.New(bkw.sess))
 
-	nextToken, pageData, err := logsReader.ReadLogs(evt.BuildID, evt.NextToken)
+	nextToken, pageData, err := logsReader.ReadLogs(buildID, evt.NextToken)
 	if err != nil {
 		return errors.Wrap(err, "failed to finish job")
 	}
@@ -338,7 +346,8 @@ func (bkw *BuildkiteSFNWorker) getBKClient(evt *bk.WorkflowData) (*api.Client, *
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "failed to load agent configuration")
 	}
-	return agent.APIClient{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}.Create(), agentConfig, nil
+
+	return agent.NewAPIClient(logger.NewLogger(), agent.APIClientConfig{Endpoint: bk.DefaultAPIEndpoint, Token: agentConfig.AccessToken}), agentConfig, nil
 }
 
 func convertEnvVars(env map[string]string) []*codebuild.EnvironmentVariable {

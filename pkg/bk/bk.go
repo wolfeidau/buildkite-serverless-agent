@@ -7,6 +7,7 @@ import (
 
 	"github.com/buildkite/agent/agent"
 	"github.com/buildkite/agent/api"
+	"github.com/buildkite/agent/logger"
 	"github.com/pkg/errors"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/telemetry"
 )
@@ -33,14 +34,14 @@ var (
 // WorkflowData this is information passed along in the step function workflow
 type WorkflowData struct {
 	Job                  *api.Job `json:"job,omitempty"`
-	BuildID              string   `json:"build_id,omitempty"`
-	BuildStatus          string   `json:"build_status,omitempty"`
+	BuildID              *string  `json:"build_id,omitempty"`
+	BuildStatus          *string  `json:"build_status,omitempty"`
 	WaitTime             int      `json:"wait_time,omitempty"`
 	NextToken            string   `json:"next_token,omitempty"`
 	LogBytes             int      `json:"log_bytes,omitempty"`
 	LogSequence          int      `json:"log_sequence,omitempty"`
 	AgentName            string   `json:"agent_name,omitempty"`
-	CodeBuildProjectName string   `json:"code_build_project_name,omitempty"`
+	CodeBuildProjectName *string  `json:"code_build_project_name,omitempty"`
 }
 
 // API wrap up all the buildkite api operations
@@ -128,10 +129,10 @@ func (ab *AgentAPI) AcceptJob(agentKey string, job *api.Job) (*api.Job, error) {
 	return job, nil
 }
 
-// enables overriding of the user agent to ensure this agent is recongised as a 
+// enables overriding of the user agent to ensure this agent is recongised as a
 // seperate project.
 func newAgent(agentKey string) *api.Client {
-	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()
+	client := agent.NewAPIClient(logger.NewLogger(), agent.APIClientConfig{Endpoint: DefaultAPIEndpoint, Token: agentKey})
 	client.UserAgent = fmt.Sprintf("buildkite-serverless-agent/%s_%s (%s; %s)", Version, BuildVersion, runtime.GOOS, runtime.GOARCH)
 	return client
 }
