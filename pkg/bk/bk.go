@@ -49,6 +49,10 @@ type API interface {
 	Beat(string) (*api.Heartbeat, error)
 	Ping(string) (*api.Ping, error)
 	AcceptJob(string, *api.Job) (*api.Job, error)
+	StartJob(string, *api.Job) error
+	FinishJob(string, *api.Job) error
+	GetStateJob(string, string) (*api.JobState, error)
+	ChunksUpload(string, string, *api.Chunk) error
 }
 
 // AgentAPI wrapper around all the buildkite api operations
@@ -121,14 +125,89 @@ func (ab *AgentAPI) AcceptJob(agentKey string, job *api.Job) (*api.Job, error) {
 
 	job, res, err := client.Jobs.Accept(job)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to send agent ping")
+		return nil, errors.Wrap(err, "failed to accept job")
 	}
 	defer telemetry.ReportAPIResponse(res)
 
 	return job, nil
 }
 
-// enables overriding of the user agent to ensure this agent is recongised as a 
+// StartJob start the job provided by buildkite
+func (ab *AgentAPI) StartJob(agentKey string, job *api.Job) error {
+	defer telemetry.MeasureSince("startjob", time.Now())
+
+	client := newAgent(agentKey)
+
+	res, err := client.Jobs.Start(job)
+	if err != nil {
+		return errors.Wrap(err, "failed to start job")
+	}
+	defer telemetry.ReportAPIResponse(res)
+
+	// we failed to start the job
+	if res.StatusCode > 299 {
+		return errors.Errorf("failed to start job, returned status: %s", res.Status)
+	}
+
+	return nil
+}
+
+// GetStateJob get the state of the job
+func (ab *AgentAPI) GetStateJob(agentKey string, jobID string) (*api.JobState, error) {
+	defer telemetry.MeasureSince("getstatejob", time.Now())
+
+	client := newAgent(agentKey)
+
+	jobState, res, err := client.Jobs.GetState(jobID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get job state")
+	}
+	defer telemetry.ReportAPIResponse(res)
+
+	// we failed to start the job
+	if res.StatusCode > 299 {
+		return nil, errors.Errorf("failed to get job state, returned status: %s", res.Status)
+	}
+
+	return jobState, nil
+}
+
+// ChunksUpload upload chunk of log data
+func (ab *AgentAPI) ChunksUpload(agentKey string, jobID string, chunk *api.Chunk) error {
+	defer telemetry.MeasureSince("chunkUpload", time.Now())
+
+	client := newAgent(agentKey)
+
+	res, err := client.Chunks.Upload(jobID, chunk)
+	if err != nil {
+		return errors.Wrap(err, "failed to upload chunk")
+	}
+	defer telemetry.ReportAPIResponse(res)
+
+	return nil
+}
+
+// FinishJob finish the job provided by buildkite
+func (ab *AgentAPI) FinishJob(agentKey string, job *api.Job) error {
+	defer telemetry.MeasureSince("getstatejob", time.Now())
+
+	client := newAgent(agentKey)
+
+	res, err := client.Jobs.Finish(job)
+	if err != nil {
+		return errors.Wrap(err, "failed to finish job")
+	}
+
+	defer telemetry.ReportAPIResponse(res)
+
+	if res.StatusCode == 422 {
+		return errors.Errorf("Buildkite rejected the call to finish the job (%s)", res.Status)
+	}
+
+	return nil
+}
+
+// enables overriding of the user agent to ensure this agent is recongised as a
 // seperate project.
 func newAgent(agentKey string) *api.Client {
 	client := agent.APIClient{Endpoint: DefaultAPIEndpoint, Token: agentKey}.Create()

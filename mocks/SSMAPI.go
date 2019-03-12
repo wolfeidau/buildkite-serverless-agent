@@ -2,7 +2,7 @@
 
 package mocks
 
-import aws "github.com/aws/aws-sdk-go/aws"
+import context "context"
 import mock "github.com/stretchr/testify/mock"
 import request "github.com/aws/aws-sdk-go/aws/request"
 import ssm "github.com/aws/aws-sdk-go/service/ssm"
@@ -61,7 +61,7 @@ func (_m *SSMAPI) AddTagsToResourceRequest(_a0 *ssm.AddTagsToResourceInput) (*re
 }
 
 // AddTagsToResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) AddTagsToResourceWithContext(_a0 aws.Context, _a1 *ssm.AddTagsToResourceInput, _a2 ...request.Option) (*ssm.AddTagsToResourceOutput, error) {
+func (_m *SSMAPI) AddTagsToResourceWithContext(_a0 context.Context, _a1 *ssm.AddTagsToResourceInput, _a2 ...request.Option) (*ssm.AddTagsToResourceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -72,7 +72,7 @@ func (_m *SSMAPI) AddTagsToResourceWithContext(_a0 aws.Context, _a1 *ssm.AddTags
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.AddTagsToResourceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.AddTagsToResourceInput, ...request.Option) *ssm.AddTagsToResourceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.AddTagsToResourceInput, ...request.Option) *ssm.AddTagsToResourceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -81,7 +81,7 @@ func (_m *SSMAPI) AddTagsToResourceWithContext(_a0 aws.Context, _a1 *ssm.AddTags
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.AddTagsToResourceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.AddTagsToResourceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -139,7 +139,7 @@ func (_m *SSMAPI) CancelCommandRequest(_a0 *ssm.CancelCommandInput) (*request.Re
 }
 
 // CancelCommandWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CancelCommandWithContext(_a0 aws.Context, _a1 *ssm.CancelCommandInput, _a2 ...request.Option) (*ssm.CancelCommandOutput, error) {
+func (_m *SSMAPI) CancelCommandWithContext(_a0 context.Context, _a1 *ssm.CancelCommandInput, _a2 ...request.Option) (*ssm.CancelCommandOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -150,7 +150,7 @@ func (_m *SSMAPI) CancelCommandWithContext(_a0 aws.Context, _a1 *ssm.CancelComma
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CancelCommandOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CancelCommandInput, ...request.Option) *ssm.CancelCommandOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CancelCommandInput, ...request.Option) *ssm.CancelCommandOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -159,7 +159,7 @@ func (_m *SSMAPI) CancelCommandWithContext(_a0 aws.Context, _a1 *ssm.CancelComma
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CancelCommandInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CancelCommandInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -217,7 +217,7 @@ func (_m *SSMAPI) CancelMaintenanceWindowExecutionRequest(_a0 *ssm.CancelMainten
 }
 
 // CancelMaintenanceWindowExecutionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CancelMaintenanceWindowExecutionWithContext(_a0 aws.Context, _a1 *ssm.CancelMaintenanceWindowExecutionInput, _a2 ...request.Option) (*ssm.CancelMaintenanceWindowExecutionOutput, error) {
+func (_m *SSMAPI) CancelMaintenanceWindowExecutionWithContext(_a0 context.Context, _a1 *ssm.CancelMaintenanceWindowExecutionInput, _a2 ...request.Option) (*ssm.CancelMaintenanceWindowExecutionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -228,7 +228,7 @@ func (_m *SSMAPI) CancelMaintenanceWindowExecutionWithContext(_a0 aws.Context, _
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CancelMaintenanceWindowExecutionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CancelMaintenanceWindowExecutionInput, ...request.Option) *ssm.CancelMaintenanceWindowExecutionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CancelMaintenanceWindowExecutionInput, ...request.Option) *ssm.CancelMaintenanceWindowExecutionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -237,7 +237,7 @@ func (_m *SSMAPI) CancelMaintenanceWindowExecutionWithContext(_a0 aws.Context, _
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CancelMaintenanceWindowExecutionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CancelMaintenanceWindowExecutionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -295,7 +295,7 @@ func (_m *SSMAPI) CreateActivationRequest(_a0 *ssm.CreateActivationInput) (*requ
 }
 
 // CreateActivationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateActivationWithContext(_a0 aws.Context, _a1 *ssm.CreateActivationInput, _a2 ...request.Option) (*ssm.CreateActivationOutput, error) {
+func (_m *SSMAPI) CreateActivationWithContext(_a0 context.Context, _a1 *ssm.CreateActivationInput, _a2 ...request.Option) (*ssm.CreateActivationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -306,7 +306,7 @@ func (_m *SSMAPI) CreateActivationWithContext(_a0 aws.Context, _a1 *ssm.CreateAc
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateActivationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateActivationInput, ...request.Option) *ssm.CreateActivationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateActivationInput, ...request.Option) *ssm.CreateActivationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -315,7 +315,7 @@ func (_m *SSMAPI) CreateActivationWithContext(_a0 aws.Context, _a1 *ssm.CreateAc
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateActivationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateActivationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -396,7 +396,7 @@ func (_m *SSMAPI) CreateAssociationBatchRequest(_a0 *ssm.CreateAssociationBatchI
 }
 
 // CreateAssociationBatchWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateAssociationBatchWithContext(_a0 aws.Context, _a1 *ssm.CreateAssociationBatchInput, _a2 ...request.Option) (*ssm.CreateAssociationBatchOutput, error) {
+func (_m *SSMAPI) CreateAssociationBatchWithContext(_a0 context.Context, _a1 *ssm.CreateAssociationBatchInput, _a2 ...request.Option) (*ssm.CreateAssociationBatchOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -407,7 +407,7 @@ func (_m *SSMAPI) CreateAssociationBatchWithContext(_a0 aws.Context, _a1 *ssm.Cr
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateAssociationBatchOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateAssociationBatchInput, ...request.Option) *ssm.CreateAssociationBatchOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateAssociationBatchInput, ...request.Option) *ssm.CreateAssociationBatchOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -416,7 +416,7 @@ func (_m *SSMAPI) CreateAssociationBatchWithContext(_a0 aws.Context, _a1 *ssm.Cr
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateAssociationBatchInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateAssociationBatchInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -451,7 +451,7 @@ func (_m *SSMAPI) CreateAssociationRequest(_a0 *ssm.CreateAssociationInput) (*re
 }
 
 // CreateAssociationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateAssociationWithContext(_a0 aws.Context, _a1 *ssm.CreateAssociationInput, _a2 ...request.Option) (*ssm.CreateAssociationOutput, error) {
+func (_m *SSMAPI) CreateAssociationWithContext(_a0 context.Context, _a1 *ssm.CreateAssociationInput, _a2 ...request.Option) (*ssm.CreateAssociationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -462,7 +462,7 @@ func (_m *SSMAPI) CreateAssociationWithContext(_a0 aws.Context, _a1 *ssm.CreateA
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateAssociationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateAssociationInput, ...request.Option) *ssm.CreateAssociationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateAssociationInput, ...request.Option) *ssm.CreateAssociationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -471,7 +471,7 @@ func (_m *SSMAPI) CreateAssociationWithContext(_a0 aws.Context, _a1 *ssm.CreateA
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateAssociationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateAssociationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -529,7 +529,7 @@ func (_m *SSMAPI) CreateDocumentRequest(_a0 *ssm.CreateDocumentInput) (*request.
 }
 
 // CreateDocumentWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateDocumentWithContext(_a0 aws.Context, _a1 *ssm.CreateDocumentInput, _a2 ...request.Option) (*ssm.CreateDocumentOutput, error) {
+func (_m *SSMAPI) CreateDocumentWithContext(_a0 context.Context, _a1 *ssm.CreateDocumentInput, _a2 ...request.Option) (*ssm.CreateDocumentOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -540,7 +540,7 @@ func (_m *SSMAPI) CreateDocumentWithContext(_a0 aws.Context, _a1 *ssm.CreateDocu
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateDocumentOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateDocumentInput, ...request.Option) *ssm.CreateDocumentOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateDocumentInput, ...request.Option) *ssm.CreateDocumentOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -549,7 +549,7 @@ func (_m *SSMAPI) CreateDocumentWithContext(_a0 aws.Context, _a1 *ssm.CreateDocu
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateDocumentInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateDocumentInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -607,7 +607,7 @@ func (_m *SSMAPI) CreateMaintenanceWindowRequest(_a0 *ssm.CreateMaintenanceWindo
 }
 
 // CreateMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.CreateMaintenanceWindowInput, _a2 ...request.Option) (*ssm.CreateMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) CreateMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.CreateMaintenanceWindowInput, _a2 ...request.Option) (*ssm.CreateMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -618,7 +618,7 @@ func (_m *SSMAPI) CreateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.C
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateMaintenanceWindowInput, ...request.Option) *ssm.CreateMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateMaintenanceWindowInput, ...request.Option) *ssm.CreateMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -627,7 +627,7 @@ func (_m *SSMAPI) CreateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.C
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -685,7 +685,7 @@ func (_m *SSMAPI) CreatePatchBaselineRequest(_a0 *ssm.CreatePatchBaselineInput) 
 }
 
 // CreatePatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.CreatePatchBaselineInput, _a2 ...request.Option) (*ssm.CreatePatchBaselineOutput, error) {
+func (_m *SSMAPI) CreatePatchBaselineWithContext(_a0 context.Context, _a1 *ssm.CreatePatchBaselineInput, _a2 ...request.Option) (*ssm.CreatePatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -696,7 +696,7 @@ func (_m *SSMAPI) CreatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Creat
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreatePatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreatePatchBaselineInput, ...request.Option) *ssm.CreatePatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreatePatchBaselineInput, ...request.Option) *ssm.CreatePatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -705,7 +705,7 @@ func (_m *SSMAPI) CreatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Creat
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreatePatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreatePatchBaselineInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -763,7 +763,7 @@ func (_m *SSMAPI) CreateResourceDataSyncRequest(_a0 *ssm.CreateResourceDataSyncI
 }
 
 // CreateResourceDataSyncWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) CreateResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.CreateResourceDataSyncInput, _a2 ...request.Option) (*ssm.CreateResourceDataSyncOutput, error) {
+func (_m *SSMAPI) CreateResourceDataSyncWithContext(_a0 context.Context, _a1 *ssm.CreateResourceDataSyncInput, _a2 ...request.Option) (*ssm.CreateResourceDataSyncOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -774,7 +774,7 @@ func (_m *SSMAPI) CreateResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.Cr
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.CreateResourceDataSyncOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.CreateResourceDataSyncInput, ...request.Option) *ssm.CreateResourceDataSyncOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.CreateResourceDataSyncInput, ...request.Option) *ssm.CreateResourceDataSyncOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -783,7 +783,7 @@ func (_m *SSMAPI) CreateResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.Cr
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.CreateResourceDataSyncInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.CreateResourceDataSyncInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -841,7 +841,7 @@ func (_m *SSMAPI) DeleteActivationRequest(_a0 *ssm.DeleteActivationInput) (*requ
 }
 
 // DeleteActivationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteActivationWithContext(_a0 aws.Context, _a1 *ssm.DeleteActivationInput, _a2 ...request.Option) (*ssm.DeleteActivationOutput, error) {
+func (_m *SSMAPI) DeleteActivationWithContext(_a0 context.Context, _a1 *ssm.DeleteActivationInput, _a2 ...request.Option) (*ssm.DeleteActivationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -852,7 +852,7 @@ func (_m *SSMAPI) DeleteActivationWithContext(_a0 aws.Context, _a1 *ssm.DeleteAc
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteActivationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteActivationInput, ...request.Option) *ssm.DeleteActivationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteActivationInput, ...request.Option) *ssm.DeleteActivationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -861,7 +861,7 @@ func (_m *SSMAPI) DeleteActivationWithContext(_a0 aws.Context, _a1 *ssm.DeleteAc
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteActivationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteActivationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -919,7 +919,7 @@ func (_m *SSMAPI) DeleteAssociationRequest(_a0 *ssm.DeleteAssociationInput) (*re
 }
 
 // DeleteAssociationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteAssociationWithContext(_a0 aws.Context, _a1 *ssm.DeleteAssociationInput, _a2 ...request.Option) (*ssm.DeleteAssociationOutput, error) {
+func (_m *SSMAPI) DeleteAssociationWithContext(_a0 context.Context, _a1 *ssm.DeleteAssociationInput, _a2 ...request.Option) (*ssm.DeleteAssociationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -930,7 +930,7 @@ func (_m *SSMAPI) DeleteAssociationWithContext(_a0 aws.Context, _a1 *ssm.DeleteA
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteAssociationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteAssociationInput, ...request.Option) *ssm.DeleteAssociationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteAssociationInput, ...request.Option) *ssm.DeleteAssociationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -939,7 +939,7 @@ func (_m *SSMAPI) DeleteAssociationWithContext(_a0 aws.Context, _a1 *ssm.DeleteA
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteAssociationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteAssociationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -997,7 +997,7 @@ func (_m *SSMAPI) DeleteDocumentRequest(_a0 *ssm.DeleteDocumentInput) (*request.
 }
 
 // DeleteDocumentWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteDocumentWithContext(_a0 aws.Context, _a1 *ssm.DeleteDocumentInput, _a2 ...request.Option) (*ssm.DeleteDocumentOutput, error) {
+func (_m *SSMAPI) DeleteDocumentWithContext(_a0 context.Context, _a1 *ssm.DeleteDocumentInput, _a2 ...request.Option) (*ssm.DeleteDocumentOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1008,7 +1008,7 @@ func (_m *SSMAPI) DeleteDocumentWithContext(_a0 aws.Context, _a1 *ssm.DeleteDocu
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteDocumentOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteDocumentInput, ...request.Option) *ssm.DeleteDocumentOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteDocumentInput, ...request.Option) *ssm.DeleteDocumentOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1017,7 +1017,7 @@ func (_m *SSMAPI) DeleteDocumentWithContext(_a0 aws.Context, _a1 *ssm.DeleteDocu
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteDocumentInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteDocumentInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1075,7 +1075,7 @@ func (_m *SSMAPI) DeleteInventoryRequest(_a0 *ssm.DeleteInventoryInput) (*reques
 }
 
 // DeleteInventoryWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteInventoryWithContext(_a0 aws.Context, _a1 *ssm.DeleteInventoryInput, _a2 ...request.Option) (*ssm.DeleteInventoryOutput, error) {
+func (_m *SSMAPI) DeleteInventoryWithContext(_a0 context.Context, _a1 *ssm.DeleteInventoryInput, _a2 ...request.Option) (*ssm.DeleteInventoryOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1086,7 +1086,7 @@ func (_m *SSMAPI) DeleteInventoryWithContext(_a0 aws.Context, _a1 *ssm.DeleteInv
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteInventoryOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteInventoryInput, ...request.Option) *ssm.DeleteInventoryOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteInventoryInput, ...request.Option) *ssm.DeleteInventoryOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1095,7 +1095,7 @@ func (_m *SSMAPI) DeleteInventoryWithContext(_a0 aws.Context, _a1 *ssm.DeleteInv
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteInventoryInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteInventoryInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1153,7 +1153,7 @@ func (_m *SSMAPI) DeleteMaintenanceWindowRequest(_a0 *ssm.DeleteMaintenanceWindo
 }
 
 // DeleteMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.DeleteMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeleteMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) DeleteMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.DeleteMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeleteMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1164,7 +1164,7 @@ func (_m *SSMAPI) DeleteMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.D
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteMaintenanceWindowInput, ...request.Option) *ssm.DeleteMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteMaintenanceWindowInput, ...request.Option) *ssm.DeleteMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1173,7 +1173,7 @@ func (_m *SSMAPI) DeleteMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.D
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1231,7 +1231,7 @@ func (_m *SSMAPI) DeleteParameterRequest(_a0 *ssm.DeleteParameterInput) (*reques
 }
 
 // DeleteParameterWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteParameterWithContext(_a0 aws.Context, _a1 *ssm.DeleteParameterInput, _a2 ...request.Option) (*ssm.DeleteParameterOutput, error) {
+func (_m *SSMAPI) DeleteParameterWithContext(_a0 context.Context, _a1 *ssm.DeleteParameterInput, _a2 ...request.Option) (*ssm.DeleteParameterOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1242,7 +1242,7 @@ func (_m *SSMAPI) DeleteParameterWithContext(_a0 aws.Context, _a1 *ssm.DeletePar
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteParameterOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteParameterInput, ...request.Option) *ssm.DeleteParameterOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteParameterInput, ...request.Option) *ssm.DeleteParameterOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1251,7 +1251,7 @@ func (_m *SSMAPI) DeleteParameterWithContext(_a0 aws.Context, _a1 *ssm.DeletePar
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteParameterInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteParameterInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1309,7 +1309,7 @@ func (_m *SSMAPI) DeleteParametersRequest(_a0 *ssm.DeleteParametersInput) (*requ
 }
 
 // DeleteParametersWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteParametersWithContext(_a0 aws.Context, _a1 *ssm.DeleteParametersInput, _a2 ...request.Option) (*ssm.DeleteParametersOutput, error) {
+func (_m *SSMAPI) DeleteParametersWithContext(_a0 context.Context, _a1 *ssm.DeleteParametersInput, _a2 ...request.Option) (*ssm.DeleteParametersOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1320,7 +1320,7 @@ func (_m *SSMAPI) DeleteParametersWithContext(_a0 aws.Context, _a1 *ssm.DeletePa
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteParametersOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteParametersInput, ...request.Option) *ssm.DeleteParametersOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteParametersInput, ...request.Option) *ssm.DeleteParametersOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1329,7 +1329,7 @@ func (_m *SSMAPI) DeleteParametersWithContext(_a0 aws.Context, _a1 *ssm.DeletePa
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteParametersInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteParametersInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1387,7 +1387,7 @@ func (_m *SSMAPI) DeletePatchBaselineRequest(_a0 *ssm.DeletePatchBaselineInput) 
 }
 
 // DeletePatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeletePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.DeletePatchBaselineInput, _a2 ...request.Option) (*ssm.DeletePatchBaselineOutput, error) {
+func (_m *SSMAPI) DeletePatchBaselineWithContext(_a0 context.Context, _a1 *ssm.DeletePatchBaselineInput, _a2 ...request.Option) (*ssm.DeletePatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1398,7 +1398,7 @@ func (_m *SSMAPI) DeletePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Delet
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeletePatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeletePatchBaselineInput, ...request.Option) *ssm.DeletePatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeletePatchBaselineInput, ...request.Option) *ssm.DeletePatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1407,7 +1407,7 @@ func (_m *SSMAPI) DeletePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Delet
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeletePatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeletePatchBaselineInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1465,7 +1465,7 @@ func (_m *SSMAPI) DeleteResourceDataSyncRequest(_a0 *ssm.DeleteResourceDataSyncI
 }
 
 // DeleteResourceDataSyncWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeleteResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.DeleteResourceDataSyncInput, _a2 ...request.Option) (*ssm.DeleteResourceDataSyncOutput, error) {
+func (_m *SSMAPI) DeleteResourceDataSyncWithContext(_a0 context.Context, _a1 *ssm.DeleteResourceDataSyncInput, _a2 ...request.Option) (*ssm.DeleteResourceDataSyncOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1476,7 +1476,7 @@ func (_m *SSMAPI) DeleteResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.De
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeleteResourceDataSyncOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeleteResourceDataSyncInput, ...request.Option) *ssm.DeleteResourceDataSyncOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeleteResourceDataSyncInput, ...request.Option) *ssm.DeleteResourceDataSyncOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1485,7 +1485,7 @@ func (_m *SSMAPI) DeleteResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.De
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeleteResourceDataSyncInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeleteResourceDataSyncInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1543,7 +1543,7 @@ func (_m *SSMAPI) DeregisterManagedInstanceRequest(_a0 *ssm.DeregisterManagedIns
 }
 
 // DeregisterManagedInstanceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeregisterManagedInstanceWithContext(_a0 aws.Context, _a1 *ssm.DeregisterManagedInstanceInput, _a2 ...request.Option) (*ssm.DeregisterManagedInstanceOutput, error) {
+func (_m *SSMAPI) DeregisterManagedInstanceWithContext(_a0 context.Context, _a1 *ssm.DeregisterManagedInstanceInput, _a2 ...request.Option) (*ssm.DeregisterManagedInstanceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1554,7 +1554,7 @@ func (_m *SSMAPI) DeregisterManagedInstanceWithContext(_a0 aws.Context, _a1 *ssm
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeregisterManagedInstanceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeregisterManagedInstanceInput, ...request.Option) *ssm.DeregisterManagedInstanceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeregisterManagedInstanceInput, ...request.Option) *ssm.DeregisterManagedInstanceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1563,7 +1563,7 @@ func (_m *SSMAPI) DeregisterManagedInstanceWithContext(_a0 aws.Context, _a1 *ssm
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeregisterManagedInstanceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeregisterManagedInstanceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1621,7 +1621,7 @@ func (_m *SSMAPI) DeregisterPatchBaselineForPatchGroupRequest(_a0 *ssm.Deregiste
 }
 
 // DeregisterPatchBaselineForPatchGroupWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeregisterPatchBaselineForPatchGroupWithContext(_a0 aws.Context, _a1 *ssm.DeregisterPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.DeregisterPatchBaselineForPatchGroupOutput, error) {
+func (_m *SSMAPI) DeregisterPatchBaselineForPatchGroupWithContext(_a0 context.Context, _a1 *ssm.DeregisterPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.DeregisterPatchBaselineForPatchGroupOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1632,7 +1632,7 @@ func (_m *SSMAPI) DeregisterPatchBaselineForPatchGroupWithContext(_a0 aws.Contex
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeregisterPatchBaselineForPatchGroupOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeregisterPatchBaselineForPatchGroupInput, ...request.Option) *ssm.DeregisterPatchBaselineForPatchGroupOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeregisterPatchBaselineForPatchGroupInput, ...request.Option) *ssm.DeregisterPatchBaselineForPatchGroupOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1641,7 +1641,7 @@ func (_m *SSMAPI) DeregisterPatchBaselineForPatchGroupWithContext(_a0 aws.Contex
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeregisterPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeregisterPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1699,7 +1699,7 @@ func (_m *SSMAPI) DeregisterTargetFromMaintenanceWindowRequest(_a0 *ssm.Deregist
 }
 
 // DeregisterTargetFromMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeregisterTargetFromMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.DeregisterTargetFromMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeregisterTargetFromMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) DeregisterTargetFromMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.DeregisterTargetFromMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeregisterTargetFromMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1710,7 +1710,7 @@ func (_m *SSMAPI) DeregisterTargetFromMaintenanceWindowWithContext(_a0 aws.Conte
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeregisterTargetFromMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeregisterTargetFromMaintenanceWindowInput, ...request.Option) *ssm.DeregisterTargetFromMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeregisterTargetFromMaintenanceWindowInput, ...request.Option) *ssm.DeregisterTargetFromMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1719,7 +1719,7 @@ func (_m *SSMAPI) DeregisterTargetFromMaintenanceWindowWithContext(_a0 aws.Conte
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeregisterTargetFromMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeregisterTargetFromMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1777,7 +1777,7 @@ func (_m *SSMAPI) DeregisterTaskFromMaintenanceWindowRequest(_a0 *ssm.Deregister
 }
 
 // DeregisterTaskFromMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DeregisterTaskFromMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.DeregisterTaskFromMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeregisterTaskFromMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) DeregisterTaskFromMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.DeregisterTaskFromMaintenanceWindowInput, _a2 ...request.Option) (*ssm.DeregisterTaskFromMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1788,7 +1788,7 @@ func (_m *SSMAPI) DeregisterTaskFromMaintenanceWindowWithContext(_a0 aws.Context
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DeregisterTaskFromMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DeregisterTaskFromMaintenanceWindowInput, ...request.Option) *ssm.DeregisterTaskFromMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DeregisterTaskFromMaintenanceWindowInput, ...request.Option) *ssm.DeregisterTaskFromMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1797,7 +1797,7 @@ func (_m *SSMAPI) DeregisterTaskFromMaintenanceWindowWithContext(_a0 aws.Context
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DeregisterTaskFromMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DeregisterTaskFromMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1844,7 +1844,7 @@ func (_m *SSMAPI) DescribeActivationsPages(_a0 *ssm.DescribeActivationsInput, _a
 }
 
 // DescribeActivationsPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) DescribeActivationsPagesWithContext(_a0 aws.Context, _a1 *ssm.DescribeActivationsInput, _a2 func(*ssm.DescribeActivationsOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) DescribeActivationsPagesWithContext(_a0 context.Context, _a1 *ssm.DescribeActivationsInput, _a2 func(*ssm.DescribeActivationsOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -1855,7 +1855,7 @@ func (_m *SSMAPI) DescribeActivationsPagesWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeActivationsInput, func(*ssm.DescribeActivationsOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeActivationsInput, func(*ssm.DescribeActivationsOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -1890,7 +1890,7 @@ func (_m *SSMAPI) DescribeActivationsRequest(_a0 *ssm.DescribeActivationsInput) 
 }
 
 // DescribeActivationsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeActivationsWithContext(_a0 aws.Context, _a1 *ssm.DescribeActivationsInput, _a2 ...request.Option) (*ssm.DescribeActivationsOutput, error) {
+func (_m *SSMAPI) DescribeActivationsWithContext(_a0 context.Context, _a1 *ssm.DescribeActivationsInput, _a2 ...request.Option) (*ssm.DescribeActivationsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -1901,7 +1901,7 @@ func (_m *SSMAPI) DescribeActivationsWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeActivationsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeActivationsInput, ...request.Option) *ssm.DescribeActivationsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeActivationsInput, ...request.Option) *ssm.DescribeActivationsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -1910,7 +1910,7 @@ func (_m *SSMAPI) DescribeActivationsWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeActivationsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeActivationsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -1991,7 +1991,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionTargetsRequest(_a0 *ssm.DescribeAs
 }
 
 // DescribeAssociationExecutionTargetsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAssociationExecutionTargetsWithContext(_a0 aws.Context, _a1 *ssm.DescribeAssociationExecutionTargetsInput, _a2 ...request.Option) (*ssm.DescribeAssociationExecutionTargetsOutput, error) {
+func (_m *SSMAPI) DescribeAssociationExecutionTargetsWithContext(_a0 context.Context, _a1 *ssm.DescribeAssociationExecutionTargetsInput, _a2 ...request.Option) (*ssm.DescribeAssociationExecutionTargetsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2002,7 +2002,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionTargetsWithContext(_a0 aws.Context
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAssociationExecutionTargetsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAssociationExecutionTargetsInput, ...request.Option) *ssm.DescribeAssociationExecutionTargetsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAssociationExecutionTargetsInput, ...request.Option) *ssm.DescribeAssociationExecutionTargetsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2011,7 +2011,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionTargetsWithContext(_a0 aws.Context
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAssociationExecutionTargetsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAssociationExecutionTargetsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2069,7 +2069,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionsRequest(_a0 *ssm.DescribeAssociat
 }
 
 // DescribeAssociationExecutionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAssociationExecutionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeAssociationExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAssociationExecutionsOutput, error) {
+func (_m *SSMAPI) DescribeAssociationExecutionsWithContext(_a0 context.Context, _a1 *ssm.DescribeAssociationExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAssociationExecutionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2080,7 +2080,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionsWithContext(_a0 aws.Context, _a1 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAssociationExecutionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAssociationExecutionsInput, ...request.Option) *ssm.DescribeAssociationExecutionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAssociationExecutionsInput, ...request.Option) *ssm.DescribeAssociationExecutionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2089,7 +2089,7 @@ func (_m *SSMAPI) DescribeAssociationExecutionsWithContext(_a0 aws.Context, _a1 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAssociationExecutionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAssociationExecutionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2124,7 +2124,7 @@ func (_m *SSMAPI) DescribeAssociationRequest(_a0 *ssm.DescribeAssociationInput) 
 }
 
 // DescribeAssociationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAssociationWithContext(_a0 aws.Context, _a1 *ssm.DescribeAssociationInput, _a2 ...request.Option) (*ssm.DescribeAssociationOutput, error) {
+func (_m *SSMAPI) DescribeAssociationWithContext(_a0 context.Context, _a1 *ssm.DescribeAssociationInput, _a2 ...request.Option) (*ssm.DescribeAssociationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2135,7 +2135,7 @@ func (_m *SSMAPI) DescribeAssociationWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAssociationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAssociationInput, ...request.Option) *ssm.DescribeAssociationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAssociationInput, ...request.Option) *ssm.DescribeAssociationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2144,7 +2144,7 @@ func (_m *SSMAPI) DescribeAssociationWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAssociationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAssociationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2202,7 +2202,7 @@ func (_m *SSMAPI) DescribeAutomationExecutionsRequest(_a0 *ssm.DescribeAutomatio
 }
 
 // DescribeAutomationExecutionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAutomationExecutionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeAutomationExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAutomationExecutionsOutput, error) {
+func (_m *SSMAPI) DescribeAutomationExecutionsWithContext(_a0 context.Context, _a1 *ssm.DescribeAutomationExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAutomationExecutionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2213,7 +2213,7 @@ func (_m *SSMAPI) DescribeAutomationExecutionsWithContext(_a0 aws.Context, _a1 *
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAutomationExecutionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAutomationExecutionsInput, ...request.Option) *ssm.DescribeAutomationExecutionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAutomationExecutionsInput, ...request.Option) *ssm.DescribeAutomationExecutionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2222,7 +2222,7 @@ func (_m *SSMAPI) DescribeAutomationExecutionsWithContext(_a0 aws.Context, _a1 *
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAutomationExecutionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAutomationExecutionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2280,7 +2280,7 @@ func (_m *SSMAPI) DescribeAutomationStepExecutionsRequest(_a0 *ssm.DescribeAutom
 }
 
 // DescribeAutomationStepExecutionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAutomationStepExecutionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeAutomationStepExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAutomationStepExecutionsOutput, error) {
+func (_m *SSMAPI) DescribeAutomationStepExecutionsWithContext(_a0 context.Context, _a1 *ssm.DescribeAutomationStepExecutionsInput, _a2 ...request.Option) (*ssm.DescribeAutomationStepExecutionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2291,7 +2291,7 @@ func (_m *SSMAPI) DescribeAutomationStepExecutionsWithContext(_a0 aws.Context, _
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAutomationStepExecutionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAutomationStepExecutionsInput, ...request.Option) *ssm.DescribeAutomationStepExecutionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAutomationStepExecutionsInput, ...request.Option) *ssm.DescribeAutomationStepExecutionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2300,7 +2300,7 @@ func (_m *SSMAPI) DescribeAutomationStepExecutionsWithContext(_a0 aws.Context, _
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAutomationStepExecutionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAutomationStepExecutionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2358,7 +2358,7 @@ func (_m *SSMAPI) DescribeAvailablePatchesRequest(_a0 *ssm.DescribeAvailablePatc
 }
 
 // DescribeAvailablePatchesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeAvailablePatchesWithContext(_a0 aws.Context, _a1 *ssm.DescribeAvailablePatchesInput, _a2 ...request.Option) (*ssm.DescribeAvailablePatchesOutput, error) {
+func (_m *SSMAPI) DescribeAvailablePatchesWithContext(_a0 context.Context, _a1 *ssm.DescribeAvailablePatchesInput, _a2 ...request.Option) (*ssm.DescribeAvailablePatchesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2369,7 +2369,7 @@ func (_m *SSMAPI) DescribeAvailablePatchesWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeAvailablePatchesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeAvailablePatchesInput, ...request.Option) *ssm.DescribeAvailablePatchesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeAvailablePatchesInput, ...request.Option) *ssm.DescribeAvailablePatchesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2378,7 +2378,7 @@ func (_m *SSMAPI) DescribeAvailablePatchesWithContext(_a0 aws.Context, _a1 *ssm.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeAvailablePatchesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeAvailablePatchesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2459,7 +2459,7 @@ func (_m *SSMAPI) DescribeDocumentPermissionRequest(_a0 *ssm.DescribeDocumentPer
 }
 
 // DescribeDocumentPermissionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeDocumentPermissionWithContext(_a0 aws.Context, _a1 *ssm.DescribeDocumentPermissionInput, _a2 ...request.Option) (*ssm.DescribeDocumentPermissionOutput, error) {
+func (_m *SSMAPI) DescribeDocumentPermissionWithContext(_a0 context.Context, _a1 *ssm.DescribeDocumentPermissionInput, _a2 ...request.Option) (*ssm.DescribeDocumentPermissionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2470,7 +2470,7 @@ func (_m *SSMAPI) DescribeDocumentPermissionWithContext(_a0 aws.Context, _a1 *ss
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeDocumentPermissionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeDocumentPermissionInput, ...request.Option) *ssm.DescribeDocumentPermissionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeDocumentPermissionInput, ...request.Option) *ssm.DescribeDocumentPermissionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2479,7 +2479,7 @@ func (_m *SSMAPI) DescribeDocumentPermissionWithContext(_a0 aws.Context, _a1 *ss
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeDocumentPermissionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeDocumentPermissionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2514,7 +2514,7 @@ func (_m *SSMAPI) DescribeDocumentRequest(_a0 *ssm.DescribeDocumentInput) (*requ
 }
 
 // DescribeDocumentWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeDocumentWithContext(_a0 aws.Context, _a1 *ssm.DescribeDocumentInput, _a2 ...request.Option) (*ssm.DescribeDocumentOutput, error) {
+func (_m *SSMAPI) DescribeDocumentWithContext(_a0 context.Context, _a1 *ssm.DescribeDocumentInput, _a2 ...request.Option) (*ssm.DescribeDocumentOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2525,7 +2525,7 @@ func (_m *SSMAPI) DescribeDocumentWithContext(_a0 aws.Context, _a1 *ssm.Describe
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeDocumentOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeDocumentInput, ...request.Option) *ssm.DescribeDocumentOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeDocumentInput, ...request.Option) *ssm.DescribeDocumentOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2534,7 +2534,7 @@ func (_m *SSMAPI) DescribeDocumentWithContext(_a0 aws.Context, _a1 *ssm.Describe
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeDocumentInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeDocumentInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2592,7 +2592,7 @@ func (_m *SSMAPI) DescribeEffectiveInstanceAssociationsRequest(_a0 *ssm.Describe
 }
 
 // DescribeEffectiveInstanceAssociationsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeEffectiveInstanceAssociationsWithContext(_a0 aws.Context, _a1 *ssm.DescribeEffectiveInstanceAssociationsInput, _a2 ...request.Option) (*ssm.DescribeEffectiveInstanceAssociationsOutput, error) {
+func (_m *SSMAPI) DescribeEffectiveInstanceAssociationsWithContext(_a0 context.Context, _a1 *ssm.DescribeEffectiveInstanceAssociationsInput, _a2 ...request.Option) (*ssm.DescribeEffectiveInstanceAssociationsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2603,7 +2603,7 @@ func (_m *SSMAPI) DescribeEffectiveInstanceAssociationsWithContext(_a0 aws.Conte
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeEffectiveInstanceAssociationsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeEffectiveInstanceAssociationsInput, ...request.Option) *ssm.DescribeEffectiveInstanceAssociationsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeEffectiveInstanceAssociationsInput, ...request.Option) *ssm.DescribeEffectiveInstanceAssociationsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2612,7 +2612,7 @@ func (_m *SSMAPI) DescribeEffectiveInstanceAssociationsWithContext(_a0 aws.Conte
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeEffectiveInstanceAssociationsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeEffectiveInstanceAssociationsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2670,7 +2670,7 @@ func (_m *SSMAPI) DescribeEffectivePatchesForPatchBaselineRequest(_a0 *ssm.Descr
 }
 
 // DescribeEffectivePatchesForPatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeEffectivePatchesForPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.DescribeEffectivePatchesForPatchBaselineInput, _a2 ...request.Option) (*ssm.DescribeEffectivePatchesForPatchBaselineOutput, error) {
+func (_m *SSMAPI) DescribeEffectivePatchesForPatchBaselineWithContext(_a0 context.Context, _a1 *ssm.DescribeEffectivePatchesForPatchBaselineInput, _a2 ...request.Option) (*ssm.DescribeEffectivePatchesForPatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2681,7 +2681,7 @@ func (_m *SSMAPI) DescribeEffectivePatchesForPatchBaselineWithContext(_a0 aws.Co
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeEffectivePatchesForPatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeEffectivePatchesForPatchBaselineInput, ...request.Option) *ssm.DescribeEffectivePatchesForPatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeEffectivePatchesForPatchBaselineInput, ...request.Option) *ssm.DescribeEffectivePatchesForPatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2690,7 +2690,7 @@ func (_m *SSMAPI) DescribeEffectivePatchesForPatchBaselineWithContext(_a0 aws.Co
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeEffectivePatchesForPatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeEffectivePatchesForPatchBaselineInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2748,7 +2748,7 @@ func (_m *SSMAPI) DescribeInstanceAssociationsStatusRequest(_a0 *ssm.DescribeIns
 }
 
 // DescribeInstanceAssociationsStatusWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInstanceAssociationsStatusWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstanceAssociationsStatusInput, _a2 ...request.Option) (*ssm.DescribeInstanceAssociationsStatusOutput, error) {
+func (_m *SSMAPI) DescribeInstanceAssociationsStatusWithContext(_a0 context.Context, _a1 *ssm.DescribeInstanceAssociationsStatusInput, _a2 ...request.Option) (*ssm.DescribeInstanceAssociationsStatusOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2759,7 +2759,7 @@ func (_m *SSMAPI) DescribeInstanceAssociationsStatusWithContext(_a0 aws.Context,
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInstanceAssociationsStatusOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstanceAssociationsStatusInput, ...request.Option) *ssm.DescribeInstanceAssociationsStatusOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstanceAssociationsStatusInput, ...request.Option) *ssm.DescribeInstanceAssociationsStatusOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2768,7 +2768,7 @@ func (_m *SSMAPI) DescribeInstanceAssociationsStatusWithContext(_a0 aws.Context,
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInstanceAssociationsStatusInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInstanceAssociationsStatusInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2815,7 +2815,7 @@ func (_m *SSMAPI) DescribeInstanceInformationPages(_a0 *ssm.DescribeInstanceInfo
 }
 
 // DescribeInstanceInformationPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) DescribeInstanceInformationPagesWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstanceInformationInput, _a2 func(*ssm.DescribeInstanceInformationOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) DescribeInstanceInformationPagesWithContext(_a0 context.Context, _a1 *ssm.DescribeInstanceInformationInput, _a2 func(*ssm.DescribeInstanceInformationOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -2826,7 +2826,7 @@ func (_m *SSMAPI) DescribeInstanceInformationPagesWithContext(_a0 aws.Context, _
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstanceInformationInput, func(*ssm.DescribeInstanceInformationOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstanceInformationInput, func(*ssm.DescribeInstanceInformationOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -2861,7 +2861,7 @@ func (_m *SSMAPI) DescribeInstanceInformationRequest(_a0 *ssm.DescribeInstanceIn
 }
 
 // DescribeInstanceInformationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInstanceInformationWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstanceInformationInput, _a2 ...request.Option) (*ssm.DescribeInstanceInformationOutput, error) {
+func (_m *SSMAPI) DescribeInstanceInformationWithContext(_a0 context.Context, _a1 *ssm.DescribeInstanceInformationInput, _a2 ...request.Option) (*ssm.DescribeInstanceInformationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2872,7 +2872,7 @@ func (_m *SSMAPI) DescribeInstanceInformationWithContext(_a0 aws.Context, _a1 *s
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInstanceInformationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstanceInformationInput, ...request.Option) *ssm.DescribeInstanceInformationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstanceInformationInput, ...request.Option) *ssm.DescribeInstanceInformationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2881,7 +2881,7 @@ func (_m *SSMAPI) DescribeInstanceInformationWithContext(_a0 aws.Context, _a1 *s
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInstanceInformationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInstanceInformationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -2962,7 +2962,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesForPatchGroupRequest(_a0 *ssm.Descr
 }
 
 // DescribeInstancePatchStatesForPatchGroupWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInstancePatchStatesForPatchGroupWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstancePatchStatesForPatchGroupInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchStatesForPatchGroupOutput, error) {
+func (_m *SSMAPI) DescribeInstancePatchStatesForPatchGroupWithContext(_a0 context.Context, _a1 *ssm.DescribeInstancePatchStatesForPatchGroupInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchStatesForPatchGroupOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -2973,7 +2973,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesForPatchGroupWithContext(_a0 aws.Co
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInstancePatchStatesForPatchGroupOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstancePatchStatesForPatchGroupInput, ...request.Option) *ssm.DescribeInstancePatchStatesForPatchGroupOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstancePatchStatesForPatchGroupInput, ...request.Option) *ssm.DescribeInstancePatchStatesForPatchGroupOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -2982,7 +2982,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesForPatchGroupWithContext(_a0 aws.Co
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInstancePatchStatesForPatchGroupInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInstancePatchStatesForPatchGroupInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3017,7 +3017,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesRequest(_a0 *ssm.DescribeInstancePa
 }
 
 // DescribeInstancePatchStatesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInstancePatchStatesWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstancePatchStatesInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchStatesOutput, error) {
+func (_m *SSMAPI) DescribeInstancePatchStatesWithContext(_a0 context.Context, _a1 *ssm.DescribeInstancePatchStatesInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchStatesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3028,7 +3028,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesWithContext(_a0 aws.Context, _a1 *s
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInstancePatchStatesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstancePatchStatesInput, ...request.Option) *ssm.DescribeInstancePatchStatesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstancePatchStatesInput, ...request.Option) *ssm.DescribeInstancePatchStatesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3037,7 +3037,7 @@ func (_m *SSMAPI) DescribeInstancePatchStatesWithContext(_a0 aws.Context, _a1 *s
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInstancePatchStatesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInstancePatchStatesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3095,7 +3095,7 @@ func (_m *SSMAPI) DescribeInstancePatchesRequest(_a0 *ssm.DescribeInstancePatche
 }
 
 // DescribeInstancePatchesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInstancePatchesWithContext(_a0 aws.Context, _a1 *ssm.DescribeInstancePatchesInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchesOutput, error) {
+func (_m *SSMAPI) DescribeInstancePatchesWithContext(_a0 context.Context, _a1 *ssm.DescribeInstancePatchesInput, _a2 ...request.Option) (*ssm.DescribeInstancePatchesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3106,7 +3106,7 @@ func (_m *SSMAPI) DescribeInstancePatchesWithContext(_a0 aws.Context, _a1 *ssm.D
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInstancePatchesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInstancePatchesInput, ...request.Option) *ssm.DescribeInstancePatchesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInstancePatchesInput, ...request.Option) *ssm.DescribeInstancePatchesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3115,7 +3115,7 @@ func (_m *SSMAPI) DescribeInstancePatchesWithContext(_a0 aws.Context, _a1 *ssm.D
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInstancePatchesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInstancePatchesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3173,7 +3173,7 @@ func (_m *SSMAPI) DescribeInventoryDeletionsRequest(_a0 *ssm.DescribeInventoryDe
 }
 
 // DescribeInventoryDeletionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeInventoryDeletionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeInventoryDeletionsInput, _a2 ...request.Option) (*ssm.DescribeInventoryDeletionsOutput, error) {
+func (_m *SSMAPI) DescribeInventoryDeletionsWithContext(_a0 context.Context, _a1 *ssm.DescribeInventoryDeletionsInput, _a2 ...request.Option) (*ssm.DescribeInventoryDeletionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3184,7 +3184,7 @@ func (_m *SSMAPI) DescribeInventoryDeletionsWithContext(_a0 aws.Context, _a1 *ss
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeInventoryDeletionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeInventoryDeletionsInput, ...request.Option) *ssm.DescribeInventoryDeletionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeInventoryDeletionsInput, ...request.Option) *ssm.DescribeInventoryDeletionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3193,7 +3193,7 @@ func (_m *SSMAPI) DescribeInventoryDeletionsWithContext(_a0 aws.Context, _a1 *ss
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeInventoryDeletionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeInventoryDeletionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3251,7 +3251,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTaskInvocationsRequest(_a0 *
 }
 
 // DescribeMaintenanceWindowExecutionTaskInvocationsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTaskInvocationsWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTaskInvocationsWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3262,7 +3262,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTaskInvocationsWithContext(_
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3271,7 +3271,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTaskInvocationsWithContext(_
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionTaskInvocationsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3329,7 +3329,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTasksRequest(_a0 *ssm.Descri
 }
 
 // DescribeMaintenanceWindowExecutionTasksWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTasksWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionTasksInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionTasksOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTasksWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionTasksInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionTasksOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3340,7 +3340,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTasksWithContext(_a0 aws.Con
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowExecutionTasksOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionTasksInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionTasksOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionTasksInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionTasksOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3349,7 +3349,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionTasksWithContext(_a0 aws.Con
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionTasksInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionTasksInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3407,7 +3407,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionsRequest(_a0 *ssm.DescribeMa
 }
 
 // DescribeMaintenanceWindowExecutionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowExecutionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionsOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowExecutionsWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowExecutionsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowExecutionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3418,7 +3418,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionsWithContext(_a0 aws.Context
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowExecutionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionsInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionsInput, ...request.Option) *ssm.DescribeMaintenanceWindowExecutionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3427,7 +3427,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowExecutionsWithContext(_a0 aws.Context
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowExecutionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowExecutionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3485,7 +3485,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowScheduleRequest(_a0 *ssm.DescribeMain
 }
 
 // DescribeMaintenanceWindowScheduleWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowScheduleWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowScheduleInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowScheduleOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowScheduleWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowScheduleInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowScheduleOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3496,7 +3496,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowScheduleWithContext(_a0 aws.Context, 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowScheduleOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowScheduleInput, ...request.Option) *ssm.DescribeMaintenanceWindowScheduleOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowScheduleInput, ...request.Option) *ssm.DescribeMaintenanceWindowScheduleOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3505,7 +3505,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowScheduleWithContext(_a0 aws.Context, 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowScheduleInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowScheduleInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3563,7 +3563,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTargetsRequest(_a0 *ssm.DescribeMaint
 }
 
 // DescribeMaintenanceWindowTargetsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowTargetsWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowTargetsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowTargetsOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowTargetsWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowTargetsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowTargetsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3574,7 +3574,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTargetsWithContext(_a0 aws.Context, _
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowTargetsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowTargetsInput, ...request.Option) *ssm.DescribeMaintenanceWindowTargetsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowTargetsInput, ...request.Option) *ssm.DescribeMaintenanceWindowTargetsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3583,7 +3583,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTargetsWithContext(_a0 aws.Context, _
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowTargetsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowTargetsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3641,7 +3641,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTasksRequest(_a0 *ssm.DescribeMainten
 }
 
 // DescribeMaintenanceWindowTasksWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowTasksWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowTasksInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowTasksOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowTasksWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowTasksInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowTasksOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3652,7 +3652,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTasksWithContext(_a0 aws.Context, _a1
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowTasksOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowTasksInput, ...request.Option) *ssm.DescribeMaintenanceWindowTasksOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowTasksInput, ...request.Option) *ssm.DescribeMaintenanceWindowTasksOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3661,7 +3661,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowTasksWithContext(_a0 aws.Context, _a1
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowTasksInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowTasksInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3742,7 +3742,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsForTargetRequest(_a0 *ssm.DescribeMa
 }
 
 // DescribeMaintenanceWindowsForTargetWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowsForTargetWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowsForTargetInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowsForTargetOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowsForTargetWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowsForTargetInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowsForTargetOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3753,7 +3753,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsForTargetWithContext(_a0 aws.Context
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowsForTargetOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowsForTargetInput, ...request.Option) *ssm.DescribeMaintenanceWindowsForTargetOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowsForTargetInput, ...request.Option) *ssm.DescribeMaintenanceWindowsForTargetOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3762,7 +3762,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsForTargetWithContext(_a0 aws.Context
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowsForTargetInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowsForTargetInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3797,7 +3797,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsRequest(_a0 *ssm.DescribeMaintenance
 }
 
 // DescribeMaintenanceWindowsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeMaintenanceWindowsWithContext(_a0 aws.Context, _a1 *ssm.DescribeMaintenanceWindowsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowsOutput, error) {
+func (_m *SSMAPI) DescribeMaintenanceWindowsWithContext(_a0 context.Context, _a1 *ssm.DescribeMaintenanceWindowsInput, _a2 ...request.Option) (*ssm.DescribeMaintenanceWindowsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3808,7 +3808,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsWithContext(_a0 aws.Context, _a1 *ss
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeMaintenanceWindowsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeMaintenanceWindowsInput, ...request.Option) *ssm.DescribeMaintenanceWindowsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeMaintenanceWindowsInput, ...request.Option) *ssm.DescribeMaintenanceWindowsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3817,7 +3817,7 @@ func (_m *SSMAPI) DescribeMaintenanceWindowsWithContext(_a0 aws.Context, _a1 *ss
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeMaintenanceWindowsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeMaintenanceWindowsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3864,7 +3864,7 @@ func (_m *SSMAPI) DescribeParametersPages(_a0 *ssm.DescribeParametersInput, _a1 
 }
 
 // DescribeParametersPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) DescribeParametersPagesWithContext(_a0 aws.Context, _a1 *ssm.DescribeParametersInput, _a2 func(*ssm.DescribeParametersOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) DescribeParametersPagesWithContext(_a0 context.Context, _a1 *ssm.DescribeParametersInput, _a2 func(*ssm.DescribeParametersOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -3875,7 +3875,7 @@ func (_m *SSMAPI) DescribeParametersPagesWithContext(_a0 aws.Context, _a1 *ssm.D
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeParametersInput, func(*ssm.DescribeParametersOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeParametersInput, func(*ssm.DescribeParametersOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -3910,7 +3910,7 @@ func (_m *SSMAPI) DescribeParametersRequest(_a0 *ssm.DescribeParametersInput) (*
 }
 
 // DescribeParametersWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeParametersWithContext(_a0 aws.Context, _a1 *ssm.DescribeParametersInput, _a2 ...request.Option) (*ssm.DescribeParametersOutput, error) {
+func (_m *SSMAPI) DescribeParametersWithContext(_a0 context.Context, _a1 *ssm.DescribeParametersInput, _a2 ...request.Option) (*ssm.DescribeParametersOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3921,7 +3921,7 @@ func (_m *SSMAPI) DescribeParametersWithContext(_a0 aws.Context, _a1 *ssm.Descri
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeParametersOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeParametersInput, ...request.Option) *ssm.DescribeParametersOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeParametersInput, ...request.Option) *ssm.DescribeParametersOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -3930,7 +3930,7 @@ func (_m *SSMAPI) DescribeParametersWithContext(_a0 aws.Context, _a1 *ssm.Descri
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeParametersInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeParametersInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -3988,7 +3988,7 @@ func (_m *SSMAPI) DescribePatchBaselinesRequest(_a0 *ssm.DescribePatchBaselinesI
 }
 
 // DescribePatchBaselinesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribePatchBaselinesWithContext(_a0 aws.Context, _a1 *ssm.DescribePatchBaselinesInput, _a2 ...request.Option) (*ssm.DescribePatchBaselinesOutput, error) {
+func (_m *SSMAPI) DescribePatchBaselinesWithContext(_a0 context.Context, _a1 *ssm.DescribePatchBaselinesInput, _a2 ...request.Option) (*ssm.DescribePatchBaselinesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -3999,7 +3999,7 @@ func (_m *SSMAPI) DescribePatchBaselinesWithContext(_a0 aws.Context, _a1 *ssm.De
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribePatchBaselinesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribePatchBaselinesInput, ...request.Option) *ssm.DescribePatchBaselinesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribePatchBaselinesInput, ...request.Option) *ssm.DescribePatchBaselinesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4008,7 +4008,7 @@ func (_m *SSMAPI) DescribePatchBaselinesWithContext(_a0 aws.Context, _a1 *ssm.De
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribePatchBaselinesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribePatchBaselinesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4066,7 +4066,7 @@ func (_m *SSMAPI) DescribePatchGroupStateRequest(_a0 *ssm.DescribePatchGroupStat
 }
 
 // DescribePatchGroupStateWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribePatchGroupStateWithContext(_a0 aws.Context, _a1 *ssm.DescribePatchGroupStateInput, _a2 ...request.Option) (*ssm.DescribePatchGroupStateOutput, error) {
+func (_m *SSMAPI) DescribePatchGroupStateWithContext(_a0 context.Context, _a1 *ssm.DescribePatchGroupStateInput, _a2 ...request.Option) (*ssm.DescribePatchGroupStateOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4077,7 +4077,7 @@ func (_m *SSMAPI) DescribePatchGroupStateWithContext(_a0 aws.Context, _a1 *ssm.D
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribePatchGroupStateOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribePatchGroupStateInput, ...request.Option) *ssm.DescribePatchGroupStateOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribePatchGroupStateInput, ...request.Option) *ssm.DescribePatchGroupStateOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4086,7 +4086,7 @@ func (_m *SSMAPI) DescribePatchGroupStateWithContext(_a0 aws.Context, _a1 *ssm.D
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribePatchGroupStateInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribePatchGroupStateInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4144,7 +4144,7 @@ func (_m *SSMAPI) DescribePatchGroupsRequest(_a0 *ssm.DescribePatchGroupsInput) 
 }
 
 // DescribePatchGroupsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribePatchGroupsWithContext(_a0 aws.Context, _a1 *ssm.DescribePatchGroupsInput, _a2 ...request.Option) (*ssm.DescribePatchGroupsOutput, error) {
+func (_m *SSMAPI) DescribePatchGroupsWithContext(_a0 context.Context, _a1 *ssm.DescribePatchGroupsInput, _a2 ...request.Option) (*ssm.DescribePatchGroupsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4155,7 +4155,7 @@ func (_m *SSMAPI) DescribePatchGroupsWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribePatchGroupsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribePatchGroupsInput, ...request.Option) *ssm.DescribePatchGroupsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribePatchGroupsInput, ...request.Option) *ssm.DescribePatchGroupsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4164,7 +4164,7 @@ func (_m *SSMAPI) DescribePatchGroupsWithContext(_a0 aws.Context, _a1 *ssm.Descr
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribePatchGroupsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribePatchGroupsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4222,7 +4222,7 @@ func (_m *SSMAPI) DescribeSessionsRequest(_a0 *ssm.DescribeSessionsInput) (*requ
 }
 
 // DescribeSessionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) DescribeSessionsWithContext(_a0 aws.Context, _a1 *ssm.DescribeSessionsInput, _a2 ...request.Option) (*ssm.DescribeSessionsOutput, error) {
+func (_m *SSMAPI) DescribeSessionsWithContext(_a0 context.Context, _a1 *ssm.DescribeSessionsInput, _a2 ...request.Option) (*ssm.DescribeSessionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4233,7 +4233,7 @@ func (_m *SSMAPI) DescribeSessionsWithContext(_a0 aws.Context, _a1 *ssm.Describe
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.DescribeSessionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.DescribeSessionsInput, ...request.Option) *ssm.DescribeSessionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.DescribeSessionsInput, ...request.Option) *ssm.DescribeSessionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4242,7 +4242,7 @@ func (_m *SSMAPI) DescribeSessionsWithContext(_a0 aws.Context, _a1 *ssm.Describe
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.DescribeSessionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.DescribeSessionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4300,7 +4300,7 @@ func (_m *SSMAPI) GetAutomationExecutionRequest(_a0 *ssm.GetAutomationExecutionI
 }
 
 // GetAutomationExecutionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.GetAutomationExecutionInput, _a2 ...request.Option) (*ssm.GetAutomationExecutionOutput, error) {
+func (_m *SSMAPI) GetAutomationExecutionWithContext(_a0 context.Context, _a1 *ssm.GetAutomationExecutionInput, _a2 ...request.Option) (*ssm.GetAutomationExecutionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4311,7 +4311,7 @@ func (_m *SSMAPI) GetAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.Ge
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetAutomationExecutionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetAutomationExecutionInput, ...request.Option) *ssm.GetAutomationExecutionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetAutomationExecutionInput, ...request.Option) *ssm.GetAutomationExecutionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4320,7 +4320,7 @@ func (_m *SSMAPI) GetAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.Ge
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetAutomationExecutionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetAutomationExecutionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4378,7 +4378,7 @@ func (_m *SSMAPI) GetCommandInvocationRequest(_a0 *ssm.GetCommandInvocationInput
 }
 
 // GetCommandInvocationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetCommandInvocationWithContext(_a0 aws.Context, _a1 *ssm.GetCommandInvocationInput, _a2 ...request.Option) (*ssm.GetCommandInvocationOutput, error) {
+func (_m *SSMAPI) GetCommandInvocationWithContext(_a0 context.Context, _a1 *ssm.GetCommandInvocationInput, _a2 ...request.Option) (*ssm.GetCommandInvocationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4389,7 +4389,7 @@ func (_m *SSMAPI) GetCommandInvocationWithContext(_a0 aws.Context, _a1 *ssm.GetC
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetCommandInvocationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetCommandInvocationInput, ...request.Option) *ssm.GetCommandInvocationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetCommandInvocationInput, ...request.Option) *ssm.GetCommandInvocationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4398,7 +4398,7 @@ func (_m *SSMAPI) GetCommandInvocationWithContext(_a0 aws.Context, _a1 *ssm.GetC
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetCommandInvocationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetCommandInvocationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4456,7 +4456,7 @@ func (_m *SSMAPI) GetConnectionStatusRequest(_a0 *ssm.GetConnectionStatusInput) 
 }
 
 // GetConnectionStatusWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetConnectionStatusWithContext(_a0 aws.Context, _a1 *ssm.GetConnectionStatusInput, _a2 ...request.Option) (*ssm.GetConnectionStatusOutput, error) {
+func (_m *SSMAPI) GetConnectionStatusWithContext(_a0 context.Context, _a1 *ssm.GetConnectionStatusInput, _a2 ...request.Option) (*ssm.GetConnectionStatusOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4467,7 +4467,7 @@ func (_m *SSMAPI) GetConnectionStatusWithContext(_a0 aws.Context, _a1 *ssm.GetCo
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetConnectionStatusOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetConnectionStatusInput, ...request.Option) *ssm.GetConnectionStatusOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetConnectionStatusInput, ...request.Option) *ssm.GetConnectionStatusOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4476,7 +4476,7 @@ func (_m *SSMAPI) GetConnectionStatusWithContext(_a0 aws.Context, _a1 *ssm.GetCo
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetConnectionStatusInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetConnectionStatusInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4534,7 +4534,7 @@ func (_m *SSMAPI) GetDefaultPatchBaselineRequest(_a0 *ssm.GetDefaultPatchBaselin
 }
 
 // GetDefaultPatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.GetDefaultPatchBaselineInput, _a2 ...request.Option) (*ssm.GetDefaultPatchBaselineOutput, error) {
+func (_m *SSMAPI) GetDefaultPatchBaselineWithContext(_a0 context.Context, _a1 *ssm.GetDefaultPatchBaselineInput, _a2 ...request.Option) (*ssm.GetDefaultPatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4545,7 +4545,7 @@ func (_m *SSMAPI) GetDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.G
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetDefaultPatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetDefaultPatchBaselineInput, ...request.Option) *ssm.GetDefaultPatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetDefaultPatchBaselineInput, ...request.Option) *ssm.GetDefaultPatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4554,7 +4554,7 @@ func (_m *SSMAPI) GetDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.G
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetDefaultPatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetDefaultPatchBaselineInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4612,7 +4612,7 @@ func (_m *SSMAPI) GetDeployablePatchSnapshotForInstanceRequest(_a0 *ssm.GetDeplo
 }
 
 // GetDeployablePatchSnapshotForInstanceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetDeployablePatchSnapshotForInstanceWithContext(_a0 aws.Context, _a1 *ssm.GetDeployablePatchSnapshotForInstanceInput, _a2 ...request.Option) (*ssm.GetDeployablePatchSnapshotForInstanceOutput, error) {
+func (_m *SSMAPI) GetDeployablePatchSnapshotForInstanceWithContext(_a0 context.Context, _a1 *ssm.GetDeployablePatchSnapshotForInstanceInput, _a2 ...request.Option) (*ssm.GetDeployablePatchSnapshotForInstanceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4623,7 +4623,7 @@ func (_m *SSMAPI) GetDeployablePatchSnapshotForInstanceWithContext(_a0 aws.Conte
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetDeployablePatchSnapshotForInstanceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetDeployablePatchSnapshotForInstanceInput, ...request.Option) *ssm.GetDeployablePatchSnapshotForInstanceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetDeployablePatchSnapshotForInstanceInput, ...request.Option) *ssm.GetDeployablePatchSnapshotForInstanceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4632,7 +4632,7 @@ func (_m *SSMAPI) GetDeployablePatchSnapshotForInstanceWithContext(_a0 aws.Conte
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetDeployablePatchSnapshotForInstanceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetDeployablePatchSnapshotForInstanceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4690,7 +4690,7 @@ func (_m *SSMAPI) GetDocumentRequest(_a0 *ssm.GetDocumentInput) (*request.Reques
 }
 
 // GetDocumentWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetDocumentWithContext(_a0 aws.Context, _a1 *ssm.GetDocumentInput, _a2 ...request.Option) (*ssm.GetDocumentOutput, error) {
+func (_m *SSMAPI) GetDocumentWithContext(_a0 context.Context, _a1 *ssm.GetDocumentInput, _a2 ...request.Option) (*ssm.GetDocumentOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4701,7 +4701,7 @@ func (_m *SSMAPI) GetDocumentWithContext(_a0 aws.Context, _a1 *ssm.GetDocumentIn
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetDocumentOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetDocumentInput, ...request.Option) *ssm.GetDocumentOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetDocumentInput, ...request.Option) *ssm.GetDocumentOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4710,7 +4710,7 @@ func (_m *SSMAPI) GetDocumentWithContext(_a0 aws.Context, _a1 *ssm.GetDocumentIn
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetDocumentInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetDocumentInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4816,7 +4816,7 @@ func (_m *SSMAPI) GetInventorySchemaRequest(_a0 *ssm.GetInventorySchemaInput) (*
 }
 
 // GetInventorySchemaWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetInventorySchemaWithContext(_a0 aws.Context, _a1 *ssm.GetInventorySchemaInput, _a2 ...request.Option) (*ssm.GetInventorySchemaOutput, error) {
+func (_m *SSMAPI) GetInventorySchemaWithContext(_a0 context.Context, _a1 *ssm.GetInventorySchemaInput, _a2 ...request.Option) (*ssm.GetInventorySchemaOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4827,7 +4827,7 @@ func (_m *SSMAPI) GetInventorySchemaWithContext(_a0 aws.Context, _a1 *ssm.GetInv
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetInventorySchemaOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetInventorySchemaInput, ...request.Option) *ssm.GetInventorySchemaOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetInventorySchemaInput, ...request.Option) *ssm.GetInventorySchemaOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4836,7 +4836,7 @@ func (_m *SSMAPI) GetInventorySchemaWithContext(_a0 aws.Context, _a1 *ssm.GetInv
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetInventorySchemaInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetInventorySchemaInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -4846,7 +4846,7 @@ func (_m *SSMAPI) GetInventorySchemaWithContext(_a0 aws.Context, _a1 *ssm.GetInv
 }
 
 // GetInventoryWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetInventoryWithContext(_a0 aws.Context, _a1 *ssm.GetInventoryInput, _a2 ...request.Option) (*ssm.GetInventoryOutput, error) {
+func (_m *SSMAPI) GetInventoryWithContext(_a0 context.Context, _a1 *ssm.GetInventoryInput, _a2 ...request.Option) (*ssm.GetInventoryOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -4857,7 +4857,7 @@ func (_m *SSMAPI) GetInventoryWithContext(_a0 aws.Context, _a1 *ssm.GetInventory
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetInventoryOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetInventoryInput, ...request.Option) *ssm.GetInventoryOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetInventoryInput, ...request.Option) *ssm.GetInventoryOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -4866,7 +4866,7 @@ func (_m *SSMAPI) GetInventoryWithContext(_a0 aws.Context, _a1 *ssm.GetInventory
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetInventoryInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetInventoryInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5018,7 +5018,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskInvocationRequest(_a0 *ssm.Ge
 }
 
 // GetMaintenanceWindowExecutionTaskInvocationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskInvocationWithContext(_a0 aws.Context, _a1 *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionTaskInvocationOutput, error) {
+func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskInvocationWithContext(_a0 context.Context, _a1 *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionTaskInvocationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5029,7 +5029,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskInvocationWithContext(_a0 aws
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetMaintenanceWindowExecutionTaskInvocationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionTaskInvocationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionTaskInvocationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5038,7 +5038,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskInvocationWithContext(_a0 aws
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetMaintenanceWindowExecutionTaskInvocationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5073,7 +5073,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskRequest(_a0 *ssm.GetMaintenan
 }
 
 // GetMaintenanceWindowExecutionTaskWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskWithContext(_a0 aws.Context, _a1 *ssm.GetMaintenanceWindowExecutionTaskInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionTaskOutput, error) {
+func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskWithContext(_a0 context.Context, _a1 *ssm.GetMaintenanceWindowExecutionTaskInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionTaskOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5084,7 +5084,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskWithContext(_a0 aws.Context, 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetMaintenanceWindowExecutionTaskOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionTaskInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionTaskOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetMaintenanceWindowExecutionTaskInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionTaskOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5093,7 +5093,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskWithContext(_a0 aws.Context, 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionTaskInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetMaintenanceWindowExecutionTaskInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5103,7 +5103,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionTaskWithContext(_a0 aws.Context, 
 }
 
 // GetMaintenanceWindowExecutionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetMaintenanceWindowExecutionWithContext(_a0 aws.Context, _a1 *ssm.GetMaintenanceWindowExecutionInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionOutput, error) {
+func (_m *SSMAPI) GetMaintenanceWindowExecutionWithContext(_a0 context.Context, _a1 *ssm.GetMaintenanceWindowExecutionInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowExecutionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5114,7 +5114,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionWithContext(_a0 aws.Context, _a1 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetMaintenanceWindowExecutionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetMaintenanceWindowExecutionInput, ...request.Option) *ssm.GetMaintenanceWindowExecutionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5123,7 +5123,7 @@ func (_m *SSMAPI) GetMaintenanceWindowExecutionWithContext(_a0 aws.Context, _a1 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetMaintenanceWindowExecutionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetMaintenanceWindowExecutionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5206,7 +5206,7 @@ func (_m *SSMAPI) GetMaintenanceWindowTaskRequest(_a0 *ssm.GetMaintenanceWindowT
 }
 
 // GetMaintenanceWindowTaskWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *ssm.GetMaintenanceWindowTaskInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowTaskOutput, error) {
+func (_m *SSMAPI) GetMaintenanceWindowTaskWithContext(_a0 context.Context, _a1 *ssm.GetMaintenanceWindowTaskInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowTaskOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5217,7 +5217,7 @@ func (_m *SSMAPI) GetMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetMaintenanceWindowTaskOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetMaintenanceWindowTaskInput, ...request.Option) *ssm.GetMaintenanceWindowTaskOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetMaintenanceWindowTaskInput, ...request.Option) *ssm.GetMaintenanceWindowTaskOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5226,7 +5226,7 @@ func (_m *SSMAPI) GetMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *ssm.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetMaintenanceWindowTaskInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetMaintenanceWindowTaskInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5236,7 +5236,7 @@ func (_m *SSMAPI) GetMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *ssm.
 }
 
 // GetMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.GetMaintenanceWindowInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) GetMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.GetMaintenanceWindowInput, _a2 ...request.Option) (*ssm.GetMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5247,7 +5247,7 @@ func (_m *SSMAPI) GetMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.GetM
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetMaintenanceWindowInput, ...request.Option) *ssm.GetMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetMaintenanceWindowInput, ...request.Option) *ssm.GetMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5256,7 +5256,7 @@ func (_m *SSMAPI) GetMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.GetM
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5326,7 +5326,7 @@ func (_m *SSMAPI) GetParameterHistoryPages(_a0 *ssm.GetParameterHistoryInput, _a
 }
 
 // GetParameterHistoryPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) GetParameterHistoryPagesWithContext(_a0 aws.Context, _a1 *ssm.GetParameterHistoryInput, _a2 func(*ssm.GetParameterHistoryOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) GetParameterHistoryPagesWithContext(_a0 context.Context, _a1 *ssm.GetParameterHistoryInput, _a2 func(*ssm.GetParameterHistoryOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -5337,7 +5337,7 @@ func (_m *SSMAPI) GetParameterHistoryPagesWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParameterHistoryInput, func(*ssm.GetParameterHistoryOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParameterHistoryInput, func(*ssm.GetParameterHistoryOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -5372,7 +5372,7 @@ func (_m *SSMAPI) GetParameterHistoryRequest(_a0 *ssm.GetParameterHistoryInput) 
 }
 
 // GetParameterHistoryWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetParameterHistoryWithContext(_a0 aws.Context, _a1 *ssm.GetParameterHistoryInput, _a2 ...request.Option) (*ssm.GetParameterHistoryOutput, error) {
+func (_m *SSMAPI) GetParameterHistoryWithContext(_a0 context.Context, _a1 *ssm.GetParameterHistoryInput, _a2 ...request.Option) (*ssm.GetParameterHistoryOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5383,7 +5383,7 @@ func (_m *SSMAPI) GetParameterHistoryWithContext(_a0 aws.Context, _a1 *ssm.GetPa
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetParameterHistoryOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParameterHistoryInput, ...request.Option) *ssm.GetParameterHistoryOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParameterHistoryInput, ...request.Option) *ssm.GetParameterHistoryOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5392,7 +5392,7 @@ func (_m *SSMAPI) GetParameterHistoryWithContext(_a0 aws.Context, _a1 *ssm.GetPa
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetParameterHistoryInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetParameterHistoryInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5427,7 +5427,7 @@ func (_m *SSMAPI) GetParameterRequest(_a0 *ssm.GetParameterInput) (*request.Requ
 }
 
 // GetParameterWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetParameterWithContext(_a0 aws.Context, _a1 *ssm.GetParameterInput, _a2 ...request.Option) (*ssm.GetParameterOutput, error) {
+func (_m *SSMAPI) GetParameterWithContext(_a0 context.Context, _a1 *ssm.GetParameterInput, _a2 ...request.Option) (*ssm.GetParameterOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5438,7 +5438,7 @@ func (_m *SSMAPI) GetParameterWithContext(_a0 aws.Context, _a1 *ssm.GetParameter
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetParameterOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParameterInput, ...request.Option) *ssm.GetParameterOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParameterInput, ...request.Option) *ssm.GetParameterOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5447,7 +5447,7 @@ func (_m *SSMAPI) GetParameterWithContext(_a0 aws.Context, _a1 *ssm.GetParameter
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetParameterInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetParameterInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5517,7 +5517,7 @@ func (_m *SSMAPI) GetParametersByPathPages(_a0 *ssm.GetParametersByPathInput, _a
 }
 
 // GetParametersByPathPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) GetParametersByPathPagesWithContext(_a0 aws.Context, _a1 *ssm.GetParametersByPathInput, _a2 func(*ssm.GetParametersByPathOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) GetParametersByPathPagesWithContext(_a0 context.Context, _a1 *ssm.GetParametersByPathInput, _a2 func(*ssm.GetParametersByPathOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -5528,7 +5528,7 @@ func (_m *SSMAPI) GetParametersByPathPagesWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParametersByPathInput, func(*ssm.GetParametersByPathOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParametersByPathInput, func(*ssm.GetParametersByPathOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -5563,7 +5563,7 @@ func (_m *SSMAPI) GetParametersByPathRequest(_a0 *ssm.GetParametersByPathInput) 
 }
 
 // GetParametersByPathWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetParametersByPathWithContext(_a0 aws.Context, _a1 *ssm.GetParametersByPathInput, _a2 ...request.Option) (*ssm.GetParametersByPathOutput, error) {
+func (_m *SSMAPI) GetParametersByPathWithContext(_a0 context.Context, _a1 *ssm.GetParametersByPathInput, _a2 ...request.Option) (*ssm.GetParametersByPathOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5574,7 +5574,7 @@ func (_m *SSMAPI) GetParametersByPathWithContext(_a0 aws.Context, _a1 *ssm.GetPa
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetParametersByPathOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParametersByPathInput, ...request.Option) *ssm.GetParametersByPathOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParametersByPathInput, ...request.Option) *ssm.GetParametersByPathOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5583,7 +5583,7 @@ func (_m *SSMAPI) GetParametersByPathWithContext(_a0 aws.Context, _a1 *ssm.GetPa
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetParametersByPathInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetParametersByPathInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5618,7 +5618,7 @@ func (_m *SSMAPI) GetParametersRequest(_a0 *ssm.GetParametersInput) (*request.Re
 }
 
 // GetParametersWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetParametersWithContext(_a0 aws.Context, _a1 *ssm.GetParametersInput, _a2 ...request.Option) (*ssm.GetParametersOutput, error) {
+func (_m *SSMAPI) GetParametersWithContext(_a0 context.Context, _a1 *ssm.GetParametersInput, _a2 ...request.Option) (*ssm.GetParametersOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5629,7 +5629,7 @@ func (_m *SSMAPI) GetParametersWithContext(_a0 aws.Context, _a1 *ssm.GetParamete
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetParametersOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetParametersInput, ...request.Option) *ssm.GetParametersOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetParametersInput, ...request.Option) *ssm.GetParametersOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5638,7 +5638,7 @@ func (_m *SSMAPI) GetParametersWithContext(_a0 aws.Context, _a1 *ssm.GetParamete
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetParametersInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetParametersInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5719,7 +5719,7 @@ func (_m *SSMAPI) GetPatchBaselineForPatchGroupRequest(_a0 *ssm.GetPatchBaseline
 }
 
 // GetPatchBaselineForPatchGroupWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetPatchBaselineForPatchGroupWithContext(_a0 aws.Context, _a1 *ssm.GetPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.GetPatchBaselineForPatchGroupOutput, error) {
+func (_m *SSMAPI) GetPatchBaselineForPatchGroupWithContext(_a0 context.Context, _a1 *ssm.GetPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.GetPatchBaselineForPatchGroupOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5730,7 +5730,7 @@ func (_m *SSMAPI) GetPatchBaselineForPatchGroupWithContext(_a0 aws.Context, _a1 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetPatchBaselineForPatchGroupOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetPatchBaselineForPatchGroupInput, ...request.Option) *ssm.GetPatchBaselineForPatchGroupOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetPatchBaselineForPatchGroupInput, ...request.Option) *ssm.GetPatchBaselineForPatchGroupOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5739,7 +5739,7 @@ func (_m *SSMAPI) GetPatchBaselineForPatchGroupWithContext(_a0 aws.Context, _a1 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5774,7 +5774,7 @@ func (_m *SSMAPI) GetPatchBaselineRequest(_a0 *ssm.GetPatchBaselineInput) (*requ
 }
 
 // GetPatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) GetPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.GetPatchBaselineInput, _a2 ...request.Option) (*ssm.GetPatchBaselineOutput, error) {
+func (_m *SSMAPI) GetPatchBaselineWithContext(_a0 context.Context, _a1 *ssm.GetPatchBaselineInput, _a2 ...request.Option) (*ssm.GetPatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5785,7 +5785,7 @@ func (_m *SSMAPI) GetPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.GetPatch
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.GetPatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.GetPatchBaselineInput, ...request.Option) *ssm.GetPatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetPatchBaselineInput, ...request.Option) *ssm.GetPatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5794,7 +5794,85 @@ func (_m *SSMAPI) GetPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.GetPatch
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.GetPatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetPatchBaselineInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetServiceSetting provides a mock function with given fields: _a0
+func (_m *SSMAPI) GetServiceSetting(_a0 *ssm.GetServiceSettingInput) (*ssm.GetServiceSettingOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.GetServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(*ssm.GetServiceSettingInput) *ssm.GetServiceSettingOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.GetServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.GetServiceSettingInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetServiceSettingRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) GetServiceSettingRequest(_a0 *ssm.GetServiceSettingInput) (*request.Request, *ssm.GetServiceSettingOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.GetServiceSettingInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.GetServiceSettingOutput
+	if rf, ok := ret.Get(1).(func(*ssm.GetServiceSettingInput) *ssm.GetServiceSettingOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.GetServiceSettingOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// GetServiceSettingWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) GetServiceSettingWithContext(_a0 context.Context, _a1 *ssm.GetServiceSettingInput, _a2 ...request.Option) (*ssm.GetServiceSettingOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.GetServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.GetServiceSettingInput, ...request.Option) *ssm.GetServiceSettingOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.GetServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.GetServiceSettingInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5852,7 +5930,7 @@ func (_m *SSMAPI) LabelParameterVersionRequest(_a0 *ssm.LabelParameterVersionInp
 }
 
 // LabelParameterVersionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) LabelParameterVersionWithContext(_a0 aws.Context, _a1 *ssm.LabelParameterVersionInput, _a2 ...request.Option) (*ssm.LabelParameterVersionOutput, error) {
+func (_m *SSMAPI) LabelParameterVersionWithContext(_a0 context.Context, _a1 *ssm.LabelParameterVersionInput, _a2 ...request.Option) (*ssm.LabelParameterVersionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5863,7 +5941,7 @@ func (_m *SSMAPI) LabelParameterVersionWithContext(_a0 aws.Context, _a1 *ssm.Lab
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.LabelParameterVersionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.LabelParameterVersionInput, ...request.Option) *ssm.LabelParameterVersionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.LabelParameterVersionInput, ...request.Option) *ssm.LabelParameterVersionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5872,7 +5950,7 @@ func (_m *SSMAPI) LabelParameterVersionWithContext(_a0 aws.Context, _a1 *ssm.Lab
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.LabelParameterVersionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.LabelParameterVersionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5930,7 +6008,7 @@ func (_m *SSMAPI) ListAssociationVersionsRequest(_a0 *ssm.ListAssociationVersion
 }
 
 // ListAssociationVersionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListAssociationVersionsWithContext(_a0 aws.Context, _a1 *ssm.ListAssociationVersionsInput, _a2 ...request.Option) (*ssm.ListAssociationVersionsOutput, error) {
+func (_m *SSMAPI) ListAssociationVersionsWithContext(_a0 context.Context, _a1 *ssm.ListAssociationVersionsInput, _a2 ...request.Option) (*ssm.ListAssociationVersionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -5941,7 +6019,7 @@ func (_m *SSMAPI) ListAssociationVersionsWithContext(_a0 aws.Context, _a1 *ssm.L
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListAssociationVersionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListAssociationVersionsInput, ...request.Option) *ssm.ListAssociationVersionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListAssociationVersionsInput, ...request.Option) *ssm.ListAssociationVersionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -5950,7 +6028,7 @@ func (_m *SSMAPI) ListAssociationVersionsWithContext(_a0 aws.Context, _a1 *ssm.L
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListAssociationVersionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListAssociationVersionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -5997,7 +6075,7 @@ func (_m *SSMAPI) ListAssociationsPages(_a0 *ssm.ListAssociationsInput, _a1 func
 }
 
 // ListAssociationsPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) ListAssociationsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListAssociationsInput, _a2 func(*ssm.ListAssociationsOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) ListAssociationsPagesWithContext(_a0 context.Context, _a1 *ssm.ListAssociationsInput, _a2 func(*ssm.ListAssociationsOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -6008,7 +6086,7 @@ func (_m *SSMAPI) ListAssociationsPagesWithContext(_a0 aws.Context, _a1 *ssm.Lis
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListAssociationsInput, func(*ssm.ListAssociationsOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListAssociationsInput, func(*ssm.ListAssociationsOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -6043,7 +6121,7 @@ func (_m *SSMAPI) ListAssociationsRequest(_a0 *ssm.ListAssociationsInput) (*requ
 }
 
 // ListAssociationsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListAssociationsWithContext(_a0 aws.Context, _a1 *ssm.ListAssociationsInput, _a2 ...request.Option) (*ssm.ListAssociationsOutput, error) {
+func (_m *SSMAPI) ListAssociationsWithContext(_a0 context.Context, _a1 *ssm.ListAssociationsInput, _a2 ...request.Option) (*ssm.ListAssociationsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6054,7 +6132,7 @@ func (_m *SSMAPI) ListAssociationsWithContext(_a0 aws.Context, _a1 *ssm.ListAsso
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListAssociationsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListAssociationsInput, ...request.Option) *ssm.ListAssociationsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListAssociationsInput, ...request.Option) *ssm.ListAssociationsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6063,7 +6141,7 @@ func (_m *SSMAPI) ListAssociationsWithContext(_a0 aws.Context, _a1 *ssm.ListAsso
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListAssociationsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListAssociationsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6110,7 +6188,7 @@ func (_m *SSMAPI) ListCommandInvocationsPages(_a0 *ssm.ListCommandInvocationsInp
 }
 
 // ListCommandInvocationsPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) ListCommandInvocationsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListCommandInvocationsInput, _a2 func(*ssm.ListCommandInvocationsOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) ListCommandInvocationsPagesWithContext(_a0 context.Context, _a1 *ssm.ListCommandInvocationsInput, _a2 func(*ssm.ListCommandInvocationsOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -6121,7 +6199,7 @@ func (_m *SSMAPI) ListCommandInvocationsPagesWithContext(_a0 aws.Context, _a1 *s
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListCommandInvocationsInput, func(*ssm.ListCommandInvocationsOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListCommandInvocationsInput, func(*ssm.ListCommandInvocationsOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -6156,7 +6234,7 @@ func (_m *SSMAPI) ListCommandInvocationsRequest(_a0 *ssm.ListCommandInvocationsI
 }
 
 // ListCommandInvocationsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListCommandInvocationsWithContext(_a0 aws.Context, _a1 *ssm.ListCommandInvocationsInput, _a2 ...request.Option) (*ssm.ListCommandInvocationsOutput, error) {
+func (_m *SSMAPI) ListCommandInvocationsWithContext(_a0 context.Context, _a1 *ssm.ListCommandInvocationsInput, _a2 ...request.Option) (*ssm.ListCommandInvocationsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6167,7 +6245,7 @@ func (_m *SSMAPI) ListCommandInvocationsWithContext(_a0 aws.Context, _a1 *ssm.Li
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListCommandInvocationsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListCommandInvocationsInput, ...request.Option) *ssm.ListCommandInvocationsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListCommandInvocationsInput, ...request.Option) *ssm.ListCommandInvocationsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6176,7 +6254,7 @@ func (_m *SSMAPI) ListCommandInvocationsWithContext(_a0 aws.Context, _a1 *ssm.Li
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListCommandInvocationsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListCommandInvocationsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6223,7 +6301,7 @@ func (_m *SSMAPI) ListCommandsPages(_a0 *ssm.ListCommandsInput, _a1 func(*ssm.Li
 }
 
 // ListCommandsPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) ListCommandsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListCommandsInput, _a2 func(*ssm.ListCommandsOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) ListCommandsPagesWithContext(_a0 context.Context, _a1 *ssm.ListCommandsInput, _a2 func(*ssm.ListCommandsOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -6234,7 +6312,7 @@ func (_m *SSMAPI) ListCommandsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListCom
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListCommandsInput, func(*ssm.ListCommandsOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListCommandsInput, func(*ssm.ListCommandsOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -6269,7 +6347,7 @@ func (_m *SSMAPI) ListCommandsRequest(_a0 *ssm.ListCommandsInput) (*request.Requ
 }
 
 // ListCommandsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListCommandsWithContext(_a0 aws.Context, _a1 *ssm.ListCommandsInput, _a2 ...request.Option) (*ssm.ListCommandsOutput, error) {
+func (_m *SSMAPI) ListCommandsWithContext(_a0 context.Context, _a1 *ssm.ListCommandsInput, _a2 ...request.Option) (*ssm.ListCommandsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6280,7 +6358,7 @@ func (_m *SSMAPI) ListCommandsWithContext(_a0 aws.Context, _a1 *ssm.ListCommands
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListCommandsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListCommandsInput, ...request.Option) *ssm.ListCommandsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListCommandsInput, ...request.Option) *ssm.ListCommandsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6289,7 +6367,7 @@ func (_m *SSMAPI) ListCommandsWithContext(_a0 aws.Context, _a1 *ssm.ListCommands
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListCommandsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListCommandsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6347,7 +6425,7 @@ func (_m *SSMAPI) ListComplianceItemsRequest(_a0 *ssm.ListComplianceItemsInput) 
 }
 
 // ListComplianceItemsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.ListComplianceItemsInput, _a2 ...request.Option) (*ssm.ListComplianceItemsOutput, error) {
+func (_m *SSMAPI) ListComplianceItemsWithContext(_a0 context.Context, _a1 *ssm.ListComplianceItemsInput, _a2 ...request.Option) (*ssm.ListComplianceItemsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6358,7 +6436,7 @@ func (_m *SSMAPI) ListComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.ListC
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListComplianceItemsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListComplianceItemsInput, ...request.Option) *ssm.ListComplianceItemsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListComplianceItemsInput, ...request.Option) *ssm.ListComplianceItemsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6367,7 +6445,7 @@ func (_m *SSMAPI) ListComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.ListC
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListComplianceItemsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListComplianceItemsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6425,7 +6503,7 @@ func (_m *SSMAPI) ListComplianceSummariesRequest(_a0 *ssm.ListComplianceSummarie
 }
 
 // ListComplianceSummariesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListComplianceSummariesWithContext(_a0 aws.Context, _a1 *ssm.ListComplianceSummariesInput, _a2 ...request.Option) (*ssm.ListComplianceSummariesOutput, error) {
+func (_m *SSMAPI) ListComplianceSummariesWithContext(_a0 context.Context, _a1 *ssm.ListComplianceSummariesInput, _a2 ...request.Option) (*ssm.ListComplianceSummariesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6436,7 +6514,7 @@ func (_m *SSMAPI) ListComplianceSummariesWithContext(_a0 aws.Context, _a1 *ssm.L
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListComplianceSummariesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListComplianceSummariesInput, ...request.Option) *ssm.ListComplianceSummariesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListComplianceSummariesInput, ...request.Option) *ssm.ListComplianceSummariesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6445,7 +6523,7 @@ func (_m *SSMAPI) ListComplianceSummariesWithContext(_a0 aws.Context, _a1 *ssm.L
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListComplianceSummariesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListComplianceSummariesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6503,7 +6581,7 @@ func (_m *SSMAPI) ListDocumentVersionsRequest(_a0 *ssm.ListDocumentVersionsInput
 }
 
 // ListDocumentVersionsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListDocumentVersionsWithContext(_a0 aws.Context, _a1 *ssm.ListDocumentVersionsInput, _a2 ...request.Option) (*ssm.ListDocumentVersionsOutput, error) {
+func (_m *SSMAPI) ListDocumentVersionsWithContext(_a0 context.Context, _a1 *ssm.ListDocumentVersionsInput, _a2 ...request.Option) (*ssm.ListDocumentVersionsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6514,7 +6592,7 @@ func (_m *SSMAPI) ListDocumentVersionsWithContext(_a0 aws.Context, _a1 *ssm.List
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListDocumentVersionsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListDocumentVersionsInput, ...request.Option) *ssm.ListDocumentVersionsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListDocumentVersionsInput, ...request.Option) *ssm.ListDocumentVersionsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6523,7 +6601,7 @@ func (_m *SSMAPI) ListDocumentVersionsWithContext(_a0 aws.Context, _a1 *ssm.List
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListDocumentVersionsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListDocumentVersionsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6570,7 +6648,7 @@ func (_m *SSMAPI) ListDocumentsPages(_a0 *ssm.ListDocumentsInput, _a1 func(*ssm.
 }
 
 // ListDocumentsPagesWithContext provides a mock function with given fields: _a0, _a1, _a2, _a3
-func (_m *SSMAPI) ListDocumentsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListDocumentsInput, _a2 func(*ssm.ListDocumentsOutput, bool) bool, _a3 ...request.Option) error {
+func (_m *SSMAPI) ListDocumentsPagesWithContext(_a0 context.Context, _a1 *ssm.ListDocumentsInput, _a2 func(*ssm.ListDocumentsOutput, bool) bool, _a3 ...request.Option) error {
 	_va := make([]interface{}, len(_a3))
 	for _i := range _a3 {
 		_va[_i] = _a3[_i]
@@ -6581,7 +6659,7 @@ func (_m *SSMAPI) ListDocumentsPagesWithContext(_a0 aws.Context, _a1 *ssm.ListDo
 	ret := _m.Called(_ca...)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListDocumentsInput, func(*ssm.ListDocumentsOutput, bool) bool, ...request.Option) error); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListDocumentsInput, func(*ssm.ListDocumentsOutput, bool) bool, ...request.Option) error); ok {
 		r0 = rf(_a0, _a1, _a2, _a3...)
 	} else {
 		r0 = ret.Error(0)
@@ -6616,7 +6694,7 @@ func (_m *SSMAPI) ListDocumentsRequest(_a0 *ssm.ListDocumentsInput) (*request.Re
 }
 
 // ListDocumentsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListDocumentsWithContext(_a0 aws.Context, _a1 *ssm.ListDocumentsInput, _a2 ...request.Option) (*ssm.ListDocumentsOutput, error) {
+func (_m *SSMAPI) ListDocumentsWithContext(_a0 context.Context, _a1 *ssm.ListDocumentsInput, _a2 ...request.Option) (*ssm.ListDocumentsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6627,7 +6705,7 @@ func (_m *SSMAPI) ListDocumentsWithContext(_a0 aws.Context, _a1 *ssm.ListDocumen
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListDocumentsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListDocumentsInput, ...request.Option) *ssm.ListDocumentsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListDocumentsInput, ...request.Option) *ssm.ListDocumentsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6636,7 +6714,7 @@ func (_m *SSMAPI) ListDocumentsWithContext(_a0 aws.Context, _a1 *ssm.ListDocumen
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListDocumentsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListDocumentsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6694,7 +6772,7 @@ func (_m *SSMAPI) ListInventoryEntriesRequest(_a0 *ssm.ListInventoryEntriesInput
 }
 
 // ListInventoryEntriesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListInventoryEntriesWithContext(_a0 aws.Context, _a1 *ssm.ListInventoryEntriesInput, _a2 ...request.Option) (*ssm.ListInventoryEntriesOutput, error) {
+func (_m *SSMAPI) ListInventoryEntriesWithContext(_a0 context.Context, _a1 *ssm.ListInventoryEntriesInput, _a2 ...request.Option) (*ssm.ListInventoryEntriesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6705,7 +6783,7 @@ func (_m *SSMAPI) ListInventoryEntriesWithContext(_a0 aws.Context, _a1 *ssm.List
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListInventoryEntriesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListInventoryEntriesInput, ...request.Option) *ssm.ListInventoryEntriesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListInventoryEntriesInput, ...request.Option) *ssm.ListInventoryEntriesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6714,7 +6792,7 @@ func (_m *SSMAPI) ListInventoryEntriesWithContext(_a0 aws.Context, _a1 *ssm.List
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListInventoryEntriesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListInventoryEntriesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6772,7 +6850,7 @@ func (_m *SSMAPI) ListResourceComplianceSummariesRequest(_a0 *ssm.ListResourceCo
 }
 
 // ListResourceComplianceSummariesWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListResourceComplianceSummariesWithContext(_a0 aws.Context, _a1 *ssm.ListResourceComplianceSummariesInput, _a2 ...request.Option) (*ssm.ListResourceComplianceSummariesOutput, error) {
+func (_m *SSMAPI) ListResourceComplianceSummariesWithContext(_a0 context.Context, _a1 *ssm.ListResourceComplianceSummariesInput, _a2 ...request.Option) (*ssm.ListResourceComplianceSummariesOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6783,7 +6861,7 @@ func (_m *SSMAPI) ListResourceComplianceSummariesWithContext(_a0 aws.Context, _a
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListResourceComplianceSummariesOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListResourceComplianceSummariesInput, ...request.Option) *ssm.ListResourceComplianceSummariesOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListResourceComplianceSummariesInput, ...request.Option) *ssm.ListResourceComplianceSummariesOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6792,7 +6870,7 @@ func (_m *SSMAPI) ListResourceComplianceSummariesWithContext(_a0 aws.Context, _a
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListResourceComplianceSummariesInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListResourceComplianceSummariesInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6850,7 +6928,7 @@ func (_m *SSMAPI) ListResourceDataSyncRequest(_a0 *ssm.ListResourceDataSyncInput
 }
 
 // ListResourceDataSyncWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.ListResourceDataSyncInput, _a2 ...request.Option) (*ssm.ListResourceDataSyncOutput, error) {
+func (_m *SSMAPI) ListResourceDataSyncWithContext(_a0 context.Context, _a1 *ssm.ListResourceDataSyncInput, _a2 ...request.Option) (*ssm.ListResourceDataSyncOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6861,7 +6939,7 @@ func (_m *SSMAPI) ListResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.List
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListResourceDataSyncOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListResourceDataSyncInput, ...request.Option) *ssm.ListResourceDataSyncOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListResourceDataSyncInput, ...request.Option) *ssm.ListResourceDataSyncOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6870,7 +6948,7 @@ func (_m *SSMAPI) ListResourceDataSyncWithContext(_a0 aws.Context, _a1 *ssm.List
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListResourceDataSyncInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListResourceDataSyncInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -6928,7 +7006,7 @@ func (_m *SSMAPI) ListTagsForResourceRequest(_a0 *ssm.ListTagsForResourceInput) 
 }
 
 // ListTagsForResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ListTagsForResourceWithContext(_a0 aws.Context, _a1 *ssm.ListTagsForResourceInput, _a2 ...request.Option) (*ssm.ListTagsForResourceOutput, error) {
+func (_m *SSMAPI) ListTagsForResourceWithContext(_a0 context.Context, _a1 *ssm.ListTagsForResourceInput, _a2 ...request.Option) (*ssm.ListTagsForResourceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -6939,7 +7017,7 @@ func (_m *SSMAPI) ListTagsForResourceWithContext(_a0 aws.Context, _a1 *ssm.ListT
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ListTagsForResourceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ListTagsForResourceInput, ...request.Option) *ssm.ListTagsForResourceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ListTagsForResourceInput, ...request.Option) *ssm.ListTagsForResourceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -6948,7 +7026,7 @@ func (_m *SSMAPI) ListTagsForResourceWithContext(_a0 aws.Context, _a1 *ssm.ListT
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ListTagsForResourceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ListTagsForResourceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7006,7 +7084,7 @@ func (_m *SSMAPI) ModifyDocumentPermissionRequest(_a0 *ssm.ModifyDocumentPermiss
 }
 
 // ModifyDocumentPermissionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ModifyDocumentPermissionWithContext(_a0 aws.Context, _a1 *ssm.ModifyDocumentPermissionInput, _a2 ...request.Option) (*ssm.ModifyDocumentPermissionOutput, error) {
+func (_m *SSMAPI) ModifyDocumentPermissionWithContext(_a0 context.Context, _a1 *ssm.ModifyDocumentPermissionInput, _a2 ...request.Option) (*ssm.ModifyDocumentPermissionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7017,7 +7095,7 @@ func (_m *SSMAPI) ModifyDocumentPermissionWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ModifyDocumentPermissionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ModifyDocumentPermissionInput, ...request.Option) *ssm.ModifyDocumentPermissionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ModifyDocumentPermissionInput, ...request.Option) *ssm.ModifyDocumentPermissionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7026,7 +7104,7 @@ func (_m *SSMAPI) ModifyDocumentPermissionWithContext(_a0 aws.Context, _a1 *ssm.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ModifyDocumentPermissionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ModifyDocumentPermissionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7084,7 +7162,7 @@ func (_m *SSMAPI) PutComplianceItemsRequest(_a0 *ssm.PutComplianceItemsInput) (*
 }
 
 // PutComplianceItemsWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) PutComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.PutComplianceItemsInput, _a2 ...request.Option) (*ssm.PutComplianceItemsOutput, error) {
+func (_m *SSMAPI) PutComplianceItemsWithContext(_a0 context.Context, _a1 *ssm.PutComplianceItemsInput, _a2 ...request.Option) (*ssm.PutComplianceItemsOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7095,7 +7173,7 @@ func (_m *SSMAPI) PutComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.PutCom
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.PutComplianceItemsOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.PutComplianceItemsInput, ...request.Option) *ssm.PutComplianceItemsOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.PutComplianceItemsInput, ...request.Option) *ssm.PutComplianceItemsOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7104,7 +7182,7 @@ func (_m *SSMAPI) PutComplianceItemsWithContext(_a0 aws.Context, _a1 *ssm.PutCom
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.PutComplianceItemsInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.PutComplianceItemsInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7162,7 +7240,7 @@ func (_m *SSMAPI) PutInventoryRequest(_a0 *ssm.PutInventoryInput) (*request.Requ
 }
 
 // PutInventoryWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) PutInventoryWithContext(_a0 aws.Context, _a1 *ssm.PutInventoryInput, _a2 ...request.Option) (*ssm.PutInventoryOutput, error) {
+func (_m *SSMAPI) PutInventoryWithContext(_a0 context.Context, _a1 *ssm.PutInventoryInput, _a2 ...request.Option) (*ssm.PutInventoryOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7173,7 +7251,7 @@ func (_m *SSMAPI) PutInventoryWithContext(_a0 aws.Context, _a1 *ssm.PutInventory
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.PutInventoryOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.PutInventoryInput, ...request.Option) *ssm.PutInventoryOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.PutInventoryInput, ...request.Option) *ssm.PutInventoryOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7182,7 +7260,7 @@ func (_m *SSMAPI) PutInventoryWithContext(_a0 aws.Context, _a1 *ssm.PutInventory
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.PutInventoryInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.PutInventoryInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7240,7 +7318,7 @@ func (_m *SSMAPI) PutParameterRequest(_a0 *ssm.PutParameterInput) (*request.Requ
 }
 
 // PutParameterWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) PutParameterWithContext(_a0 aws.Context, _a1 *ssm.PutParameterInput, _a2 ...request.Option) (*ssm.PutParameterOutput, error) {
+func (_m *SSMAPI) PutParameterWithContext(_a0 context.Context, _a1 *ssm.PutParameterInput, _a2 ...request.Option) (*ssm.PutParameterOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7251,7 +7329,7 @@ func (_m *SSMAPI) PutParameterWithContext(_a0 aws.Context, _a1 *ssm.PutParameter
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.PutParameterOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.PutParameterInput, ...request.Option) *ssm.PutParameterOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.PutParameterInput, ...request.Option) *ssm.PutParameterOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7260,7 +7338,7 @@ func (_m *SSMAPI) PutParameterWithContext(_a0 aws.Context, _a1 *ssm.PutParameter
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.PutParameterInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.PutParameterInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7318,7 +7396,7 @@ func (_m *SSMAPI) RegisterDefaultPatchBaselineRequest(_a0 *ssm.RegisterDefaultPa
 }
 
 // RegisterDefaultPatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) RegisterDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.RegisterDefaultPatchBaselineInput, _a2 ...request.Option) (*ssm.RegisterDefaultPatchBaselineOutput, error) {
+func (_m *SSMAPI) RegisterDefaultPatchBaselineWithContext(_a0 context.Context, _a1 *ssm.RegisterDefaultPatchBaselineInput, _a2 ...request.Option) (*ssm.RegisterDefaultPatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7329,7 +7407,7 @@ func (_m *SSMAPI) RegisterDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.RegisterDefaultPatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.RegisterDefaultPatchBaselineInput, ...request.Option) *ssm.RegisterDefaultPatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.RegisterDefaultPatchBaselineInput, ...request.Option) *ssm.RegisterDefaultPatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7338,7 +7416,7 @@ func (_m *SSMAPI) RegisterDefaultPatchBaselineWithContext(_a0 aws.Context, _a1 *
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.RegisterDefaultPatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.RegisterDefaultPatchBaselineInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7396,7 +7474,7 @@ func (_m *SSMAPI) RegisterPatchBaselineForPatchGroupRequest(_a0 *ssm.RegisterPat
 }
 
 // RegisterPatchBaselineForPatchGroupWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) RegisterPatchBaselineForPatchGroupWithContext(_a0 aws.Context, _a1 *ssm.RegisterPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.RegisterPatchBaselineForPatchGroupOutput, error) {
+func (_m *SSMAPI) RegisterPatchBaselineForPatchGroupWithContext(_a0 context.Context, _a1 *ssm.RegisterPatchBaselineForPatchGroupInput, _a2 ...request.Option) (*ssm.RegisterPatchBaselineForPatchGroupOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7407,7 +7485,7 @@ func (_m *SSMAPI) RegisterPatchBaselineForPatchGroupWithContext(_a0 aws.Context,
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.RegisterPatchBaselineForPatchGroupOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.RegisterPatchBaselineForPatchGroupInput, ...request.Option) *ssm.RegisterPatchBaselineForPatchGroupOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.RegisterPatchBaselineForPatchGroupInput, ...request.Option) *ssm.RegisterPatchBaselineForPatchGroupOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7416,7 +7494,7 @@ func (_m *SSMAPI) RegisterPatchBaselineForPatchGroupWithContext(_a0 aws.Context,
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.RegisterPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.RegisterPatchBaselineForPatchGroupInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7474,7 +7552,7 @@ func (_m *SSMAPI) RegisterTargetWithMaintenanceWindowRequest(_a0 *ssm.RegisterTa
 }
 
 // RegisterTargetWithMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) RegisterTargetWithMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.RegisterTargetWithMaintenanceWindowInput, _a2 ...request.Option) (*ssm.RegisterTargetWithMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) RegisterTargetWithMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.RegisterTargetWithMaintenanceWindowInput, _a2 ...request.Option) (*ssm.RegisterTargetWithMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7485,7 +7563,7 @@ func (_m *SSMAPI) RegisterTargetWithMaintenanceWindowWithContext(_a0 aws.Context
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.RegisterTargetWithMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.RegisterTargetWithMaintenanceWindowInput, ...request.Option) *ssm.RegisterTargetWithMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.RegisterTargetWithMaintenanceWindowInput, ...request.Option) *ssm.RegisterTargetWithMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7494,7 +7572,7 @@ func (_m *SSMAPI) RegisterTargetWithMaintenanceWindowWithContext(_a0 aws.Context
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.RegisterTargetWithMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.RegisterTargetWithMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7552,7 +7630,7 @@ func (_m *SSMAPI) RegisterTaskWithMaintenanceWindowRequest(_a0 *ssm.RegisterTask
 }
 
 // RegisterTaskWithMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) RegisterTaskWithMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.RegisterTaskWithMaintenanceWindowInput, _a2 ...request.Option) (*ssm.RegisterTaskWithMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) RegisterTaskWithMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.RegisterTaskWithMaintenanceWindowInput, _a2 ...request.Option) (*ssm.RegisterTaskWithMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7563,7 +7641,7 @@ func (_m *SSMAPI) RegisterTaskWithMaintenanceWindowWithContext(_a0 aws.Context, 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.RegisterTaskWithMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.RegisterTaskWithMaintenanceWindowInput, ...request.Option) *ssm.RegisterTaskWithMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.RegisterTaskWithMaintenanceWindowInput, ...request.Option) *ssm.RegisterTaskWithMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7572,7 +7650,7 @@ func (_m *SSMAPI) RegisterTaskWithMaintenanceWindowWithContext(_a0 aws.Context, 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.RegisterTaskWithMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.RegisterTaskWithMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7630,7 +7708,7 @@ func (_m *SSMAPI) RemoveTagsFromResourceRequest(_a0 *ssm.RemoveTagsFromResourceI
 }
 
 // RemoveTagsFromResourceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) RemoveTagsFromResourceWithContext(_a0 aws.Context, _a1 *ssm.RemoveTagsFromResourceInput, _a2 ...request.Option) (*ssm.RemoveTagsFromResourceOutput, error) {
+func (_m *SSMAPI) RemoveTagsFromResourceWithContext(_a0 context.Context, _a1 *ssm.RemoveTagsFromResourceInput, _a2 ...request.Option) (*ssm.RemoveTagsFromResourceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7641,7 +7719,7 @@ func (_m *SSMAPI) RemoveTagsFromResourceWithContext(_a0 aws.Context, _a1 *ssm.Re
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.RemoveTagsFromResourceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.RemoveTagsFromResourceInput, ...request.Option) *ssm.RemoveTagsFromResourceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.RemoveTagsFromResourceInput, ...request.Option) *ssm.RemoveTagsFromResourceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7650,7 +7728,85 @@ func (_m *SSMAPI) RemoveTagsFromResourceWithContext(_a0 aws.Context, _a1 *ssm.Re
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.RemoveTagsFromResourceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.RemoveTagsFromResourceInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ResetServiceSetting provides a mock function with given fields: _a0
+func (_m *SSMAPI) ResetServiceSetting(_a0 *ssm.ResetServiceSettingInput) (*ssm.ResetServiceSettingOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.ResetServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(*ssm.ResetServiceSettingInput) *ssm.ResetServiceSettingOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.ResetServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.ResetServiceSettingInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ResetServiceSettingRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) ResetServiceSettingRequest(_a0 *ssm.ResetServiceSettingInput) (*request.Request, *ssm.ResetServiceSettingOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.ResetServiceSettingInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.ResetServiceSettingOutput
+	if rf, ok := ret.Get(1).(func(*ssm.ResetServiceSettingInput) *ssm.ResetServiceSettingOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.ResetServiceSettingOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// ResetServiceSettingWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) ResetServiceSettingWithContext(_a0 context.Context, _a1 *ssm.ResetServiceSettingInput, _a2 ...request.Option) (*ssm.ResetServiceSettingOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.ResetServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ResetServiceSettingInput, ...request.Option) *ssm.ResetServiceSettingOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.ResetServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ResetServiceSettingInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7708,7 +7864,7 @@ func (_m *SSMAPI) ResumeSessionRequest(_a0 *ssm.ResumeSessionInput) (*request.Re
 }
 
 // ResumeSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) ResumeSessionWithContext(_a0 aws.Context, _a1 *ssm.ResumeSessionInput, _a2 ...request.Option) (*ssm.ResumeSessionOutput, error) {
+func (_m *SSMAPI) ResumeSessionWithContext(_a0 context.Context, _a1 *ssm.ResumeSessionInput, _a2 ...request.Option) (*ssm.ResumeSessionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7719,7 +7875,7 @@ func (_m *SSMAPI) ResumeSessionWithContext(_a0 aws.Context, _a1 *ssm.ResumeSessi
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.ResumeSessionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.ResumeSessionInput, ...request.Option) *ssm.ResumeSessionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.ResumeSessionInput, ...request.Option) *ssm.ResumeSessionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7728,7 +7884,7 @@ func (_m *SSMAPI) ResumeSessionWithContext(_a0 aws.Context, _a1 *ssm.ResumeSessi
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.ResumeSessionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.ResumeSessionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7786,7 +7942,7 @@ func (_m *SSMAPI) SendAutomationSignalRequest(_a0 *ssm.SendAutomationSignalInput
 }
 
 // SendAutomationSignalWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) SendAutomationSignalWithContext(_a0 aws.Context, _a1 *ssm.SendAutomationSignalInput, _a2 ...request.Option) (*ssm.SendAutomationSignalOutput, error) {
+func (_m *SSMAPI) SendAutomationSignalWithContext(_a0 context.Context, _a1 *ssm.SendAutomationSignalInput, _a2 ...request.Option) (*ssm.SendAutomationSignalOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7797,7 +7953,7 @@ func (_m *SSMAPI) SendAutomationSignalWithContext(_a0 aws.Context, _a1 *ssm.Send
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.SendAutomationSignalOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.SendAutomationSignalInput, ...request.Option) *ssm.SendAutomationSignalOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.SendAutomationSignalInput, ...request.Option) *ssm.SendAutomationSignalOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7806,7 +7962,7 @@ func (_m *SSMAPI) SendAutomationSignalWithContext(_a0 aws.Context, _a1 *ssm.Send
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.SendAutomationSignalInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.SendAutomationSignalInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7864,7 +8020,7 @@ func (_m *SSMAPI) SendCommandRequest(_a0 *ssm.SendCommandInput) (*request.Reques
 }
 
 // SendCommandWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) SendCommandWithContext(_a0 aws.Context, _a1 *ssm.SendCommandInput, _a2 ...request.Option) (*ssm.SendCommandOutput, error) {
+func (_m *SSMAPI) SendCommandWithContext(_a0 context.Context, _a1 *ssm.SendCommandInput, _a2 ...request.Option) (*ssm.SendCommandOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7875,7 +8031,7 @@ func (_m *SSMAPI) SendCommandWithContext(_a0 aws.Context, _a1 *ssm.SendCommandIn
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.SendCommandOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.SendCommandInput, ...request.Option) *ssm.SendCommandOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.SendCommandInput, ...request.Option) *ssm.SendCommandOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7884,7 +8040,7 @@ func (_m *SSMAPI) SendCommandWithContext(_a0 aws.Context, _a1 *ssm.SendCommandIn
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.SendCommandInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.SendCommandInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -7942,7 +8098,7 @@ func (_m *SSMAPI) StartAssociationsOnceRequest(_a0 *ssm.StartAssociationsOnceInp
 }
 
 // StartAssociationsOnceWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) StartAssociationsOnceWithContext(_a0 aws.Context, _a1 *ssm.StartAssociationsOnceInput, _a2 ...request.Option) (*ssm.StartAssociationsOnceOutput, error) {
+func (_m *SSMAPI) StartAssociationsOnceWithContext(_a0 context.Context, _a1 *ssm.StartAssociationsOnceInput, _a2 ...request.Option) (*ssm.StartAssociationsOnceOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -7953,7 +8109,7 @@ func (_m *SSMAPI) StartAssociationsOnceWithContext(_a0 aws.Context, _a1 *ssm.Sta
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.StartAssociationsOnceOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.StartAssociationsOnceInput, ...request.Option) *ssm.StartAssociationsOnceOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.StartAssociationsOnceInput, ...request.Option) *ssm.StartAssociationsOnceOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -7962,7 +8118,7 @@ func (_m *SSMAPI) StartAssociationsOnceWithContext(_a0 aws.Context, _a1 *ssm.Sta
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StartAssociationsOnceInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.StartAssociationsOnceInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8020,7 +8176,7 @@ func (_m *SSMAPI) StartAutomationExecutionRequest(_a0 *ssm.StartAutomationExecut
 }
 
 // StartAutomationExecutionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) StartAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.StartAutomationExecutionInput, _a2 ...request.Option) (*ssm.StartAutomationExecutionOutput, error) {
+func (_m *SSMAPI) StartAutomationExecutionWithContext(_a0 context.Context, _a1 *ssm.StartAutomationExecutionInput, _a2 ...request.Option) (*ssm.StartAutomationExecutionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8031,7 +8187,7 @@ func (_m *SSMAPI) StartAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.StartAutomationExecutionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.StartAutomationExecutionInput, ...request.Option) *ssm.StartAutomationExecutionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.StartAutomationExecutionInput, ...request.Option) *ssm.StartAutomationExecutionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8040,7 +8196,7 @@ func (_m *SSMAPI) StartAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StartAutomationExecutionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.StartAutomationExecutionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8098,7 +8254,7 @@ func (_m *SSMAPI) StartSessionRequest(_a0 *ssm.StartSessionInput) (*request.Requ
 }
 
 // StartSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) StartSessionWithContext(_a0 aws.Context, _a1 *ssm.StartSessionInput, _a2 ...request.Option) (*ssm.StartSessionOutput, error) {
+func (_m *SSMAPI) StartSessionWithContext(_a0 context.Context, _a1 *ssm.StartSessionInput, _a2 ...request.Option) (*ssm.StartSessionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8109,7 +8265,7 @@ func (_m *SSMAPI) StartSessionWithContext(_a0 aws.Context, _a1 *ssm.StartSession
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.StartSessionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.StartSessionInput, ...request.Option) *ssm.StartSessionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.StartSessionInput, ...request.Option) *ssm.StartSessionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8118,7 +8274,7 @@ func (_m *SSMAPI) StartSessionWithContext(_a0 aws.Context, _a1 *ssm.StartSession
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StartSessionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.StartSessionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8176,7 +8332,7 @@ func (_m *SSMAPI) StopAutomationExecutionRequest(_a0 *ssm.StopAutomationExecutio
 }
 
 // StopAutomationExecutionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) StopAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.StopAutomationExecutionInput, _a2 ...request.Option) (*ssm.StopAutomationExecutionOutput, error) {
+func (_m *SSMAPI) StopAutomationExecutionWithContext(_a0 context.Context, _a1 *ssm.StopAutomationExecutionInput, _a2 ...request.Option) (*ssm.StopAutomationExecutionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8187,7 +8343,7 @@ func (_m *SSMAPI) StopAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.S
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.StopAutomationExecutionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.StopAutomationExecutionInput, ...request.Option) *ssm.StopAutomationExecutionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.StopAutomationExecutionInput, ...request.Option) *ssm.StopAutomationExecutionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8196,7 +8352,7 @@ func (_m *SSMAPI) StopAutomationExecutionWithContext(_a0 aws.Context, _a1 *ssm.S
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.StopAutomationExecutionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.StopAutomationExecutionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8254,7 +8410,7 @@ func (_m *SSMAPI) TerminateSessionRequest(_a0 *ssm.TerminateSessionInput) (*requ
 }
 
 // TerminateSessionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) TerminateSessionWithContext(_a0 aws.Context, _a1 *ssm.TerminateSessionInput, _a2 ...request.Option) (*ssm.TerminateSessionOutput, error) {
+func (_m *SSMAPI) TerminateSessionWithContext(_a0 context.Context, _a1 *ssm.TerminateSessionInput, _a2 ...request.Option) (*ssm.TerminateSessionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8265,7 +8421,7 @@ func (_m *SSMAPI) TerminateSessionWithContext(_a0 aws.Context, _a1 *ssm.Terminat
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.TerminateSessionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.TerminateSessionInput, ...request.Option) *ssm.TerminateSessionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.TerminateSessionInput, ...request.Option) *ssm.TerminateSessionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8274,7 +8430,7 @@ func (_m *SSMAPI) TerminateSessionWithContext(_a0 aws.Context, _a1 *ssm.Terminat
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.TerminateSessionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.TerminateSessionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8380,7 +8536,7 @@ func (_m *SSMAPI) UpdateAssociationStatusRequest(_a0 *ssm.UpdateAssociationStatu
 }
 
 // UpdateAssociationStatusWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateAssociationStatusWithContext(_a0 aws.Context, _a1 *ssm.UpdateAssociationStatusInput, _a2 ...request.Option) (*ssm.UpdateAssociationStatusOutput, error) {
+func (_m *SSMAPI) UpdateAssociationStatusWithContext(_a0 context.Context, _a1 *ssm.UpdateAssociationStatusInput, _a2 ...request.Option) (*ssm.UpdateAssociationStatusOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8391,7 +8547,7 @@ func (_m *SSMAPI) UpdateAssociationStatusWithContext(_a0 aws.Context, _a1 *ssm.U
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateAssociationStatusOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateAssociationStatusInput, ...request.Option) *ssm.UpdateAssociationStatusOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateAssociationStatusInput, ...request.Option) *ssm.UpdateAssociationStatusOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8400,7 +8556,7 @@ func (_m *SSMAPI) UpdateAssociationStatusWithContext(_a0 aws.Context, _a1 *ssm.U
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateAssociationStatusInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateAssociationStatusInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8410,7 +8566,7 @@ func (_m *SSMAPI) UpdateAssociationStatusWithContext(_a0 aws.Context, _a1 *ssm.U
 }
 
 // UpdateAssociationWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateAssociationWithContext(_a0 aws.Context, _a1 *ssm.UpdateAssociationInput, _a2 ...request.Option) (*ssm.UpdateAssociationOutput, error) {
+func (_m *SSMAPI) UpdateAssociationWithContext(_a0 context.Context, _a1 *ssm.UpdateAssociationInput, _a2 ...request.Option) (*ssm.UpdateAssociationOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8421,7 +8577,7 @@ func (_m *SSMAPI) UpdateAssociationWithContext(_a0 aws.Context, _a1 *ssm.UpdateA
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateAssociationOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateAssociationInput, ...request.Option) *ssm.UpdateAssociationOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateAssociationInput, ...request.Option) *ssm.UpdateAssociationOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8430,7 +8586,7 @@ func (_m *SSMAPI) UpdateAssociationWithContext(_a0 aws.Context, _a1 *ssm.UpdateA
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateAssociationInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateAssociationInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8511,7 +8667,7 @@ func (_m *SSMAPI) UpdateDocumentDefaultVersionRequest(_a0 *ssm.UpdateDocumentDef
 }
 
 // UpdateDocumentDefaultVersionWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateDocumentDefaultVersionWithContext(_a0 aws.Context, _a1 *ssm.UpdateDocumentDefaultVersionInput, _a2 ...request.Option) (*ssm.UpdateDocumentDefaultVersionOutput, error) {
+func (_m *SSMAPI) UpdateDocumentDefaultVersionWithContext(_a0 context.Context, _a1 *ssm.UpdateDocumentDefaultVersionInput, _a2 ...request.Option) (*ssm.UpdateDocumentDefaultVersionOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8522,7 +8678,7 @@ func (_m *SSMAPI) UpdateDocumentDefaultVersionWithContext(_a0 aws.Context, _a1 *
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateDocumentDefaultVersionOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateDocumentDefaultVersionInput, ...request.Option) *ssm.UpdateDocumentDefaultVersionOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateDocumentDefaultVersionInput, ...request.Option) *ssm.UpdateDocumentDefaultVersionOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8531,7 +8687,7 @@ func (_m *SSMAPI) UpdateDocumentDefaultVersionWithContext(_a0 aws.Context, _a1 *
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateDocumentDefaultVersionInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateDocumentDefaultVersionInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8566,7 +8722,7 @@ func (_m *SSMAPI) UpdateDocumentRequest(_a0 *ssm.UpdateDocumentInput) (*request.
 }
 
 // UpdateDocumentWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateDocumentWithContext(_a0 aws.Context, _a1 *ssm.UpdateDocumentInput, _a2 ...request.Option) (*ssm.UpdateDocumentOutput, error) {
+func (_m *SSMAPI) UpdateDocumentWithContext(_a0 context.Context, _a1 *ssm.UpdateDocumentInput, _a2 ...request.Option) (*ssm.UpdateDocumentOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8577,7 +8733,7 @@ func (_m *SSMAPI) UpdateDocumentWithContext(_a0 aws.Context, _a1 *ssm.UpdateDocu
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateDocumentOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateDocumentInput, ...request.Option) *ssm.UpdateDocumentOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateDocumentInput, ...request.Option) *ssm.UpdateDocumentOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8586,7 +8742,7 @@ func (_m *SSMAPI) UpdateDocumentWithContext(_a0 aws.Context, _a1 *ssm.UpdateDocu
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateDocumentInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateDocumentInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8692,7 +8848,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTargetRequest(_a0 *ssm.UpdateMaintenanc
 }
 
 // UpdateMaintenanceWindowTargetWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateMaintenanceWindowTargetWithContext(_a0 aws.Context, _a1 *ssm.UpdateMaintenanceWindowTargetInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowTargetOutput, error) {
+func (_m *SSMAPI) UpdateMaintenanceWindowTargetWithContext(_a0 context.Context, _a1 *ssm.UpdateMaintenanceWindowTargetInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowTargetOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8703,7 +8859,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTargetWithContext(_a0 aws.Context, _a1 
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateMaintenanceWindowTargetOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateMaintenanceWindowTargetInput, ...request.Option) *ssm.UpdateMaintenanceWindowTargetOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateMaintenanceWindowTargetInput, ...request.Option) *ssm.UpdateMaintenanceWindowTargetOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8712,7 +8868,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTargetWithContext(_a0 aws.Context, _a1 
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateMaintenanceWindowTargetInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateMaintenanceWindowTargetInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8770,7 +8926,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTaskRequest(_a0 *ssm.UpdateMaintenanceW
 }
 
 // UpdateMaintenanceWindowTaskWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *ssm.UpdateMaintenanceWindowTaskInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowTaskOutput, error) {
+func (_m *SSMAPI) UpdateMaintenanceWindowTaskWithContext(_a0 context.Context, _a1 *ssm.UpdateMaintenanceWindowTaskInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowTaskOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8781,7 +8937,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *s
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateMaintenanceWindowTaskOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateMaintenanceWindowTaskInput, ...request.Option) *ssm.UpdateMaintenanceWindowTaskOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateMaintenanceWindowTaskInput, ...request.Option) *ssm.UpdateMaintenanceWindowTaskOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8790,7 +8946,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *s
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateMaintenanceWindowTaskInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateMaintenanceWindowTaskInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8800,7 +8956,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowTaskWithContext(_a0 aws.Context, _a1 *s
 }
 
 // UpdateMaintenanceWindowWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.UpdateMaintenanceWindowInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowOutput, error) {
+func (_m *SSMAPI) UpdateMaintenanceWindowWithContext(_a0 context.Context, _a1 *ssm.UpdateMaintenanceWindowInput, _a2 ...request.Option) (*ssm.UpdateMaintenanceWindowOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8811,7 +8967,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.U
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateMaintenanceWindowOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateMaintenanceWindowInput, ...request.Option) *ssm.UpdateMaintenanceWindowOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateMaintenanceWindowInput, ...request.Option) *ssm.UpdateMaintenanceWindowOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8820,7 +8976,7 @@ func (_m *SSMAPI) UpdateMaintenanceWindowWithContext(_a0 aws.Context, _a1 *ssm.U
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateMaintenanceWindowInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateMaintenanceWindowInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8878,7 +9034,7 @@ func (_m *SSMAPI) UpdateManagedInstanceRoleRequest(_a0 *ssm.UpdateManagedInstanc
 }
 
 // UpdateManagedInstanceRoleWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdateManagedInstanceRoleWithContext(_a0 aws.Context, _a1 *ssm.UpdateManagedInstanceRoleInput, _a2 ...request.Option) (*ssm.UpdateManagedInstanceRoleOutput, error) {
+func (_m *SSMAPI) UpdateManagedInstanceRoleWithContext(_a0 context.Context, _a1 *ssm.UpdateManagedInstanceRoleInput, _a2 ...request.Option) (*ssm.UpdateManagedInstanceRoleOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8889,7 +9045,7 @@ func (_m *SSMAPI) UpdateManagedInstanceRoleWithContext(_a0 aws.Context, _a1 *ssm
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdateManagedInstanceRoleOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdateManagedInstanceRoleInput, ...request.Option) *ssm.UpdateManagedInstanceRoleOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateManagedInstanceRoleInput, ...request.Option) *ssm.UpdateManagedInstanceRoleOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8898,7 +9054,7 @@ func (_m *SSMAPI) UpdateManagedInstanceRoleWithContext(_a0 aws.Context, _a1 *ssm
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdateManagedInstanceRoleInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateManagedInstanceRoleInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
@@ -8956,7 +9112,7 @@ func (_m *SSMAPI) UpdatePatchBaselineRequest(_a0 *ssm.UpdatePatchBaselineInput) 
 }
 
 // UpdatePatchBaselineWithContext provides a mock function with given fields: _a0, _a1, _a2
-func (_m *SSMAPI) UpdatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.UpdatePatchBaselineInput, _a2 ...request.Option) (*ssm.UpdatePatchBaselineOutput, error) {
+func (_m *SSMAPI) UpdatePatchBaselineWithContext(_a0 context.Context, _a1 *ssm.UpdatePatchBaselineInput, _a2 ...request.Option) (*ssm.UpdatePatchBaselineOutput, error) {
 	_va := make([]interface{}, len(_a2))
 	for _i := range _a2 {
 		_va[_i] = _a2[_i]
@@ -8967,7 +9123,7 @@ func (_m *SSMAPI) UpdatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Updat
 	ret := _m.Called(_ca...)
 
 	var r0 *ssm.UpdatePatchBaselineOutput
-	if rf, ok := ret.Get(0).(func(aws.Context, *ssm.UpdatePatchBaselineInput, ...request.Option) *ssm.UpdatePatchBaselineOutput); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdatePatchBaselineInput, ...request.Option) *ssm.UpdatePatchBaselineOutput); ok {
 		r0 = rf(_a0, _a1, _a2...)
 	} else {
 		if ret.Get(0) != nil {
@@ -8976,7 +9132,85 @@ func (_m *SSMAPI) UpdatePatchBaselineWithContext(_a0 aws.Context, _a1 *ssm.Updat
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(aws.Context, *ssm.UpdatePatchBaselineInput, ...request.Option) error); ok {
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdatePatchBaselineInput, ...request.Option) error); ok {
+		r1 = rf(_a0, _a1, _a2...)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UpdateServiceSetting provides a mock function with given fields: _a0
+func (_m *SSMAPI) UpdateServiceSetting(_a0 *ssm.UpdateServiceSettingInput) (*ssm.UpdateServiceSettingOutput, error) {
+	ret := _m.Called(_a0)
+
+	var r0 *ssm.UpdateServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(*ssm.UpdateServiceSettingInput) *ssm.UpdateServiceSettingOutput); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.UpdateServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(*ssm.UpdateServiceSettingInput) error); ok {
+		r1 = rf(_a0)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// UpdateServiceSettingRequest provides a mock function with given fields: _a0
+func (_m *SSMAPI) UpdateServiceSettingRequest(_a0 *ssm.UpdateServiceSettingInput) (*request.Request, *ssm.UpdateServiceSettingOutput) {
+	ret := _m.Called(_a0)
+
+	var r0 *request.Request
+	if rf, ok := ret.Get(0).(func(*ssm.UpdateServiceSettingInput) *request.Request); ok {
+		r0 = rf(_a0)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*request.Request)
+		}
+	}
+
+	var r1 *ssm.UpdateServiceSettingOutput
+	if rf, ok := ret.Get(1).(func(*ssm.UpdateServiceSettingInput) *ssm.UpdateServiceSettingOutput); ok {
+		r1 = rf(_a0)
+	} else {
+		if ret.Get(1) != nil {
+			r1 = ret.Get(1).(*ssm.UpdateServiceSettingOutput)
+		}
+	}
+
+	return r0, r1
+}
+
+// UpdateServiceSettingWithContext provides a mock function with given fields: _a0, _a1, _a2
+func (_m *SSMAPI) UpdateServiceSettingWithContext(_a0 context.Context, _a1 *ssm.UpdateServiceSettingInput, _a2 ...request.Option) (*ssm.UpdateServiceSettingOutput, error) {
+	_va := make([]interface{}, len(_a2))
+	for _i := range _a2 {
+		_va[_i] = _a2[_i]
+	}
+	var _ca []interface{}
+	_ca = append(_ca, _a0, _a1)
+	_ca = append(_ca, _va...)
+	ret := _m.Called(_ca...)
+
+	var r0 *ssm.UpdateServiceSettingOutput
+	if rf, ok := ret.Get(0).(func(context.Context, *ssm.UpdateServiceSettingInput, ...request.Option) *ssm.UpdateServiceSettingOutput); ok {
+		r0 = rf(_a0, _a1, _a2...)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*ssm.UpdateServiceSettingOutput)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, *ssm.UpdateServiceSettingInput, ...request.Option) error); ok {
 		r1 = rf(_a0, _a1, _a2...)
 	} else {
 		r1 = ret.Error(1)
