@@ -4,14 +4,13 @@ require (
 	cloud.google.com/go v0.31.0 // indirect
 	github.com/ErikDubbelboer/gspt v0.0.0-20180711091504-e39e726e09cc // indirect
 	github.com/aws/aws-lambda-go v1.6.0
-	github.com/aws/aws-sdk-go v1.15.80
+	github.com/aws/aws-sdk-go v1.17.14
 	github.com/buildkite/agent v3.5.3+incompatible
 	github.com/buildkite/interpolate v0.0.0-20180215132703-c1c376f870d2 // indirect
 	github.com/buildkite/shellwords v0.0.0-20180315110454-59467a9b8e10 // indirect
 	github.com/buildkite/yaml v2.1.0+incompatible // indirect
 	github.com/denisbrodbeck/machineid v1.0.0 // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
-	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/kelseyhightower/envconfig v1.3.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/kr/pty v1.1.3 // indirect

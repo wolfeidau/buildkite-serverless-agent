@@ -30,14 +30,15 @@ func main() {
 
 	sess := session.Must(session.NewSession())
 
-	bkw := handlers.New(cfg, sess, bk.NewAgentAPI())
-
 	switch cfg.StepHandler {
-	case "check-job":
-		lambda.Start(bkw.HandlerCheckJob)
 	case "submit-job":
-		lambda.Start(bkw.HandlerSubmitJob)
+		sh := handlers.NewSubmitJobHandler(cfg, bk.NewAgentAPI())
+		lambda.Start(sh.HandlerSubmitJob)
+	case "check-job":
+		bkw := handlers.NewCheckJobHandler(cfg, sess, bk.NewAgentAPI())
+		lambda.Start(bkw.HandlerCheckJob)
 	case "complete-job":
+		bkw := handlers.NewCompletedJobHandler(cfg, sess, bk.NewAgentAPI())
 		lambda.Start(bkw.HandlerCompletedJob)
 	default:
 		log.WithField("StepHandler", cfg.StepHandler).Fatal("failed to locate job handler")
