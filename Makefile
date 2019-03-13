@@ -3,11 +3,9 @@ ENV ?= dev
 ENV_NO ?= 1
 DEPLOYER_NAME ?= default
 
-VERSION := 1.1.0
+VERSION := 1.3.0
 BUILD_VERSION := $(shell git rev-parse --short HEAD)
 GOPKG := $(shell go list -m)
-
-SOURCE_FILES?=$$(go list ./... | grep -v /vendor/ | grep -v mocks)
 
 LDFLAGS := -ldflags="-s -w -X '$(GOPKG)/pkg/bk.Version=$(VERSION)' -X '$(GOPKG)/pkg/bk.BuildVersion=$(BUILD_VERSION)'"
 
