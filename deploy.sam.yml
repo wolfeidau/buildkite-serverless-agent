@@ -16,9 +16,19 @@ Resources:
 
   SourceBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+        - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
@@ -403,6 +413,74 @@ Resources:
             - !GetAtt CheckJobFunction.Arn
             - !GetAtt CompleteJobFunction.Arn
 
+  AgentFunctionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: "AgentFunctionErrors"
+      AlarmDescription: "Alarm if lambda errors out too many times"
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+      - Name: "FunctionName"
+        Value: !Ref AgentFunction
+      Statistic: "Sum"
+      ComparisonOperator: "GreaterThanThreshold"
+      Threshold: 0
+      EvaluationPeriods: 5
+      Period: 60
+      TreatMissingData: "breaching"
+
+  SubmitJobFunctionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: "SubmitJobFunctionErrors"
+      AlarmDescription: "Alarm if lambda errors out too many times"
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+      - Name: "FunctionName"
+        Value: !Ref SubmitJobFunction
+      Statistic: "Sum"
+      ComparisonOperator: "GreaterThanThreshold"
+      Threshold: 0
+      EvaluationPeriods: 5
+      Period: 60
+      TreatMissingData: "notBreaching"
+
+  CheckJobFunctionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: "CheckJobFunctionErrors"
+      AlarmDescription: "Alarm if lambda errors out too many times"
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+      - Name: "FunctionName"
+        Value: !Ref CheckJobFunction
+      Statistic: "Sum"
+      ComparisonOperator: "GreaterThanThreshold"
+      Threshold: 0
+      EvaluationPeriods: 5
+      Period: 60
+      TreatMissingData: "notBreaching"
+
+  CompleteJobFunctionAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: "CompleteJobFunctionErrors"
+      AlarmDescription: "Alarm if lambda errors out too many times"
+      Namespace: "AWS/Lambda"
+      MetricName: "Errors"
+      Dimensions:
+      - Name: "FunctionName"
+        Value: !Ref CompleteJobFunction
+      Statistic: "Sum"
+      ComparisonOperator: "GreaterThanThreshold"
+      Threshold: 0
+      EvaluationPeriods: 5
+      Period: 60
+      TreatMissingData: "notBreaching"
+
 Outputs:
   AgentFunctionArn:
     Value: !GetAtt AgentFunction.Arn
@@ -436,3 +514,19 @@ Outputs:
     Value: !Ref BuildkiteProject
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
+  AgentFunctionAlarm:
+    Value: !Ref AgentFunctionAlarm
+    Export:
+      Name: !Sub "${AWS::StackName}-AgentFunctionAlarm"
+  SubmitJobFunctionAlarm:
+    Value: !Ref SubmitJobFunctionAlarm
+    Export:
+      Name: !Sub "${AWS::StackName}-SubmitJobFunctionAlarm"
+  CheckJobFunctionAlarm:
+    Value: !Ref CheckJobFunctionAlarm
+    Export:
+      Name: !Sub "${AWS::StackName}-CheckJobFunctionAlarm"
+  CompleteJobFunctionAlarm:
+    Value: !Ref CompleteJobFunctionAlarm
+    Export:
+      Name: !Sub "${AWS::StackName}-CompleteJobFunctionAlarm"
