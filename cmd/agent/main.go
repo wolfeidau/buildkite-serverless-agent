@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/onrik/logrus/filename"
 	log "github.com/sirupsen/logrus"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/agentpool"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/handlers"
@@ -30,7 +31,22 @@ func main() {
 
 	sess := session.Must(session.NewSession())
 
-	switch cfg.StepHandler {
+	switch cfg.LambdaHandler {
+	case "agent-poll":
+		agentPool := agentpool.New(cfg, sess, bk.NewAgentAPI())
+
+		// configure a 30 second deadline for the register operation just to make sure
+		// this doesn't timeout or block. I have added this to ensure changes to the 30 second deadline
+		// in the buildkite http client don't impact this service.
+		deadline := time.Now().Add(30 * time.Second)
+		err = agentPool.RegisterAgents(deadline)
+		if err != nil {
+			log.WithError(err).Fatal("failed to register agents")
+		}
+
+		bkw := agentpool.NewBuildkiteWorker(agentPool)
+
+		lambda.Start(bkw.Handler)
 	case "submit-job":
 		sh := handlers.NewSubmitJobHandler(cfg, bk.NewAgentAPI())
 		lambda.Start(sh.HandlerSubmitJob)
@@ -41,6 +57,6 @@ func main() {
 		bkw := handlers.NewCompletedJobHandler(cfg, sess, bk.NewAgentAPI())
 		lambda.Start(bkw.HandlerCompletedJob)
 	default:
-		log.WithField("StepHandler", cfg.StepHandler).Fatal("failed to locate job handler")
+		log.WithField("LambdaHandler", cfg.LambdaHandler).Fatal("failed to locate job handler")
 	}
 }

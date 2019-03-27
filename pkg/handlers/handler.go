@@ -4,20 +4,20 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"strconv"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/codebuild"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
 )
 
-const codebuildProjectPrefix = "BuildkiteProject"
+const (
+	codebuildProjectPrefix = "BuildkiteProject"
+)
 
 func getBKClient(agentName string, cfg *config.Config, paramStore params.Store) (string, *api.Agent, error) {
 	agentSSMConfigKey := fmt.Sprintf("/%s/%s/%s", cfg.EnvironmentName, cfg.EnvironmentNumber, agentName)
@@ -29,27 +29,48 @@ func getBKClient(agentName string, cfg *config.Config, paramStore params.Store) 
 	return agentConfig.AccessToken, agentConfig, nil
 }
 
-func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader *cwlogs.CloudwatchLogsReader, evt *bk.WorkflowData) error {
+func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader cwlogs.LogsReader, evt *bk.WorkflowData) error {
 
-	logrus.WithFields(logrus.Fields{
-		"BuildID":   evt.BuildID,
-		"NextToken": evt.NextToken,
-	}).Info("ReadLogs")
+	req := &cwlogs.ReadLogsParams{
+		GroupName:  evt.Codebuild.LogGroupName,
+		StreamName: evt.Codebuild.LogStreamName,
+	}
 
-	nextToken, pageData, err := logsReader.ReadLogs(evt.BuildID, evt.NextToken)
+	if evt.NextToken != "" {
+		req.NextToken = aws.String(evt.NextToken)
+	}
+
+	// evt.Codebuild.BuildID, evt.NextToken
+	res, err := logsReader.ReadLogs(req)
 	if err != nil {
 		return errors.Wrap(err, "failed to finish job")
 	}
 
 	logrus.WithFields(logrus.Fields{
-		"BuildID":   evt.BuildID,
-		"ChunkLen":  len(pageData),
-		"NextToken": nextToken,
-	}).Info("ReadLogs Complete")
+		"BuildID":          evt.Codebuild.BuildID,
+		"LogGroupName":     evt.Codebuild.LogGroupName,
+		"LogStreamName":    evt.Codebuild.LogStreamName,
+		"LogLinesLen":      len(res.LogLines),
+		"CurrentNextToken": evt.NextToken,
+		"NewNextToken":     res.NextToken,
+	}).Info("ReadLogs")
 
-	if len(pageData) > 0 {
+	// The token for the next set of items in the forward direction. If you have
+	// reached the end of the stream, it will return the same token you passed in.
+	if evt.NextToken == aws.StringValue(res.NextToken) {
+		return nil
+	}
 
-		buf := bytes.NewBuffer(pageData)
+	if len(res.LogLines) > 0 {
+
+		buf := new(bytes.Buffer)
+
+		for _, logLine := range res.LogLines {
+			_, err := buf.WriteString(logLine.Message)
+			if err != nil {
+				return errors.Wrap(err, "failed to append to buffer")
+			}
+		}
 
 		p := make([]byte, evt.Job.ChunksMaxSizeBytes)
 		for {
@@ -62,7 +83,7 @@ func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader *cwlogs.Cloud
 			}
 
 			logrus.WithFields(logrus.Fields{
-				"BuildID": evt.BuildID,
+				"BuildID": evt.Codebuild.BuildID,
 				"n":       br,
 			}).Info("Read Chunk")
 
@@ -77,7 +98,7 @@ func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader *cwlogs.Cloud
 			}
 
 			logrus.WithFields(logrus.Fields{
-				"BuildID":     evt.BuildID,
+				"BuildID":     evt.Codebuild.BuildID,
 				"LogSequence": evt.LogSequence,
 				"LogBytes":    evt.LogBytes,
 			}).Info("Wrote Chunk")
@@ -87,52 +108,8 @@ func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader *cwlogs.Cloud
 			evt.LogBytes += br
 		}
 
-	}
-
-	evt.NextToken = nextToken
-
-	return nil
-}
-
-func convertEnvVars(env map[string]string) []*codebuild.EnvironmentVariable {
-
-	codebuildEnv := make([]*codebuild.EnvironmentVariable, 0)
-
-	for k, v := range env {
-		codebuildEnv = append(codebuildEnv, &codebuild.EnvironmentVariable{
-			Name:  aws.String(k),
-			Value: aws.String(v),
-		})
-	}
-
-	return codebuildEnv
-}
-
-type overrides struct {
-	logger logrus.FieldLogger
-	env    map[string]string
-}
-
-func (ov *overrides) String(key string) *string {
-	if val, ok := ov.env[key]; ok {
-		ov.logger.Infof("updating %s to %s", key, val)
-		return aws.String(val)
-	}
-
-	return nil
-}
-
-func (ov *overrides) Bool(key string) *bool {
-	if val, ok := ov.env[key]; !ok {
-
-		b, err := strconv.ParseBool(val)
-		if err != nil {
-			ov.logger.Warnf("failed to update %s to %s", key, val)
-			return nil
-		}
-
-		ov.logger.Infof("updating %s to %t", key, b)
-		return aws.Bool(b)
+		// only update the token if events came through
+		evt.NextToken = aws.StringValue(res.NextToken)
 	}
 
 	return nil

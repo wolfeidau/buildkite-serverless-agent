@@ -183,6 +183,21 @@ func (ap *AgentPool) poll(agentInstance *AgentInstance) error {
 		return nil // we are done
 	}
 
+	log.WithField("state", ping.Job.State).Info("Job received")
+
+	if ping.Job.State == "canceling" {
+
+		ping.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
+		ping.Job.ExitStatus = "-99"
+
+		err := ap.buildkiteAPI.FinishJob(agentConfig.AccessToken, ping.Job)
+		if err != nil {
+			return errors.Wrap(err, "failed to finish canceling job")
+		}
+
+		return nil // we are done
+	}
+
 	count, err := ap.executor.RunningForAgent(agentInstance.Name())
 	if err != nil {
 		return errors.Wrap(err, "failed to list executions")

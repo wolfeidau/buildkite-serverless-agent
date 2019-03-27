@@ -5,14 +5,13 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
-	"github.com/aws/aws-sdk-go/service/codebuild"
-	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
+	"github.com/wolfeidau/aws-launch/pkg/launcher/codebuild"
+	"github.com/wolfeidau/aws-launch/pkg/launcher/service"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
 )
 
@@ -22,23 +21,24 @@ type CheckJobHandler struct {
 	sess         *session.Session
 	paramStore   params.Store
 	buildkiteAPI bk.API
-	codebuildSvc codebuildiface.CodeBuildAPI
-	logsReader   *cwlogs.CloudwatchLogsReader
+	lch          codebuild.LauncherAPI
+	logsReader   cwlogs.LogsReader
 }
 
 // NewCheckJobHandler create a new handler
 func NewCheckJobHandler(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *CheckJobHandler {
 
-	codebuildSvc := codebuild.New(sess)
-	logsReader := cwlogs.NewCloudwatchLogsReader(cfg, cloudwatchlogs.New(sess))
+	config := aws.NewConfig()
+	lch := service.New(config).Codebuild
+	logsReader := cwlogs.NewCloudwatchLogsReader(config)
 
 	return &CheckJobHandler{
 		cfg:          cfg,
 		sess:         sess,
 		paramStore:   params.New(cfg, sess),
 		buildkiteAPI: buildkiteAPI,
-		codebuildSvc: codebuildSvc,
 		logsReader:   logsReader,
+		lch:          lch,
 	}
 }
 
@@ -47,20 +47,19 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 
 	logrus.Infof("%+v", evt)
 
-	logrus.WithField("projectName", evt.CodeBuildProjectName).Info("Getting build status")
+	logrus.WithField("projectName", evt.Codebuild.ProjectName).Info("Getting build status")
 
-	res, err := ch.codebuildSvc.BatchGetBuilds(&codebuild.BatchGetBuildsInput{
-		Ids: []*string{aws.String(evt.BuildID)},
+	getStatus, err := ch.lch.GetTaskStatus(&codebuild.GetTaskStatusParams{
+		ID: evt.Codebuild.BuildID,
 	})
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to start codebuild job")
+		return nil, errors.Wrap(err, "failed to retrieve codebuild job status")
 	}
 
-	if len(res.Builds) != 1 {
-		return nil, errors.Errorf("failed to locate build: %s", evt.BuildID)
+	err = evt.UpdateCodebuildStatus(getStatus.ID, getStatus.BuildStatus, getStatus.TaskStatus)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to update codebuild status")
 	}
-
-	evt.BuildStatus = aws.StringValue(res.Builds[0].BuildStatus)
 
 	token, _, err := getBKClient(evt.AgentName, ch.cfg, ch.paramStore)
 	if err != nil {
@@ -79,9 +78,10 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 
 	logrus.WithFields(
 		logrus.Fields{
-			"projectName":     evt.CodeBuildProjectName,
-			"id":              evt.BuildID,
-			"CodebuildStatus": aws.StringValue(res.Builds[0].BuildStatus),
+			"projectName":     evt.Codebuild.ProjectName,
+			"id":              evt.Codebuild.BuildID,
+			"CodebuildStatus": getStatus.BuildStatus,
+			"TaskStatus":      getStatus.TaskStatus,
 			"buildkiteStatus": jobStatus.State,
 		},
 	).Info("checked build")
@@ -89,8 +89,8 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 	// if job status is canceled then we need to stop codebuild and mark the job as complete
 	switch jobStatus.State {
 	case "canceled":
-		stopRes, err := ch.codebuildSvc.StopBuild(&codebuild.StopBuildInput{
-			Id: res.Builds[0].Id,
+		stopRes, err := ch.lch.StopTask(&codebuild.StopTaskParams{
+			ID: getStatus.ID,
 		})
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to stop codebuild job")
@@ -98,14 +98,17 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 
 		logrus.WithFields(
 			logrus.Fields{
-				"projectName":     evt.CodeBuildProjectName,
-				"id":              evt.BuildID,
-				"CodebuildStatus": aws.StringValue(stopRes.Build.BuildStatus),
+				"projectName":     evt.Codebuild.ProjectName,
+				"id":              evt.Codebuild.BuildID,
+				"CodebuildStatus": stopRes.BuildStatus,
 				"buildkiteStatus": jobStatus.State,
 			},
 		).Info("stopped canceled build")
 
-		evt.BuildStatus = aws.StringValue(stopRes.Build.BuildStatus)
+		err = evt.UpdateCodebuildStatus(getStatus.ID, stopRes.BuildStatus, stopRes.TaskStatus)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to update codebuild status")
+		}
 	}
 
 	return evt, nil

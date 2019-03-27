@@ -15,13 +15,16 @@ var (
 
 // Config for the environment
 type Config struct {
-	StepHandler               string `envconfig:"STEP_HANDLER"`
-	AwsRegion                 string `envconfig:"AWS_REGION"`
-	EnvironmentName           string `envconfig:"ENVIRONMENT_NAME"`
-	EnvironmentNumber         string `envconfig:"ENVIRONMENT_NUMBER"`
-	SfnCodebuildJobMonitorArn string `envconfig:"SFN_CODEBUILD_JOB_MONITOR_ARN"`
-	SfnAgentPollerArn         string `envconfig:"SFN_AGENT_POLLER_ARN"`
-	AgentPoolSize             int    `envconfig:"AGENT_POOL_SIZE"`
+	LambdaHandler               string `envconfig:"LAMBDA_HANDLER"`
+	AwsRegion                   string `envconfig:"AWS_REGION"`
+	EnvironmentName             string `envconfig:"ENVIRONMENT_NAME"`
+	EnvironmentNumber           string `envconfig:"ENVIRONMENT_NUMBER"`
+	SfnCodebuildJobMonitorArn   string `envconfig:"SFN_CODEBUILD_JOB_MONITOR_ARN"`
+	SfnAgentPollerArn           string `envconfig:"SFN_AGENT_POLLER_ARN"`
+	AgentPoolSize               int    `envconfig:"AGENT_POOL_SIZE"`
+	DefaultDockerImage          string `envconfig:"DEFAULT_DOCKER_IMAGE"`
+	DefaultCodebuildProjectRole string `envconfig:"DEFAULT_CODEBUILD_PROJECT_ROLE"`
+	DefineAndStart              string `envconfig:"DEFINE_AND_START"`
 }
 
 // Validate checks the presence of the loaded template path on the filesystem
