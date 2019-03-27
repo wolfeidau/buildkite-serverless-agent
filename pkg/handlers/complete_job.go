@@ -2,17 +2,16 @@ package handlers
 
 import (
 	"context"
-	"time"
 
+	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
-	"github.com/aws/aws-sdk-go/service/codebuild"
-	"github.com/aws/aws-sdk-go/service/codebuild/codebuildiface"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
+	"github.com/wolfeidau/aws-launch/pkg/launcher/codebuild"
+	"github.com/wolfeidau/aws-launch/pkg/launcher/service"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
 )
 
@@ -22,23 +21,24 @@ type CompletedJobHandler struct {
 	sess         *session.Session
 	paramStore   params.Store
 	buildkiteAPI bk.API
-	codebuildSvc codebuildiface.CodeBuildAPI
-	logsReader   *cwlogs.CloudwatchLogsReader
+	logsReader   cwlogs.LogsReader
+	lch          codebuild.LauncherAPI
 }
 
 // NewCompletedJobHandler create a new handler
 func NewCompletedJobHandler(cfg *config.Config, sess *session.Session, buildkiteAPI bk.API) *CompletedJobHandler {
 
-	codebuildSvc := codebuild.New(sess)
-	logsReader := cwlogs.NewCloudwatchLogsReader(cfg, cloudwatchlogs.New(sess))
+	logsReader := cwlogs.NewCloudwatchLogsReader()
+	config := aws.NewConfig()
+	lch := service.New(config).Codebuild
 
 	return &CompletedJobHandler{
 		cfg:          cfg,
 		sess:         sess,
 		paramStore:   params.New(cfg, sess),
 		buildkiteAPI: buildkiteAPI,
-		codebuildSvc: codebuildSvc,
 		logsReader:   logsReader,
+		lch:          lch,
 	}
 }
 
@@ -50,21 +50,10 @@ func (bkw *CompletedJobHandler) HandlerCompletedJob(ctx context.Context, evt *bk
 		return nil, errors.Wrap(err, "failed to build buildkite client")
 	}
 
-	evt.Job.FinishedAt = time.Now().UTC().Format(time.RFC3339Nano)
-
-	switch evt.BuildStatus {
-	case codebuild.StatusTypeStopped:
-		evt.Job.ExitStatus = "-3"
-	case codebuild.StatusTypeFailed:
-		evt.Job.ExitStatus = "-2"
-	case codebuild.StatusTypeSucceeded:
-		evt.Job.ExitStatus = "0"
-	default:
-		logrus.WithField("build_status", evt.BuildStatus).Error("Codebuild Job failed.")
-		evt.Job.ExitStatus = "-4"
+	err = evt.UpdateJobExitCode()
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to update job exit code")
 	}
-
-	evt.Job.ChunksFailedCount = 0
 
 	err = bkw.buildkiteAPI.FinishJob(token, evt.Job)
 	if err != nil {
@@ -76,6 +65,16 @@ func (bkw *CompletedJobHandler) HandlerCompletedJob(ctx context.Context, evt *bk
 	err = uploadLogChunks(token, bkw.buildkiteAPI, bkw.logsReader, evt)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to upload log chunks")
+	}
+
+	// are we using the 2.x model of projects on demand?
+	if bkw.cfg.DefineAndStart == "true" {
+		_, err = bkw.lch.CleanupTask(&codebuild.CleanupTaskParams{
+			ProjectName: evt.Codebuild.ProjectName,
+		})
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to cleanup task")
+		}
 	}
 
 	return evt, nil

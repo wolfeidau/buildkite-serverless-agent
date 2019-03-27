@@ -1,8 +1,6 @@
 .envrc
 handler.zip
 /agent
-/agent-poll
-/step-handler
 deploy.out.yml
 buildkite.zip
 buildkite-deployer.zip

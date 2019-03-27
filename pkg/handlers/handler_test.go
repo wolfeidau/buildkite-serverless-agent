@@ -4,14 +4,14 @@ import (
 	"testing"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/service/cloudwatchlogs"
 	"github.com/buildkite/agent/api"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
+	launchmocks "github.com/wolfeidau/aws-launch/mocks"
+	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/cwlogs"
 )
 
 func TestGetBKClient(t *testing.T) {
@@ -37,41 +37,39 @@ func Test_uploadLogChunks(t *testing.T) {
 	buildkiteAPI := &mocks.API{}
 	buildkiteAPI.On("ChunksUpload", "token123", "abc123", mock.AnythingOfType("*api.Chunk")).Return(nil)
 
-	cwlGetOutput := &cloudwatchlogs.GetLogEventsOutput{
-		NextForwardToken: aws.String("f/34139340658027874184690460781927772298499668124394061824"),
-		Events: []*cloudwatchlogs.OutputLogEvent{
-			&cloudwatchlogs.OutputLogEvent{
-				Message: aws.String("3413934065802787418469046078192777229849966812439406182434139340658027874184690460781927772298499668124394061824"),
+	logsReader := &launchmocks.LogsReader{}
+
+	readLogsRes := &cwlogs.ReadLogsResult{
+		NextToken: aws.String("f/34139340658027874184690460781927772298499668124394061824"),
+		LogLines: []*cwlogs.LogLine{
+			&cwlogs.LogLine{
+				Message: "3413934065802787418469046078192777229849966812439406182434139340658027874184690460781927772298499668124394061824",
 			},
-			&cloudwatchlogs.OutputLogEvent{
-				Message: aws.String("test"),
+			&cwlogs.LogLine{
+				Message: "test",
 			},
 		},
 	}
 
-	cwlogsSvc := &mocks.CloudWatchLogsAPI{}
-	cwlogsSvc.On("GetLogEvents", &cloudwatchlogs.GetLogEventsInput{
-		LogGroupName:  aws.String("/aws/codebuild/buildkite-dev-1"),
-		LogStreamName: aws.String("58df10ab-9dc5-4c7f-b0c3-6a02b63306ba"),
-		NextToken:     aws.String("nextToken"),
-	}).Return(cwlGetOutput, nil)
-
-	cfg := &config.Config{
-		EnvironmentName:   "dev",
-		EnvironmentNumber: "1",
-	}
+	logsReader.On("ReadLogs", &cwlogs.ReadLogsParams{
+		GroupName:  "/aws/codebuild/buildkite-dev-1",
+		StreamName: "58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+		NextToken:  aws.String("nextToken"),
+	}).Return(readLogsRes, nil)
 
 	evt := &bk.WorkflowData{
 		AgentName: "buildkite",
-		BuildID:   "buildkite-dev-1:58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+		Codebuild: &bk.CodebuildWorkflowData{
+			BuildID:       "buildkite-dev-1:58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+			LogGroupName:  "/aws/codebuild/buildkite-dev-1",
+			LogStreamName: "58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+		},
 		Job: &api.Job{
 			ID:                 "abc123",
 			ChunksMaxSizeBytes: 102400,
 		},
 		NextToken: "nextToken",
 	}
-
-	logsReader := cwlogs.NewCloudwatchLogsReader(cfg, cwlogsSvc)
 
 	err := uploadLogChunks("token123", buildkiteAPI, logsReader, evt)
 	require.Nil(t, err)

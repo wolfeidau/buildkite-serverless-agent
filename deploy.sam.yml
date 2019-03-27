@@ -5,12 +5,26 @@ Parameters:
     EnvironmentName:
       Type: String
       Default: "dev"
+      Description: "The name of the environment used to tag and name resources"
     EnvironmentNumber:
       Type: String
       Default: "1"
+      Description: "The number of the environment used to tag and name resources"
     AgentPoolSize:
       Type: Number
       Default: 5
+      Description: "The number of virtual buildkite agents to register"
+    DefaultDockerImage:
+      Type: String
+      Default: "wolfeidau/codebuild-docker-buildkite:17.09.0"
+      Description: "The name of the default codebuild docker image used to run jobs, MUST have buildkite installed"
+    DefineAndStart:
+      Type: String
+      Default: "false"
+      AllowedValues: ["true", "false"]
+
+Conditions:
+  DefineAndStartDisabled: !Equals [ !Ref DefineAndStart, "false" ]
 
 Resources:
 
@@ -32,6 +46,7 @@ Resources:
 
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
+    Condition: DefineAndStartDisabled
     Properties:
       Artifacts:
         Type: no_artifacts
@@ -87,7 +102,7 @@ Resources:
             - logs:CreateLogStream
             - logs:PutLogEvents
             Resource:
-            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
+            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
           - Effect: Allow
             Action:
             - s3:PutObject
@@ -165,7 +180,7 @@ Resources:
   AgentFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: agent-poll
+      Handler: agent
       Timeout: 60
       MemorySize: 256
       Runtime: go1.x
@@ -173,6 +188,7 @@ Resources:
       Role: !Sub ${AgentFunctionRole.Arn}
       Environment:   
         Variables:
+          LAMBDA_HANDLER: "agent-poll"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
@@ -222,26 +238,25 @@ Resources:
                 - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:*"
               - Effect: Allow
                 Action: 
-                - 'codebuild:BatchGetBuilds'
-                - 'codebuild:StartBuild'
-                - 'codebuild:StopBuild'
+                - 'codebuild:*'
                 Resource:
-                - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
+                - "*"
+              - Effect: Allow
+                Action:
+                - iam:PassRole
+                - iam:GetRole
+                Resource:
+                - !Sub "${BuildkiteCodeBuildRole.Arn}"
               - Effect: Allow
                 Action:
                 - logs:GetLogEvents
                 Resource:
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
-              - Effect: Allow
-                Action:
-                - logs:GetLogEvents
-                Resource:
-                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}*"
+                - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
 
   SubmitJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: step-handler
+      Handler: agent
       Timeout: 30
       Runtime: go1.x
       MemorySize: 256
@@ -249,16 +264,22 @@ Resources:
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
-          STEP_HANDLER: "submit-job"
+          LAMBDA_HANDLER: "submit-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
+          DEFAULT_CODEBUILD_PROJECT_ROLE:
+            Ref: BuildkiteCodeBuildRole
+          DEFINE_AND_START:
+            Ref: DefineAndStart
+          DEFAULT_DOCKER_IMAGE:
+            Ref: DefaultDockerImage
 
   CheckJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: step-handler
+      Handler: agent
       Timeout: 30
       Runtime: go1.x
       MemorySize: 256
@@ -266,16 +287,18 @@ Resources:
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
-          STEP_HANDLER: "check-job"
+          LAMBDA_HANDLER: "check-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
+          DEFINE_AND_START:
+            Ref: DefineAndStart
 
   CompleteJobFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: step-handler
+      Handler: agent
       Timeout: 30
       Runtime: go1.x
       MemorySize: 256
@@ -283,11 +306,13 @@ Resources:
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
         Variables:
-          STEP_HANDLER: "complete-job"
+          LAMBDA_HANDLER: "complete-job"
           ENVIRONMENT_NAME:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
+          DEFINE_AND_START:
+            Ref: DefineAndStart
 
   StateMachineCodebuildJobMonitor:
     Type: 'AWS::StepFunctions::StateMachine'
@@ -318,7 +343,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.build_status"
+                      "ResultPath": "$.codebuild.build_status"
                     }
                   ]
                 },
@@ -345,7 +370,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.build_status"
+                      "ResultPath": "$.codebuild.build_status"
                     }
                   ]
                 },
@@ -353,17 +378,17 @@ Resources:
                   "Type": "Choice",
                   "Choices": [
                     {
-                      "Variable": "$.build_status",
+                      "Variable": "$.codebuild.build_status",
                       "StringEquals": "STOPPED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.build_status",
+                      "Variable": "$.codebuild.build_status",
                       "StringEquals": "FAILED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.build_status",
+                      "Variable": "$.codebuild.build_status",
                       "StringEquals": "SUCCEEDED",
                       "Next": "Get Final Job Status"
                     }
@@ -512,6 +537,7 @@ Outputs:
       Name: !Sub "${AWS::StackName}-ArtifactBucket"
   BuildkiteProject:
     Value: !Ref BuildkiteProject
+    Condition: DefineAndStartDisabled
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
   AgentFunctionAlarm:

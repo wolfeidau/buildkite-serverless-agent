@@ -2,7 +2,7 @@ steps:
   - name: ":golang:"
     command: "make ci"
     env:
-      CB_IMAGE_OVERRIDE: "wolfeidau/codebuild-buildkite-golang:1.11"
+      CB_IMAGE_OVERRIDE: "wolfeidau/buildkite-golang:1.12"
       CB_COMPUTE_TYPE_OVERRIDE: "BUILD_GENERAL1_SMALL"
       CB_PRIVILEGED_MODE_OVERRIDE: "true"
       GO111MODULE: "on"
