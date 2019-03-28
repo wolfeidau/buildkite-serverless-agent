@@ -82,9 +82,11 @@ func (sh *SubmitJobHandler) HandlerSubmitJob(ctx context.Context, evt *bk.Workfl
 		return nil, errors.Wrap(err, "failed to start build in codebuild")
 	}
 
-	err = evt.UpdateCodebuildStatus(build.buildID, build.buildStatus, build.taskStatus)
+	evt.UpdateCodebuildStatus(build.buildID, build.buildStatus, build.taskStatus)
+
+	err = evt.UpdateCloudwatchLogs(build.buildID)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to update event with codebuild info")
+		return nil, errors.Wrap(err, "failed to update cloudwatch logs group and stream names")
 	}
 
 	err = sh.uploadBuildMessage(token, build.buildMessage(), evt)

@@ -95,8 +95,8 @@ func (evt *WorkflowData) UpdateCodebuildProject(buildProjectName string) {
 
 }
 
-// UpdateCodebuildStatus update the codebuild, validate the build identifier and assign the log group/stream names
-func (evt *WorkflowData) UpdateCodebuildStatus(buildID, buildStatus, taskStatus string) error {
+// UpdateCloudwatchLogs assign the log group/stream names
+func (evt *WorkflowData) UpdateCloudwatchLogs(buildID string) error {
 
 	tokens := strings.Split(buildID, ":")
 	if len(tokens) != 2 {
@@ -107,10 +107,6 @@ func (evt *WorkflowData) UpdateCodebuildStatus(buildID, buildStatus, taskStatus 
 	streamName := tokens[1]
 
 	evt.Codebuild.BuildID = buildID
-	evt.Codebuild.BuildStatus = buildStatus
-
-	// moving to the new normalised task statuses
-	evt.TaskStatus = taskStatus
 
 	// override the stream name if prefix is present caters for 2.x aws_launch based projects
 	if evt.Codebuild.LogStreamPrefix == "" {
@@ -121,9 +117,18 @@ func (evt *WorkflowData) UpdateCodebuildStatus(buildID, buildStatus, taskStatus 
 		evt.Codebuild.LogStreamName = fmt.Sprintf("%s/%s", evt.Codebuild.LogStreamPrefix, streamName)
 	}
 
-	evt.WaitTime = DefaultWaitTime
-
 	return nil
+}
+
+// UpdateCodebuildStatus assign the codebuild status
+func (evt *WorkflowData) UpdateCodebuildStatus(buildID, buildStatus, taskStatus string) {
+	evt.Codebuild.BuildID = buildID
+	evt.Codebuild.BuildStatus = buildStatus
+
+	// moving to the new normalised task statuses
+	evt.TaskStatus = taskStatus
+
+	evt.WaitTime = DefaultWaitTime
 }
 
 // UpdateBuildJobCreds update the buildkite credentials in the build job environment
