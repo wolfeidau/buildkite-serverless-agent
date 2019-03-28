@@ -88,11 +88,10 @@ func TestWorkflowData_UpdateCodebuildStatus(t *testing.T) {
 		evt *WorkflowData
 	}
 	tests := []struct {
-		name    string
-		args    args
-		fields  fields
-		want    *WorkflowData
-		wantErr bool
+		name   string
+		args   args
+		fields fields
+		want   *WorkflowData
 	}{
 		{
 			name: "check update status is correct",
@@ -106,23 +105,18 @@ func TestWorkflowData_UpdateCodebuildStatus(t *testing.T) {
 			},
 			want: &WorkflowData{
 				Codebuild: &CodebuildWorkflowData{
-					BuildID:       "buildkite-dev-1:58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
-					BuildStatus:   codebuild.StatusTypeSucceeded,
-					LogGroupName:  "/aws/codebuild/buildkite-dev-1",
-					LogStreamName: "58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+					BuildID:     "buildkite-dev-1:58df10ab-9dc5-4c7f-b0c3-6a02b63306ba",
+					BuildStatus: codebuild.StatusTypeSucceeded,
 				},
 				WaitTime:   10,
 				TaskStatus: launcher.TaskSucceeded,
 				Job:        &api.Job{},
 			},
-			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if err := tt.fields.evt.UpdateCodebuildStatus(tt.args.buildID, tt.args.buildStatus, tt.args.taskStatus); (err != nil) != tt.wantErr {
-				t.Errorf("WorkflowData.UpdateJobExitCode() error = %v, wantErr %v", err, tt.wantErr)
-			}
+			tt.fields.evt.UpdateCodebuildStatus(tt.args.buildID, tt.args.buildStatus, tt.args.taskStatus)
 			require.Equal(t, tt.want, tt.fields.evt)
 		})
 	}

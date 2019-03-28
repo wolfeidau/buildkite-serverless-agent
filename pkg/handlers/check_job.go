@@ -56,10 +56,7 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 		return nil, errors.Wrap(err, "failed to retrieve codebuild job status")
 	}
 
-	err = evt.UpdateCodebuildStatus(getStatus.ID, getStatus.BuildStatus, getStatus.TaskStatus)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to update codebuild status")
-	}
+	evt.UpdateCodebuildStatus(getStatus.ID, getStatus.BuildStatus, getStatus.TaskStatus)
 
 	token, _, err := getBKClient(evt.AgentName, ch.cfg, ch.paramStore)
 	if err != nil {
@@ -105,10 +102,7 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 			},
 		).Info("stopped canceled build")
 
-		err = evt.UpdateCodebuildStatus(getStatus.ID, stopRes.BuildStatus, stopRes.TaskStatus)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to update codebuild status")
-		}
+		evt.UpdateCodebuildStatus(getStatus.ID, stopRes.BuildStatus, stopRes.TaskStatus)
 	}
 
 	return evt, nil
