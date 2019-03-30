@@ -166,7 +166,7 @@ func (evt *WorkflowData) GetJobEnvBool(key string) *bool {
 
 // GetBuildkitePipelineEnvString get the buildkite variable for the pipeline name which is used as the codebuild project name
 func (evt *WorkflowData) GetBuildkitePipelineEnvString() string {
-	return evt.Job.Env["BUILDKITE_PIPELINE_SLUG"]
+	return evt.Job.Env["BUILDKITE_JOB_ID"]
 }
 
 // API wrap up all the buildkite api operations

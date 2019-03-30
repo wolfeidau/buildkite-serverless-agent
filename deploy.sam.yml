@@ -22,9 +22,14 @@ Parameters:
       Type: String
       Default: "false"
       AllowedValues: ["true", "false"]
+    FargateBuilds:
+      Type: String
+      Default: "false"
+      AllowedValues: ["true", "false"]
 
 Conditions:
   DefineAndStartDisabled: !Equals [ !Ref DefineAndStart, "false" ]
+  FargateBuildsDisabled: !Equals [ !Ref DefineAndStart, "false" ]
 
 Resources:
 
@@ -43,6 +48,11 @@ Resources:
         ServerSideEncryptionConfiguration:
         - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+
+  BuildkiteCluster:
+    Type: 'AWS::ECS::Cluster'
+    Condition: FargateBuildsDisabled
+    Properties: {}
 
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
@@ -343,7 +353,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.codebuild.build_status"
+                      "ResultPath": "$.task_status"
                     }
                   ]
                 },
@@ -370,7 +380,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.codebuild.build_status"
+                      "ResultPath": "$.task_status"
                     }
                   ]
                 },
@@ -378,17 +388,17 @@ Resources:
                   "Type": "Choice",
                   "Choices": [
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "STOPPED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "FAILED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "SUCCEEDED",
                       "Next": "Get Final Job Status"
                     }
@@ -540,6 +550,11 @@ Outputs:
     Condition: DefineAndStartDisabled
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
+  BuildkiteCluster:
+    Value: !Ref BuildkiteCluster
+    Condition: FargateBuildsDisabled
+    Export:
+      Name: !Sub '${AWS::StackName}-BuildkiteCluster'
   AgentFunctionAlarm:
     Value: !Ref AgentFunctionAlarm
     Export:
