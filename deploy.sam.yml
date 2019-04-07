@@ -343,7 +343,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.codebuild.build_status"
+                      "ResultPath": "$.task_status"
                     }
                   ]
                 },
@@ -370,7 +370,7 @@ Resources:
                     {
                       "ErrorEquals": [ "States.ALL" ],
                       "Next": "Get Final Job Status",
-                      "ResultPath": "$.codebuild.build_status"
+                      "ResultPath": "$.task_status"
                     }
                   ]
                 },
@@ -378,17 +378,17 @@ Resources:
                   "Type": "Choice",
                   "Choices": [
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "STOPPED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "FAILED",
                       "Next": "Get Final Job Status"
                     },
                     {
-                      "Variable": "$.codebuild.build_status",
+                      "Variable": "$.task_status",
                       "StringEquals": "SUCCEEDED",
                       "Next": "Get Final Job Status"
                     }
