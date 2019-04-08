@@ -46,8 +46,10 @@ func TestSubmitHandler_HandlerSubmitJob(t *testing.T) {
 	evt := &bk.WorkflowData{
 		AgentName: "ted",
 		Job: &api.Job{
-			ID:  "abc123",
-			Env: map[string]string{},
+			ID: "abc123",
+			Env: map[string]string{
+				"CB_PROJECT_NAME": "testproject-1",
+			},
 		},
 	}
 
@@ -97,7 +99,6 @@ func TestSubmitHandler_HandlerSubmitJobDefine(t *testing.T) {
 	cfg := &config.Config{
 		EnvironmentName:   "dev",
 		EnvironmentNumber: "1",
-		DefineAndStart:    "true",
 	}
 
 	evt := &bk.WorkflowData{
@@ -158,7 +159,7 @@ func TestSubmitHandler_HandlerSubmitJob_ErrNotFound(t *testing.T) {
 		AgentName: "ted",
 		Job: &api.Job{
 			ID:  "abc123",
-			Env: make(map[string]string),
+			Env: map[string]string{"CB_PROJECT_NAME": "testproject-1"},
 		},
 	}
 

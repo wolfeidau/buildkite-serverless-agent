@@ -64,16 +64,18 @@ func (sh *SubmitJobHandler) HandlerSubmitJob(ctx context.Context, evt *bk.Workfl
 	evt.UpdateBuildJobCreds(agentConfig.AccessToken)
 
 	// are we using the 2.x model of projects on demand?
-	if sh.cfg.DefineAndStart == "true" {
+	if evt.HasCodebuildProject() {
 
+		// assign the project name to the workflow and apply overrides from ENV vars
+		evt.UpdateCodebuildProject(sh.getProjectName())
+
+	} else {
+
+		// use the new define and launch model
 		err = sh.defineCodebuildJob(evt)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to define job in codebuild")
 		}
-
-	} else {
-		// assign the project name to the workflow and apply overrides from ENV vars
-		evt.UpdateCodebuildProject(sh.getProjectName())
 	}
 
 	// start a build job
@@ -179,6 +181,7 @@ func (sh *SubmitJobHandler) startBuildAndHandleAWSError(evt *bk.WorkflowData) (*
 				return &buildResult{
 					buildID:     "NA:NA",
 					buildStatus: launcher.TaskFailed,
+					taskStatus:  launcher.TaskFailed,
 					headerMsg:   fmt.Sprintf("Failed to start job in codebuild with %s", aerr.Code()),
 				}, nil
 			}

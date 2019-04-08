@@ -18,13 +18,6 @@ Parameters:
       Type: String
       Default: "wolfeidau/codebuild-docker-buildkite:17.09.0"
       Description: "The name of the default codebuild docker image used to run jobs, MUST have buildkite installed"
-    DefineAndStart:
-      Type: String
-      Default: "false"
-      AllowedValues: ["true", "false"]
-
-Conditions:
-  DefineAndStartDisabled: !Equals [ !Ref DefineAndStart, "false" ]
 
 Resources:
 
@@ -46,7 +39,6 @@ Resources:
 
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
-    Condition: DefineAndStartDisabled
     Properties:
       Artifacts:
         Type: no_artifacts
@@ -182,7 +174,7 @@ Resources:
     Properties:
       Handler: agent
       Timeout: 60
-      MemorySize: 256
+      MemorySize: 128
       Runtime: go1.x
       CodeUri: ./handler.zip
       Role: !Sub ${AgentFunctionRole.Arn}
@@ -259,7 +251,7 @@ Resources:
       Handler: agent
       Timeout: 30
       Runtime: go1.x
-      MemorySize: 256
+      MemorySize: 128
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
@@ -271,8 +263,6 @@ Resources:
             Ref: EnvironmentNumber
           DEFAULT_CODEBUILD_PROJECT_ROLE:
             Ref: BuildkiteCodeBuildRole
-          DEFINE_AND_START:
-            Ref: DefineAndStart
           DEFAULT_DOCKER_IMAGE:
             Ref: DefaultDockerImage
 
@@ -282,7 +272,7 @@ Resources:
       Handler: agent
       Timeout: 30
       Runtime: go1.x
-      MemorySize: 256
+      MemorySize: 128
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
@@ -292,8 +282,6 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-          DEFINE_AND_START:
-            Ref: DefineAndStart
 
   CompleteJobFunction:
     Type: AWS::Serverless::Function
@@ -301,7 +289,7 @@ Resources:
       Handler: agent
       Timeout: 30
       Runtime: go1.x
-      MemorySize: 256
+      MemorySize: 128
       CodeUri: ./handler.zip
       Role: !Sub ${SfnFunctionRole.Arn}
       Environment:
@@ -311,8 +299,6 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-          DEFINE_AND_START:
-            Ref: DefineAndStart
 
   StateMachineCodebuildJobMonitor:
     Type: 'AWS::StepFunctions::StateMachine'
@@ -537,7 +523,6 @@ Outputs:
       Name: !Sub "${AWS::StackName}-ArtifactBucket"
   BuildkiteProject:
     Value: !Ref BuildkiteProject
-    Condition: DefineAndStartDisabled
     Export:
       Name: !Sub "${AWS::StackName}-BuildkiteProject"
   AgentFunctionAlarm:

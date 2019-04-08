@@ -82,8 +82,7 @@ deploy:
 		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO) \
 		--parameter-overrides EnvironmentName=$(ENV) \
 			EnvironmentNumber=$(ENV_NO) \
-			ConcurrentBuilds=2 \
-			DefineAndStart=true
+			ConcurrentBuilds=2
 .PHONY: deploy
 
 # upload-buildkite-project:

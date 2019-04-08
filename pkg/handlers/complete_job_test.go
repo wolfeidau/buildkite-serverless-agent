@@ -118,6 +118,9 @@ func newEvent() *bk.WorkflowData {
 		Job: &api.Job{
 			ID:                 "abc123",
 			ChunksMaxSizeBytes: 102400,
+			Env: map[string]string{
+				"CB_PROJECT_NAME": "testproject-1",
+			},
 		},
 		NextToken: "nextToken",
 	}
