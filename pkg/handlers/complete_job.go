@@ -67,8 +67,9 @@ func (bkw *CompletedJobHandler) HandlerCompletedJob(ctx context.Context, evt *bk
 		return nil, errors.Wrap(err, "failed to upload log chunks")
 	}
 
-	// are we using the 2.x model of projects on demand?
-	if bkw.cfg.DefineAndStart == "true" {
+	// if a custom project was specified then we use it, otherwise we assume that the project
+	// was created on demand and remove it
+	if !evt.HasCodebuildProject() {
 		_, err = bkw.lch.CleanupTask(&codebuild.CleanupTaskParams{
 			ProjectName: evt.Codebuild.ProjectName,
 		})

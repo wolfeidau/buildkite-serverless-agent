@@ -24,7 +24,6 @@ type Config struct {
 	AgentPoolSize               int    `envconfig:"AGENT_POOL_SIZE"`
 	DefaultDockerImage          string `envconfig:"DEFAULT_DOCKER_IMAGE"`
 	DefaultCodebuildProjectRole string `envconfig:"DEFAULT_CODEBUILD_PROJECT_ROLE"`
-	DefineAndStart              string `envconfig:"DEFINE_AND_START"`
 }
 
 // Validate checks the presence of the loaded template path on the filesystem

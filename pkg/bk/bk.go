@@ -95,6 +95,12 @@ func (evt *WorkflowData) UpdateCodebuildProject(buildProjectName string) {
 
 }
 
+// HasCodebuildProject checks if a codebuild project name has been configured
+// if not, then we use the new role based model with dynamic jobs
+func (evt *WorkflowData) HasCodebuildProject() bool {
+	return evt.GetJobEnvString("CB_PROJECT_NAME") != nil
+}
+
 // UpdateCloudwatchLogs assign the log group/stream names
 func (evt *WorkflowData) UpdateCloudwatchLogs(buildID string) error {
 
