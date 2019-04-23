@@ -82,23 +82,12 @@ func (evt *WorkflowData) UpdateJobExitCode() error {
 	return nil
 }
 
-// UpdateCodebuildProject create the codebuild section and assign a project name
-func (evt *WorkflowData) UpdateCodebuildProject(buildProjectName string) {
+// UpdateEnvironment assign the environment variables to the job
+func (evt *WorkflowData) UpdateEnvironment(environmentName string, environmentNumber string) {
 
-	if codebuildProj := evt.GetJobEnvString("CB_PROJECT_NAME"); codebuildProj != nil {
-		buildProjectName = aws.StringValue(codebuildProj)
-	}
+	evt.Job.Env["ENVIRONMENT_NAME"] = environmentName
+	evt.Job.Env["ENVIRONMENT_NUMBER"] = environmentNumber
 
-	evt.Codebuild = &CodebuildWorkflowData{
-		ProjectName: buildProjectName,
-	}
-
-}
-
-// HasCodebuildProject checks if a codebuild project name has been configured
-// if not, then we use the new role based model with dynamic jobs
-func (evt *WorkflowData) HasCodebuildProject() bool {
-	return evt.GetJobEnvString("CB_PROJECT_NAME") != nil
 }
 
 // UpdateCloudwatchLogs assign the log group/stream names

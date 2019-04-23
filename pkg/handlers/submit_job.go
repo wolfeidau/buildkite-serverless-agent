@@ -6,7 +6,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/buildkite/agent/api"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -15,13 +14,13 @@ import (
 	"github.com/wolfeidau/aws-launch/pkg/launcher/service"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/store"
 )
 
 // SubmitJobHandler submit job handler
 type SubmitJobHandler struct {
 	cfg          *config.Config
-	paramStore   params.Store
+	agentStore   store.AgentsAPI
 	buildkiteAPI bk.API
 	lch          codebuild.LauncherAPI
 }
@@ -29,13 +28,12 @@ type SubmitJobHandler struct {
 // NewSubmitJobHandler create a new handler for submit job
 func NewSubmitJobHandler(cfg *config.Config, buildkiteAPI bk.API) *SubmitJobHandler {
 
-	sess := session.Must(session.NewSession())
 	config := aws.NewConfig()
 	lch := service.New(config).Codebuild
 
 	return &SubmitJobHandler{
 		cfg:          cfg,
-		paramStore:   params.New(cfg, sess),
+		agentStore:   store.NewAgents(cfg),
 		buildkiteAPI: buildkiteAPI,
 		lch:          lch,
 	}
@@ -48,12 +46,12 @@ func (sh *SubmitJobHandler) HandlerSubmitJob(ctx context.Context, evt *bk.Workfl
 
 	logger.Info("Starting job")
 
-	token, agentConfig, err := getBKClient(evt.AgentName, sh.cfg, sh.paramStore)
+	agent, err := sh.agentStore.Get(evt.AgentName)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to build buildkite client")
+		return nil, errors.Wrap(err, "failed to load agent from store")
 	}
 
-	err = sh.buildkiteAPI.StartJob(token, evt.Job)
+	err = sh.buildkiteAPI.StartJob(agent.AgentConfig.AccessToken, evt.Job)
 	if err != nil {
 		return nil, err
 	}
@@ -61,22 +59,10 @@ func (sh *SubmitJobHandler) HandlerSubmitJob(ctx context.Context, evt *bk.Workfl
 	logger.Info("Starting codebuild task")
 
 	// update the job with the agent access token
-	evt.UpdateBuildJobCreds(agentConfig.AccessToken)
+	evt.UpdateBuildJobCreds(agent.AgentConfig.AccessToken)
 
-	// are we using the 2.x model of projects on demand?
-	if evt.HasCodebuildProject() {
-
-		// assign the project name to the workflow and apply overrides from ENV vars
-		evt.UpdateCodebuildProject(sh.getProjectName())
-
-	} else {
-
-		// use the new define and launch model
-		err = sh.defineCodebuildJob(evt)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to define job in codebuild")
-		}
-	}
+	// update the environment information
+	evt.UpdateEnvironment(sh.cfg.EnvironmentName, sh.cfg.EnvironmentNumber)
 
 	// start a build job
 	build, err := sh.startBuildAndHandleAWSError(evt)
@@ -91,7 +77,7 @@ func (sh *SubmitJobHandler) HandlerSubmitJob(ctx context.Context, evt *bk.Workfl
 		return nil, errors.Wrap(err, "failed to update cloudwatch logs group and stream names")
 	}
 
-	err = sh.uploadBuildMessage(token, build.buildMessage(), evt)
+	err = sh.uploadBuildMessage(agent.AgentConfig.AccessToken, build.buildMessage(), evt)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to upload build message logs")
 	}
@@ -110,52 +96,12 @@ func (br *buildResult) buildMessage() string {
 	return fmt.Sprintf("--- %s\nbuild_id=%s\nbuild_status=%s\n", br.headerMsg, br.buildID, br.buildStatus)
 }
 
-func (sh *SubmitJobHandler) getProjectName() string {
-	return fmt.Sprintf("%s-%s-%s", codebuildProjectPrefix, sh.cfg.EnvironmentName, sh.cfg.EnvironmentNumber)
-}
 func (sh *SubmitJobHandler) getLog(evt *bk.WorkflowData) *logrus.Entry {
 	return logrus.WithFields(
 		logrus.Fields{
 			"id": evt.Job.ID,
 		},
 	)
-}
-
-func (sh *SubmitJobHandler) defineCodebuildJob(evt *bk.WorkflowData) error {
-
-	// TODO: Maximum length of 255
-	evt.Codebuild = &bk.CodebuildWorkflowData{ProjectName: evt.GetBuildkitePipelineEnvString()}
-
-	defParams := &codebuild.DefineTaskParams{
-		ProjectName:    evt.Codebuild.ProjectName,
-		ComputeType:    "BUILD_GENERAL1_SMALL",
-		Image:          sh.cfg.DefaultDockerImage,
-		Region:         sh.cfg.AwsRegion,
-		ServiceRole:    sh.cfg.DefaultCodebuildProjectRole,
-		Buildspec:      config.DefaultBuildSpec,
-		PrivilegedMode: aws.Bool(true),
-		Environment: map[string]string{
-			"ENVIRONMENT_NAME":   sh.cfg.EnvironmentName,
-			"ENVIRONMENT_NUMBER": sh.cfg.EnvironmentNumber,
-		},
-		Tags: map[string]string{
-			"EnvironmentName":   sh.cfg.EnvironmentName,
-			"EnvironmentNumber": sh.cfg.EnvironmentNumber,
-			"CreatedBy":         "https://github.com/wolfeidau/buildkite-serverless-agent",
-		},
-	}
-
-	sh.getLog(evt).WithField("params", defParams).Info("DefineTask")
-
-	defRes, err := sh.lch.DefineTask(defParams)
-	if err != nil {
-		return errors.Wrap(err, "failed to define project in codebuild")
-	}
-
-	evt.Codebuild.LogGroupName = defRes.CloudwatchLogGroupName
-	evt.Codebuild.LogStreamPrefix = defRes.CloudwatchStreamPrefix
-
-	return nil
 }
 
 func (sh *SubmitJobHandler) startBuildAndHandleAWSError(evt *bk.WorkflowData) (*buildResult, error) {

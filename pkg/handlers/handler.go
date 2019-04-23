@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -11,23 +10,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
 )
-
-const (
-	codebuildProjectPrefix = "BuildkiteProject"
-)
-
-func getBKClient(agentName string, cfg *config.Config, paramStore params.Store) (string, *api.Agent, error) {
-	agentSSMConfigKey := fmt.Sprintf("/%s/%s/%s", cfg.EnvironmentName, cfg.EnvironmentNumber, agentName)
-
-	agentConfig, err := paramStore.GetAgentConfig(agentSSMConfigKey)
-	if err != nil {
-		return "", nil, errors.Wrap(err, "failed to load agent configuration")
-	}
-	return agentConfig.AccessToken, agentConfig, nil
-}
 
 func uploadLogChunks(token string, buildkiteAPI bk.API, logsReader cwlogs.LogsReader, evt *bk.WorkflowData) error {
 

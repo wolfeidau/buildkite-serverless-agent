@@ -1,16 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'lambda: Deployer codebuild project which links to the Serverless Agent for Buildkite, a @wolfeidau template'
-Transform: AWS::Serverless-2016-10-31
+Description: 'lambda: Codebuild project which is used by the Serverless Agent for Buildkite, a @wolfeidau template'
 Parameters:
-  Name:
-    Type: String
-  EnvironmentName:
-    Type: String
-  EnvironmentNumber:
-    Type: String
   BuildkiteAgentPeerStack: 
-    Type: String
-  SourceName:
     Type: String
 
 Resources:
@@ -18,35 +9,31 @@ Resources:
   BuildkiteProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: !Sub BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}-${Name}
       Artifacts:
-        Type: no_artifacts
+        Type: NO_ARTIFACTS
       Environment:
         ComputeType: BUILD_GENERAL1_SMALL
         # using my custom codebuild docker image with buildkite installed along with golang
-        Image: wolfeidau/codebuild-docker-buildkite:17.09.0 
+        Image: versent/codebuild-all-buildkite:1.0_201904151735
         Type: LINUX_CONTAINER
         PrivilegedMode: true
         EnvironmentVariables: 
-        - Name: ENVIRONMENT_NAME
-          Type: "PLAINTEXT"
-          Value: !Sub "${EnvironmentName}"
-        - Name: ENVIRONMENT_NUMBER
-          Type: "PLAINTEXT"
-          Value: !Sub "${EnvironmentNumber}"
         - Name: ARTIFACT_BUCKET_NAME
           Type: "PLAINTEXT"
           Value: 
             'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-ArtifactBucket"
       ServiceRole: !Ref BuildkiteCodeBuildRole
+      Cache:
+        Type: LOCAL
+        Modes: # You can specify one or more cache mode, 
+          - LOCAL_DOCKER_LAYER_CACHE
       Source:
-        Type: S3
-        Location: 
-          'Fn::Sub': 
-          - "arn:aws:s3:::${SourceBucket}/${SourceName}"
-          - SourceBucket: 
-              'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-SourceBucket"
-            Name: !Sub "${Name}"
+        Type: NO_SOURCE
+        BuildSpec: "\nversion: 0.2\n\nphases:\n  install:\n    commands:\n      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay\u0026\n      - timeout 15 sh -c \"until docker info; do echo .; sleep 1; done\"\n  pre_build:\n    commands:\n      - aws ssm get-parameters --names \"/${ENVIRONMENT_NAME}/${ENVIRONMENT_NUMBER}/buildkite-ssh-key\" --with-decryption --output text --query 'Parameters[0].Value' \u003e ~/.ssh/id_rsa\n      - chmod 600 ~/.ssh/id_rsa\n  build:\n    commands:\n      - echo Build started on $(date)\n      - /opt/buildkite/buildkite-agent bootstrap --build-path ${CODEBUILD_SRC_DIR} --bin-path /opt/buildkite\n  post_build:\n    commands:\n      - echo Build completed on $(date)\n"
+      Tags:
+        - Key: EnvironmentName
+          Value: 
+            'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-EnvironmentName"
 
   BuildkiteCodeBuildRole:
     Type: AWS::IAM::Role
@@ -71,30 +58,17 @@ Resources:
             - 'ssm:GetParameters'
             - 'ssm:GetParameter'
             Resource:
-            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+            - 'Fn::Sub':
+              - "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/*"
+              - EnvironmentName:
+                  'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-EnvironmentName"
           - Effect: Allow
             Action:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
             Resource:
-            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}-${Name}*"
-          - Effect: Allow
-            Action:
-            - s3:PutObject
-            - s3:GetObject
-            - s3:GetObjectVersion
-            Resource:
-            - !Sub "arn:aws:s3:::codepipeline-${AWS::Region}-*"
-          - Effect: Allow
-            Action:
-            - s3:GetObject
-            - s3:GetObjectVersion
-            Resource:
-            - 'Fn::Sub': 
-              - "arn:aws:s3:::${SourceBucket}/*"
-              - SourceBucket: 
-                  'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-SourceBucket"
+            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
           - Effect: Allow
             Action:
             - 's3:ListAllMyBuckets'
@@ -115,13 +89,6 @@ Resources:
               - "arn:aws:s3:::${ArtifactBucket}"
               - ArtifactBucket: 
                   'Fn::ImportValue': !Sub "${BuildkiteAgentPeerStack}-ArtifactBucket"
-          # Need this to deploy all the things.
-          # NOTE: You probably want to tune this depending on the isolation you have within your account!!
-          - Effect: Allow
-            Action:
-            - '*'
-            Resource:
-            - '*'
 
 Outputs:
   BuildkiteProject:
