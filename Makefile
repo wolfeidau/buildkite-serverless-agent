@@ -1,7 +1,7 @@
 APPNAME ?= bk-serverless-codebuild-agent
 ENV ?= dev
 ENV_NO ?= 1
-DEPLOYER_NAME ?= default
+PROJECT_NAME ?= default
 
 VERSION := 1.3.0
 BUILD_VERSION := $(shell git rev-parse --short HEAD)
@@ -35,6 +35,7 @@ mocks:
 	mockery -dir pkg/bk --all
 	mockery -dir pkg/statemachine --all
 	mockery -dir pkg/ssmcache --all
+	mockery -dir pkg/store --all
 .PHONY: mocks
 
 build-docker:
@@ -81,8 +82,7 @@ deploy:
 		--capabilities CAPABILITY_IAM \
 		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO) \
 		--parameter-overrides EnvironmentName=$(ENV) \
-			EnvironmentNumber=$(ENV_NO) \
-			ConcurrentBuilds=2
+			EnvironmentNumber=$(ENV_NO)
 .PHONY: deploy
 
 # upload-buildkite-project:
@@ -92,15 +92,14 @@ deploy:
 # 		xargs -I{} -n1 aws s3 cp ./buildkite.zip s3://{}
 # .PHONY: upload-buildkite-project
 
-# deploy-deployer-project:
-# 	@echo "--- deploy deployer codebuild project into aws"
-# 	@aws cloudformation deploy \
-# 		--template-file examples/codebuild-project.yaml \
-# 		--capabilities CAPABILITY_IAM \
-# 		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO)-deployer-$(DEPLOYER_NAME) \
-# 		--parameter-overrides EnvironmentName=$(ENV) EnvironmentNumber=$(ENV_NO) Name=$(DEPLOYER_NAME) \
-# 			BuildkiteAgentPeerStack=$(APPNAME)-$(ENV)-$(ENV_NO) SourceName=buildkite-deployer.zip
-# .PHONY: deploy-deployer-project
+deploy-project:
+	@echo "--- deploy codebuild project into aws"
+	@aws cloudformation deploy \
+		--template-file examples/codebuild-project.yaml \
+		--capabilities CAPABILITY_IAM \
+		--stack-name $(APPNAME)-$(ENV)-$(ENV_NO)-$(PROJECT_NAME) \
+		--parameter-overrides BuildkiteAgentPeerStack=$(APPNAME)-$(ENV)-$(ENV_NO)
+.PHONY: deploy-deployer-project
 
 # upload-deployer-project:
 # 	@echo "--- upload the deployer codebuild sources to s3"

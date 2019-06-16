@@ -41,7 +41,8 @@ type cache struct {
 }
 
 // New new SSM cache
-func New(sess *session.Session) Cache {
+func New(cfgs ...*aws.Config) Cache {
+	sess := session.Must(session.NewSession(cfgs...))
 	return &cache{
 		ssmSvc:    ssm.New(sess),
 		ssmValues: make(map[string]*Entry),

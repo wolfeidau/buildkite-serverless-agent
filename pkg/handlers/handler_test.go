@@ -11,26 +11,7 @@ import (
 	"github.com/wolfeidau/aws-launch/pkg/cwlogs"
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
 )
-
-func TestGetBKClient(t *testing.T) {
-	paramStore := &mocks.Store{}
-
-	paramStore.On("GetAgentConfig", "/dev/1/ted").Return(&api.Agent{
-		Name: "ted",
-	}, nil)
-
-	cfg := &config.Config{
-		EnvironmentName:   "dev",
-		EnvironmentNumber: "1",
-	}
-
-	client, agent, err := getBKClient("ted", cfg, paramStore)
-	require.Nil(t, err)
-	require.NotNil(t, client)
-	require.Equal(t, &api.Agent{Name: "ted"}, agent)
-}
 
 func Test_uploadLogChunks(t *testing.T) {
 

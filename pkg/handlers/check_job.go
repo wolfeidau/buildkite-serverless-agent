@@ -12,15 +12,15 @@ import (
 	"github.com/wolfeidau/aws-launch/pkg/launcher/service"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
-	"github.com/wolfeidau/buildkite-serverless-agent/pkg/params"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/store"
 )
 
 // CheckJobHandler check handler
 type CheckJobHandler struct {
 	cfg          *config.Config
 	sess         *session.Session
-	paramStore   params.Store
 	buildkiteAPI bk.API
+	agentStore   store.AgentsAPI
 	lch          codebuild.LauncherAPI
 	logsReader   cwlogs.LogsReader
 }
@@ -35,8 +35,8 @@ func NewCheckJobHandler(cfg *config.Config, sess *session.Session, buildkiteAPI 
 	return &CheckJobHandler{
 		cfg:          cfg,
 		sess:         sess,
-		paramStore:   params.New(cfg, sess),
 		buildkiteAPI: buildkiteAPI,
+		agentStore:   store.NewAgents(cfg),
 		logsReader:   logsReader,
 		lch:          lch,
 	}
@@ -58,17 +58,17 @@ func (ch *CheckJobHandler) HandlerCheckJob(ctx context.Context, evt *bk.Workflow
 
 	evt.UpdateCodebuildStatus(getStatus.ID, getStatus.BuildStatus, getStatus.TaskStatus)
 
-	token, _, err := getBKClient(evt.AgentName, ch.cfg, ch.paramStore)
+	agent, err := ch.agentStore.Get(evt.AgentName)
 	if err != nil {
-		return nil, errors.Wrap(err, "failed to build buildkite client")
+		return nil, errors.Wrap(err, "failed to load agent from store")
 	}
 
-	err = uploadLogChunks(token, ch.buildkiteAPI, ch.logsReader, evt)
+	err = uploadLogChunks(agent.AgentConfig.AccessToken, ch.buildkiteAPI, ch.logsReader, evt)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to upload log chunks")
 	}
 
-	jobStatus, err := ch.buildkiteAPI.GetStateJob(token, evt.Job.ID)
+	jobStatus, err := ch.buildkiteAPI.GetStateJob(agent.AgentConfig.AccessToken, evt.Job.ID)
 	if err != nil {
 		return nil, errors.Wrap(err, "call to the buildkite api failed")
 	}

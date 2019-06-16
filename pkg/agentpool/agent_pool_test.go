@@ -11,9 +11,12 @@ import (
 	"github.com/stretchr/testify/require"
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/store"
 )
 
 func TestNew(t *testing.T) {
+
+	assert := require.New(t)
 
 	buildkiteAPI := &mocks.API{}
 
@@ -24,7 +27,6 @@ func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want int
 	}{
 		{
 			name: "New() with valid pool size config",
@@ -32,17 +34,15 @@ func TestNew(t *testing.T) {
 				cfg: &config.Config{
 					EnvironmentName:   "dev",
 					EnvironmentNumber: "1",
-					AgentPoolSize:     1,
 				},
 				sess: session.Must(session.NewSession()),
 			},
-			want: 1,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got := New(tt.args.cfg, tt.args.sess, buildkiteAPI)
-			require.Equal(t, tt.want, len(got.Agents))
+			assert.NotNil(got)
 		})
 	}
 }
@@ -52,12 +52,14 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 	paramStore := &mocks.Store{}
 
 	paramStore.On("GetAgentKey", "/dev/1/buildkite-agent-key").Return("abc123", nil)
-	paramStore.On("SaveAgentConfig", "/dev/1/serverless-agent-dev-1_0", mock.AnythingOfType("*api.Agent")).Return(nil)
+
+	agentStore := &mocks.AgentsAPI{}
+	agentRecord := &store.AgentRecord{Name: "deployer-dev-1", Tags: []string{"aws", "serverless", "codebuild", "", "queue=dev"}, AgentConfig: &api.Agent{}}
+	agentStore.On("CreateOrUpdate", agentRecord).Return(agentRecord, nil)
 
 	cfg := &config.Config{
 		EnvironmentName:   "dev",
 		EnvironmentNumber: "1",
-		AgentPoolSize:     1,
 	}
 
 	type fields struct {
@@ -78,12 +80,12 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 			name: "RegisterAgents() with valid pool",
 			fields: fields{
 				Agents: []*AgentInstance{
-					&AgentInstance{cfg: cfg, index: 0, tags: []string{"dev"}},
+					&AgentInstance{cfg: cfg, agent: &store.AgentRecord{Name: "deployer-dev-1", Tags: []string{"aws", "serverless", "codebuild", "", "queue=dev"}}},
 				},
 			},
 			apiMock: apiMock{
 				method:          "Register",
-				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123", []string{"dev"}},
+				arguments:       []interface{}{"deployer-dev-1", "abc123", []string{"aws", "serverless", "codebuild", "", "queue=dev"}},
 				returnArguments: []interface{}{&api.Agent{}, nil},
 			},
 			wantErr: false,
@@ -92,12 +94,12 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 			name: "RegisterAgents() with failed api call",
 			fields: fields{
 				Agents: []*AgentInstance{
-					&AgentInstance{cfg: cfg, index: 0, tags: []string{"dev"}},
+					&AgentInstance{cfg: cfg, agent: &store.AgentRecord{Name: "deployer-dev-1", Tags: []string{"aws", "serverless", "codebuild", "", "queue=dev"}}},
 				},
 			},
 			apiMock: apiMock{
 				method:          "Register",
-				arguments:       []interface{}{"serverless-agent-dev-1_0", "abc123", []string{"dev"}},
+				arguments:       []interface{}{"deployer-dev-1", "abc123", []string{"aws", "serverless", "codebuild", "", "queue=dev"}},
 				returnArguments: []interface{}{nil, errors.New("whoops")},
 			},
 			wantErr: true,
@@ -111,6 +113,7 @@ func TestAgentPool_RegisterAgents(t *testing.T) {
 			ap := &AgentPool{
 				Agents:       tt.fields.Agents,
 				paramStore:   paramStore,
+				agentStore:   agentStore,
 				buildkiteAPI: buildkiteAPI,
 				cfg:          cfg,
 			}
@@ -130,12 +133,12 @@ func TestAgentPool_PollAgents(t *testing.T) {
 	paramStore := &mocks.Store{}
 
 	paramStore.On("GetAgentKey", "/dev/1/buildkite-agent-key").Return("abc123", nil)
-	paramStore.On("GetAgentConfig", "/dev/1/serverless-agent-dev-1_0").Return(&api.Agent{AccessToken: "abc123"}, nil)
+
+	agentStore := &mocks.AgentsAPI{}
 
 	cfg := &config.Config{
 		EnvironmentName:   "dev",
 		EnvironmentNumber: "1",
-		AgentPoolSize:     1,
 	}
 
 	type fields struct {
@@ -157,7 +160,7 @@ func TestAgentPool_PollAgents(t *testing.T) {
 			name: "PollAgents() with valid pool",
 			fields: fields{
 				Agents: []*AgentInstance{
-					&AgentInstance{cfg: cfg, index: 0},
+					&AgentInstance{cfg: cfg, agent: &store.AgentRecord{Name: "deployer-dev-1", Tags: []string{"dev"}, AgentConfig: &api.Agent{AccessToken: "abc123"}}},
 				},
 			},
 			apiMock: []apiMock{
@@ -191,12 +194,13 @@ func TestAgentPool_PollAgents(t *testing.T) {
 			buildkiteAPI := &mocks.API{}
 			executor := &mocks.Executor{}
 
-			executor.On("StartExecution", "serverless-agent-dev-1_0", mock.Anything, mock.Anything).Return(nil)
+			executor.On("StartExecution", "deployer-dev-1", mock.Anything, mock.Anything).Return(nil)
 
 			ap := &AgentPool{
 				Agents:       tt.fields.Agents,
 				executor:     executor,
 				paramStore:   paramStore,
+				agentStore:   agentStore,
 				buildkiteAPI: buildkiteAPI,
 				cfg:          cfg,
 			}
@@ -205,7 +209,7 @@ func TestAgentPool_PollAgents(t *testing.T) {
 				buildkiteAPI.On(mock.method, mock.arguments...).Return(mock.returnArguments...)
 			}
 
-			executor.On("RunningForAgent", "serverless-agent-dev-1_0").Return(0, nil)
+			executor.On("RunningForAgent", "deployer-dev-1").Return(0, nil)
 
 			err := ap.PollAgents(time.Now().Add(30 * time.Second))
 			if (err != nil) != tt.wantErr {

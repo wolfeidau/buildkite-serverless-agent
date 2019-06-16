@@ -18,14 +18,18 @@ import (
 	"github.com/wolfeidau/buildkite-serverless-agent/mocks"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/bk"
 	"github.com/wolfeidau/buildkite-serverless-agent/pkg/config"
+	"github.com/wolfeidau/buildkite-serverless-agent/pkg/store"
 )
 
 func TestCheckJobHandler_HandlerCheckJob_Running(t *testing.T) {
 
-	paramStore := &mocks.Store{}
-	paramStore.On("GetAgentConfig", "/dev/1/buildkite").Return(&api.Agent{
-		Name:        "buildkite",
-		AccessToken: "token123",
+	agentStore := &mocks.AgentsAPI{}
+
+	agentStore.On("Get", "buildkite").Return(&store.AgentRecord{
+		Name: "buildkite",
+		AgentConfig: &api.Agent{
+			AccessToken: "token123",
+		},
 	}, nil)
 
 	cwlogsSvc := &mocks.CloudWatchLogsAPI{}
@@ -76,7 +80,7 @@ func TestCheckJobHandler_HandlerCheckJob_Running(t *testing.T) {
 
 	ch := &CheckJobHandler{
 		cfg:          cfg,
-		paramStore:   paramStore,
+		agentStore:   agentStore,
 		buildkiteAPI: buildkiteAPI,
 		lch:          lch,
 		logsReader:   logsReader,
@@ -89,10 +93,13 @@ func TestCheckJobHandler_HandlerCheckJob_Running(t *testing.T) {
 
 func TestCheckJobHandler_HandlerCheckJob_Cancelled(t *testing.T) {
 
-	paramStore := &mocks.Store{}
-	paramStore.On("GetAgentConfig", "/dev/1/buildkite").Return(&api.Agent{
-		Name:        "buildkite",
-		AccessToken: "token123",
+	agentStore := &mocks.AgentsAPI{}
+
+	agentStore.On("Get", "buildkite").Return(&store.AgentRecord{
+		Name: "buildkite",
+		AgentConfig: &api.Agent{
+			AccessToken: "token123",
+		},
 	}, nil)
 
 	cwlogsSvc := &mocks.CloudWatchLogsAPI{}
@@ -148,7 +155,7 @@ func TestCheckJobHandler_HandlerCheckJob_Cancelled(t *testing.T) {
 
 	ch := &CheckJobHandler{
 		cfg:          cfg,
-		paramStore:   paramStore,
+		agentStore:   agentStore,
 		buildkiteAPI: buildkiteAPI,
 		lch:          lch,
 		logsReader:   logsReader,

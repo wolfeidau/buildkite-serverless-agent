@@ -10,24 +10,8 @@ Parameters:
       Type: String
       Default: "1"
       Description: "The number of the environment used to tag and name resources"
-    AgentPoolSize:
-      Type: Number
-      Default: 5
-      Description: "The number of virtual buildkite agents to register"
-    DefaultDockerImage:
-      Type: String
-      Default: "wolfeidau/codebuild-docker-buildkite:17.09.0"
-      Description: "The name of the default codebuild docker image used to run jobs, MUST have buildkite installed"
 
 Resources:
-
-  SourceBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketEncryption:
-        ServerSideEncryptionConfiguration:
-        - ServerSideEncryptionByDefault:
-              SSEAlgorithm: AES256
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
@@ -36,96 +20,6 @@ Resources:
         ServerSideEncryptionConfiguration:
         - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-
-  BuildkiteProject:
-    Type: AWS::CodeBuild::Project
-    Properties:
-      Artifacts:
-        Type: no_artifacts
-      Environment:
-        ComputeType: BUILD_GENERAL1_SMALL
-        # using my custom codebuild docker image with buildkite installed along with golang
-        Image: wolfeidau/codebuild-docker-buildkite:17.09.0 
-        Type: LINUX_CONTAINER
-        PrivilegedMode: true
-        EnvironmentVariables: 
-        - Name: ENVIRONMENT_NAME
-          Type: "PLAINTEXT"
-          Value: !Sub "${EnvironmentName}"
-        - Name: ENVIRONMENT_NUMBER
-          Type: "PLAINTEXT"
-          Value: !Sub "${EnvironmentNumber}"
-        - Name: ARTIFACT_BUCKET_NAME
-          Type: "PLAINTEXT"
-          Value: !Ref ArtifactBucket
-      Name: !Sub "BuildkiteProject-${EnvironmentName}-${EnvironmentNumber}"
-      ServiceRole: !Ref BuildkiteCodeBuildRole
-      Source:
-        Type: S3
-        Location: !Sub "arn:aws:s3:::${SourceBucket}/buildkite.zip"
-
-  BuildkiteCodeBuildRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          Effect: Allow
-          Principal:
-            Service: codebuild.amazonaws.com
-          Action: sts:AssumeRole
-      Policies:
-      - PolicyName: BuildkiteSSMAccess
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action: 'ssm:DescribeParameters'
-            Resource:
-            - '*'
-          - Effect: Allow
-            Action: 
-            - 'ssm:GetParameters'
-            - 'ssm:GetParameter'
-            Resource:
-            - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
-          - Effect: Allow
-            Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            Resource:
-            - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
-          - Effect: Allow
-            Action:
-            - s3:PutObject
-            - s3:GetObject
-            - s3:GetObjectVersion
-            Resource:
-            - !Sub "arn:aws:s3:::codepipeline-${AWS::Region}-*"
-          - Effect: Allow
-            Action:
-            - s3:GetObject
-            - s3:GetObjectVersion
-            Resource:
-            - !Sub "arn:aws:s3:::${SourceBucket}/buildkite.zip"
-          - Effect: Allow
-            Action:
-            - 's3:ListAllMyBuckets'
-            Resource:
-            - '*'
-          - Effect: Allow
-            Action:
-            - s3:ListBucket
-            - s3:GetObject
-            - s3:GetObjectVersion
-            - s3:GetObjectAcl
-            - s3:GetObjectVersion
-            - s3:PutObject
-            - s3:PutObjectAcl
-            - s3:PutObjectVersionAcl
-            Resource:
-            - !Sub "arn:aws:s3:::${ArtifactBucket}/*"
-            - !Sub "arn:aws:s3:::${ArtifactBucket}"
 
   AgentFunctionRole:
     Type: AWS::IAM::Role
@@ -167,7 +61,25 @@ Resources:
                 - 'ssm:GetParameter'
                 - 'ssm:PutParameter'
                 Resource:
-                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/*"
+        - 
+          PolicyName: "BuildkiteDynamodbAccess"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: 
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                Resource:
+                  - !GetAtt AgentTable.Arn
+                  - !Sub '${AgentTable.Arn}/*'
 
   AgentFunction:
     Type: AWS::Serverless::Function
@@ -185,9 +97,9 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-          AGENT_POOL_SIZE:
-            Ref: AgentPoolSize
           SFN_CODEBUILD_JOB_MONITOR_ARN: !Sub '${StateMachineCodebuildJobMonitor}'
+          AGENT_TABLE_NAME:
+            Ref: AgentTable          
       Events:
         Timer:
           Type: Schedule
@@ -222,7 +134,7 @@ Resources:
                 - 'ssm:GetParameter'
                 - 'ssm:DescribeParameters'
                 Resource:
-                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/${EnvironmentNumber}/*"
+                - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/${EnvironmentName}/*"
               - Effect: Allow
                 Action: 
                 - 'ssm:DescribeParameters'
@@ -235,15 +147,27 @@ Resources:
                 - "*"
               - Effect: Allow
                 Action:
-                - iam:PassRole
-                - iam:GetRole
-                Resource:
-                - !Sub "${BuildkiteCodeBuildRole.Arn}"
-              - Effect: Allow
-                Action:
                 - logs:GetLogEvents
                 Resource:
                 - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/codebuild/*"
+        - 
+          PolicyName: "BuildkiteDynamodbAccess"
+          PolicyDocument: 
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action: 
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                Resource:
+                  - !GetAtt AgentTable.Arn
+                  - !Sub '${AgentTable.Arn}/*'
 
   SubmitJobFunction:
     Type: AWS::Serverless::Function
@@ -261,10 +185,8 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
-          DEFAULT_CODEBUILD_PROJECT_ROLE:
-            Ref: BuildkiteCodeBuildRole
-          DEFAULT_DOCKER_IMAGE:
-            Ref: DefaultDockerImage
+          AGENT_TABLE_NAME:
+            Ref: AgentTable
 
   CheckJobFunction:
     Type: AWS::Serverless::Function
@@ -282,6 +204,8 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
+          AGENT_TABLE_NAME:
+            Ref: AgentTable
 
   CompleteJobFunction:
     Type: AWS::Serverless::Function
@@ -299,6 +223,8 @@ Resources:
             Ref: EnvironmentName
           ENVIRONMENT_NUMBER:
             Ref: EnvironmentNumber
+          AGENT_TABLE_NAME:
+            Ref: AgentTable
 
   StateMachineCodebuildJobMonitor:
     Type: 'AWS::StepFunctions::StateMachine'
@@ -424,6 +350,26 @@ Resources:
             - !GetAtt CheckJobFunction.Arn
             - !GetAtt CompleteJobFunction.Arn
 
+  AgentTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      SSESpecification:
+        SSEEnabled: true
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: name
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: name
+          KeyType: RANGE          
+      BillingMode: PAY_PER_REQUEST
+      TimeToLiveSpecification:
+        AttributeName: expires
+        Enabled: true
+
   AgentFunctionAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -492,7 +438,15 @@ Resources:
       Period: 60
       TreatMissingData: "notBreaching"
 
-Outputs:
+Outputs:  
+  EnvironmentName:
+    Value: !Ref EnvironmentName
+    Export:
+      Name: !Sub "${AWS::StackName}-EnvironmentName"
+  EnvironmentNumber:
+    Value: !Ref EnvironmentNumber
+    Export:
+      Name: !Sub "${AWS::StackName}-EnvironmentNumber"
   AgentFunctionArn:
     Value: !GetAtt AgentFunction.Arn
     Export:
@@ -513,18 +467,10 @@ Outputs:
     Value: !Ref StateMachineCodebuildJobMonitor
     Export:
       Name: !Sub "${AWS::StackName}-StateMachineCodebuildJobMonitorArn"
-  SourceBucket:
-    Value: !Ref SourceBucket
-    Export:
-      Name: !Sub "${AWS::StackName}-SourceBucket"
   ArtifactBucket:
     Value: !Ref ArtifactBucket
     Export:
       Name: !Sub "${AWS::StackName}-ArtifactBucket"
-  BuildkiteProject:
-    Value: !Ref BuildkiteProject
-    Export:
-      Name: !Sub "${AWS::StackName}-BuildkiteProject"
   AgentFunctionAlarm:
     Value: !Ref AgentFunctionAlarm
     Export:

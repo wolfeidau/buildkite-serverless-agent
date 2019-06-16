@@ -76,8 +76,6 @@ func (sfne *SFNExecutor) StartExecution(agentName string, job *api.Job, jsonData
 
 	pipelineSlug := job.Env["BUILDKITE_PIPELINE_SLUG"]
 
-	// ppc-ping-stack-pipeline-deploy-s_serverless-agent-sandpit-1_2_2019-01-04T003421Z
-
 	// truncate the pipeline slug if longer than MaxPipelineSlugLength
 	if len(pipelineSlug) > MaxPipelineSlugLength {
 		pipelineSlug = pipelineSlug[0:MaxPipelineSlugLength]

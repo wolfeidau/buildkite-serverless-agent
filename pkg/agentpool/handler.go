@@ -24,8 +24,22 @@ func NewBuildkiteWorker(agentPool *AgentPool) *BuildkiteWorker {
 func (bkw *BuildkiteWorker) Handler(ctx context.Context, evt *events.CloudWatchEvent) error {
 
 	deadline, _ := ctx.Deadline()
-	deadline = deadline.Add(-3 * time.Second)
+	deadline = deadline.Add(-5 * time.Second)
 	timeoutChannel := time.After(time.Until(deadline))
+
+	log.Info("Loading agents")
+
+	err := bkw.agentPool.LoadAgents()
+	if err != nil {
+		log.WithError(err).Error("failed to load agents from store")
+	}
+
+	log.WithField("deadline", deadline).Info("Register agents")
+
+	err = bkw.agentPool.RegisterAgents(deadline)
+	if err != nil {
+		log.WithError(err).Error("failed to register agents")
+	}
 
 	log.WithField("deadline", deadline).Info("Polling agents")
 
@@ -43,7 +57,7 @@ LOOP:
 
 		default:
 
-			err := bkw.agentPool.PollAgents(deadline)
+			err = bkw.agentPool.PollAgents(deadline)
 			if err != nil {
 				log.WithError(err).Error("failed to poll")
 			}
@@ -54,6 +68,13 @@ LOOP:
 			}
 		}
 
+	}
+
+	deadline, _ = ctx.Deadline()
+
+	err = bkw.agentPool.CleanupAgents(deadline)
+	if err != nil {
+		log.WithError(err).Error("failed to cleanup")
 	}
 
 	return nil
