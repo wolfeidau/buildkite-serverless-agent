@@ -59,7 +59,7 @@ LOOP:
 
 			err = bkw.agentPool.PollAgents(deadline)
 			if err != nil {
-				log.WithError(err).Error("failed to poll")
+				log.WithError(err).Error("failed to poll agents")
 			}
 
 			// is the current time before the deadline, if not skip the sleep
